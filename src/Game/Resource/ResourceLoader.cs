@@ -128,14 +128,6 @@ namespace Netsphere.Resource
                             map.GameRules.Add(GameRule.Arcade);
                             break;
 
-                        /*case "1":
-                            map.GameRules.Add(GameRule.OWO);
-                            break;*/
-
-                        /*case "r":
-                            map.GameRules.Add(GameRule.Race);
-                            break;*/
-
                         case "std": // wtf is this?
                             break;
                         case "m": // wtf is this?

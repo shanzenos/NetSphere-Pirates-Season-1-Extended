@@ -168,8 +168,6 @@
         //Horde = 12,
         //Challenge = 13,
         //Random = 14,
-        //OWO = 15,
-        //Race = 16,
     }
 
     public enum GameState : uint
