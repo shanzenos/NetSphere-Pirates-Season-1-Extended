@@ -215,13 +215,21 @@ namespace Netsphere.Game.GameRules
         {
             _waitingNextChaser = true;
             _nextChaserTimer = TimeSpan.Zero;
+
+            var diff = Room.Options.TimeLimit - RoundTime;
+            if (diff <= TimeSpan.FromSeconds(30)) //Timespan difference
+            {
+                StateMachine.Fire(GameRuleStateTrigger.StartResult);
+                return;
+            }
+
             Room.Broadcast(new SEventMessageAckMessage(GameEventMessage.ChaserIn, (ulong)s_nextChaserWaitTime.TotalMilliseconds, 0, 0, ""));
         }
 
         public void NextChaser()
         {
             // Set round time (round time broken, using 60 sec for all players)
-            _chaserRoundTime = TimeSpan.FromSeconds(60);
+            _chaserRoundTime = Room.Players.Count < 7 ? TimeSpan.FromSeconds(60) : TimeSpan.FromSeconds(Room.Players.Count * 10);
             _chaserRoundTime += TimeSpan.FromSeconds(Chaser != null ? 3 : 6);
 
             // Pool all the players in the room
