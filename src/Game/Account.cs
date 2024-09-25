@@ -9,6 +9,7 @@ namespace Netsphere
         public string Nickname { get; set; }
         public SecurityLevel SecurityLevel { get; set; }
 
+// test
         public Account(AccountDto dto)
         {
             Id = (ulong)dto.Id;
