@@ -1,5 +1,5 @@
 # NetSphere-Pirates-Season-1-Extended
-Based on WTFBlub's original version of his season 1 P26 Emu: https://github.com/wtfblub/NetspherePirates
+Based on WTFBlub's original version of his season 1 Patch 26 Server Emulator: https://github.com/wtfblub/NetspherePirates
 
 This is an extended, bug fixed &amp; improved upon version of Wtfblub's Netsphere Pirates S4 League season 1 server emulator. 
 Special thanks for VV & Wizzardo for massive contributions to overhaul big parts of this. 
