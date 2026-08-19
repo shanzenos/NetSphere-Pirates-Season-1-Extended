@@ -1,4 +1,4 @@
-# NetSphere-Pirates-Season-1-Extended
+# S4 League Season 1 Server Emulator
 Based on WTFBlub's original version of his season 1 Patch 26 Server Emulator: https://github.com/wtfblub/NetspherePirates
 
 This is an extended, bug fixed &amp; improved upon version of Wtfblub's Netsphere Pirates S4 League season 1 server emulator I've been working on.
