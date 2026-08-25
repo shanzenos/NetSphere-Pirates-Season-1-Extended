@@ -174,6 +174,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="PlayerItem.cs" />
     <Compile Include="PlayerManager.cs" />
+    <Compile Include="ArcadeStats.cs" />
     <Compile Include="PlayerRoomInfo.cs" />
     <Compile Include="PlayerSettingManager.cs" />
     <Compile Include="Program.cs" />
