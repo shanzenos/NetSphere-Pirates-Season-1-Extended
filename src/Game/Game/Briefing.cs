@@ -53,6 +53,10 @@ namespace Netsphere.Game
             foreach (var team in teamMgr.Values)
             {
                 w.WriteEnum(team.Team);
+
+                if (GameRule.GameRule == Netsphere.GameRule.Arcade)
+                w.Write((uint)0);
+
                 w.Write(team.Score);
             }
 

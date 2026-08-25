@@ -12,7 +12,7 @@ namespace Netsphere.Game.GameRules
         private static readonly TimeSpan PreResultWaitTime = TimeSpan.FromSeconds(9);
         private static readonly TimeSpan HalfTimeWaitTime = TimeSpan.FromSeconds(24);
         private static readonly TimeSpan ResultWaitTime = TimeSpan.FromSeconds(14);
-        internal bool notInitialBriefing;
+        public bool notInitialBriefing;
 
         public abstract GameRule GameRule { get; }
         public Room Room { get; }
@@ -120,6 +120,15 @@ namespace Netsphere.Game.GameRules
 
         #region Scores
 
+        public virtual void Respawn(Player victim)
+        {
+            if (victim == null)
+                return;
+
+            victim.RoomInfo.State = PlayerState.Dead;
+            //victim.Session.SendAsync(new InGamePlayerResponseOfDeathAckMessage()); // possibly remove later
+        }
+
         public virtual void OnScoreKill(Player killer, Player assist, Player target, AttackAttribute attackAttribute)
         {
             killer.RoomInfo.Stats.Kills++;
@@ -206,12 +215,7 @@ namespace Netsphere.Game.GameRules
                         plr.Session.SendAsync(new SBeginRoundAckMessage());
                     }
 
-                    /*Room.BroadcastBriefing(); //old
-                    Room.Broadcast(new SChangeStateAckMessage(GameState.Playing));
-                    if (transition.Destination == GameRuleState.FirstHalf)
-                        Room.Broadcast(new SChangeSubStateAckMessage(GameTimeState.FirstHalf));
-                    break;*/
-                    Room.BroadcastBriefing(); //new
+                    Room.BroadcastBriefing();
                     Room.Broadcast(new SChangeStateAckMessage(GameState.Playing));
                     if (transition.Destination == GameRuleState.Neutral)
                         Room.Broadcast(new SChangeSubStateAckMessage(GameTimeState.Neutral));

@@ -717,25 +717,33 @@ namespace Netsphere.Network.Message.GameRule
     }
 
     [BlubContract]
-    public class SArcadeScoreSyncAckMessage: IGameRuleMessage
+    public class SArcadeScoreSyncAckMessage : IGameRuleMessage
     {
-        [BlubMember(0, typeof(ArrayWithIntPrefixSerializer))]
-        public ArcadeScoreSyncDto[] Scores { get; set; }
-
         public SArcadeScoreSyncAckMessage()
         {
-            Scores = Array.Empty<ArcadeScoreSyncDto>();
+
         }
+
+        public SArcadeScoreSyncAckMessage(ArcadeScoreSyncReqDto[] scores)
+        {
+            Scores = scores;
+        }
+
+        [BlubMember(0, typeof(ArrayWithIntPrefixSerializer))]
+        public ArcadeScoreSyncReqDto[] Scores { get; set; }
     }
 
     [BlubContract]
-    public class SArcadeBeginRoundAckMessage: IGameRuleMessage
+    public class SArcadeBeginRoundAckMessage : IGameRuleMessage
     {
         [BlubMember(0)]
         public byte Unk1 { get; set; }
 
         [BlubMember(1)]
         public byte Unk2 { get; set; }
+
+        [BlubMember(2)]
+        public byte Unk3 { get; set; }
     }
 
     [BlubContract]
@@ -764,8 +772,19 @@ namespace Netsphere.Network.Message.GameRule
     }
 
     [BlubContract]
-    public class SArcadeStageInfoAckMessage: IGameRuleMessage
+    public class SArcadeStageInfoAckMessage : IGameRuleMessage
     {
+        public SArcadeStageInfoAckMessage()
+        {
+
+        }
+
+        public SArcadeStageInfoAckMessage(byte unk, int unk2)
+        {
+            Unk1 = unk;
+            Unk2 = unk2;
+        }
+
         [BlubMember(0)]
         public byte Unk1 { get; set; }
 

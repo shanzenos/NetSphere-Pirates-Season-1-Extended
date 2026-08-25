@@ -465,6 +465,8 @@ namespace Netsphere.Network.Services
 
             //session.Send(new SEquipedBoostItemAckMessage());
             //session.Send(new SClearInvalidateItemAckMessage());
+
+            Netsphere.Game.GameRules.ArcadeGameRule.SendStageInfo(plr);
         }
 
         private static async Task<bool> IsNickAvailableAsync(string nickname)
