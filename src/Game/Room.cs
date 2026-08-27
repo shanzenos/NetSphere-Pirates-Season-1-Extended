@@ -459,7 +459,11 @@ namespace Netsphere
                 //Player intruding, dont send Briefing and set as dead
                 plr.RoomInfo.State = PlayerState.Dead;
             }
+            // Use IntrudeCompleted function, do not send briefing mid-match for Captain either
+            else if (gameRule.GameRule == GameRule.Captain && isPlaying)
+                ((Netsphere.Game.GameRules.CaptainGameRule)gameRule).IntrudeCompleted(plr);
 
+            //Otherwise, send briefing
             else
                 Broadcast(new SBriefingAckMessage(isResult, false, gameRule.Briefing.ToArray(isResult)));
         }
