@@ -28,6 +28,7 @@ namespace Netsphere
 
         private readonly ConcurrentDictionary<ulong, Player> _players = new ConcurrentDictionary<ulong, Player>();
         private readonly ConcurrentDictionary<ulong, object> _kickedPlayers = new ConcurrentDictionary<ulong, object>();
+        private readonly ConcurrentDictionary<ulong, byte> _peerIdSeq = new ConcurrentDictionary<ulong, byte>();
         private readonly TimeSpan _hostUpdateTime = TimeSpan.FromSeconds(30);
         private readonly TimeSpan _changingRulesTime = TimeSpan.FromSeconds(5);
 
@@ -164,6 +165,10 @@ namespace Netsphere
                     id++;
 
                 plr.RoomInfo.Slot = id;
+
+                // Make sure an old PeerID is not re-assigned to a rejoining player
+                var gen = _peerIdSeq.AddOrUpdate(plr.Account.Id, (byte)0, (_, prev) => (byte)(prev + 1));
+                plr.RoomInfo.PeerId = new LongPeerId(plr.Account.Id, new PeerId(gen, id, 1));
             }
 
             plr.RoomInfo.State = PlayerState.Lobby;
