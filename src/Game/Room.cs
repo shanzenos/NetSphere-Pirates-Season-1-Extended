@@ -456,8 +456,8 @@ namespace Netsphere
 
             if (gameRule.GameRule == GameRule.Chaser && isPlaying && gameRule.notInitialBriefing)
             {
-                //Player intruding, dont send Briefing and set as dead
-                plr.RoomInfo.State = PlayerState.Dead;
+                //Player intruding, dont send Briefing and fire off ParkIntruder function
+                ((Netsphere.Game.GameRules.ChaserGameRule)gameRule).ParkIntruder(plr);
             }
 
             else
