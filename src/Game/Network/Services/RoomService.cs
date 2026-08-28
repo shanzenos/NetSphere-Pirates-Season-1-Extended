@@ -203,6 +203,87 @@ namespace Netsphere.Network.Services
             }
         }
 
+        private static readonly Random TeamRng = new Random();
+
+        [MessageHandler(typeof(CAutoMixingTeamReqMessage))]
+        public void CAutoMixingTeamReq(GameSession session)
+        {
+            var plr = session.Player;
+            var room = plr.Room;
+
+            if (room.Master != plr ||
+                !room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Waiting))
+                return;
+
+            var alpha = room.TeamManager[Team.Alpha];
+            var beta = room.TeamManager[Team.Beta];
+            if (alpha == null || beta == null)
+                return;
+
+            var players = room.TeamManager.Players
+                .Where(p => p.RoomInfo.Mode == PlayerGameMode.Normal)
+                .OrderBy(p => TeamRng.Next())
+                .ToArray();
+
+            for (var i = 0; i < players.Length; i++)
+            {
+                var target = (i % 2) == 0 ? alpha : beta;
+                if (players[i].RoomInfo.Team == target)
+                    continue;
+
+                try
+                {
+                    target.Join(players[i]);
+                }
+                catch (TeamLimitReachedException)
+                {
+                    // The other team is full, do not fill
+                }
+            }
+
+            room.BroadcastBriefing();
+        }
+
+        [MessageHandler(typeof(CAutoAssingTeamReqMessage))]
+        public void CAutoAssingTeamReq(GameSession session, CAutoAssingTeamReqMessage message)
+        {
+            var plr = session.Player;
+            var room = plr.Room;
+
+            if (room.Master != plr ||
+                !room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Waiting))
+                return;
+
+            var alpha = room.TeamManager[Team.Alpha];
+            var beta = room.TeamManager[Team.Beta];
+            if (alpha == null || beta == null)
+                return;
+
+            // Fill based on which side has less players
+            while (true)
+            {
+                var from = alpha.Players.Count() > beta.Players.Count() ? alpha : beta;
+                var to = from == alpha ? beta : alpha;
+                if (from.Players.Count() - to.Players.Count() < 2)
+                    break;
+
+                var moving = from.Players.LastOrDefault(p => p.RoomInfo.Mode == PlayerGameMode.Normal);
+                if (moving == null)
+                    break;
+
+                try
+                {
+                    to.Join(moving);
+                }
+                catch (TeamLimitReachedException)
+                {
+                    break;
+                }
+            }
+
+            room.BroadcastBriefing();
+        }
+
         [MessageHandler(typeof(CMixChangeTeamReqMessage))]
         public void CMixChangeTeamReq(GameSession session, CMixChangeTeamReqMessage message)
         {
