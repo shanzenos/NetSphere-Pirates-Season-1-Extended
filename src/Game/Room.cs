@@ -34,6 +34,8 @@ namespace Netsphere
 
         private const uint PingDifferenceForChange = 25; // CHECK THIS
 
+        private bool _hadPlayers;
+        private TimeSpan _emptySince;
         private TimeSpan _hostUpdateTimer;
         private TimeSpan _changingRulesTimer;
 
@@ -109,9 +111,19 @@ namespace Netsphere
 
         public void Update(TimeSpan delta)     //Host change midmatch based on who has the least ping via unreliableping
         {
+            //Remove rooms with no players logic
             if (Players.Count == 0)
             {
-                RoomManager.Remove(this); //anti-stuck, remove if empty
+                if (_hadPlayers)
+                {
+                    RoomManager.Remove(this);
+                    return;
+                }
+
+                // Do not keep a room that never had any players up after 30 seconds
+                _emptySince += delta;
+                if (_emptySince >= TimeSpan.FromSeconds(30))
+                    RoomManager.Remove(this);
                 return;
             }
 
@@ -178,6 +190,7 @@ namespace Netsphere
             TeamManager.Join(plr);
 
             _players.TryAdd(plr.Account.Id, plr);
+            _hadPlayers = true;
             plr.Room = this;
             plr.RoomInfo.IsConnecting = true;
 
