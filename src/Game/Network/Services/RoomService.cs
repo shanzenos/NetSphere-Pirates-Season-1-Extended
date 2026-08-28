@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using BlubLib.DotNetty.Handlers.MessageHandling;
 using Netsphere.Game.GameRules;
+using Netsphere.Network.Data.Game;
 using Netsphere.Network.Data.GameRule;
 using Netsphere.Network.Message.Game;
 using Netsphere.Network.Message.GameRule;
@@ -280,13 +281,34 @@ namespace Netsphere.Network.Services
             //if (message.Event != GameEventMessage.StartGame)
             //    return;
 
-            if (plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing) && plr.RoomInfo.State == PlayerState.Lobby)
+            var intruding = plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing) && plr.RoomInfo.State == PlayerState.Lobby;
+
+            if (intruding)
             {
                 plr.RoomInfo.State = plr.RoomInfo.Mode == PlayerGameMode.Normal
                     ? PlayerState.Alive
                     : PlayerState.Spectating;
                 //Specific Implementation since in chaser mode it gets called when intrusion from inside the room
                 plr.Room.BroadcastBriefing(plr);
+
+                // When joining BR, if bonus target player is null, get it
+                var br = plr.Room.GameRuleManager.GameRule as BattleRoyalGameRule;
+                if (br?.First != null)
+                    session.SendAsync(new SGameRuleChangeTheFirstAckMessage(br.First.Account.Id));
+            }
+
+            plr.Room.Broadcast(new SEventMessageAckMessage(message.Event, session.Player.Account.Id, message.Unk1, message.Value, ""));
+
+            if (intruding && plr.RoomInfo.State == PlayerState.Dead)
+            {
+                var room = plr.Room;
+                Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(_ =>
+                {
+                    if (plr.Room != room || plr.RoomInfo.State != PlayerState.Dead)
+                        return;
+
+                    room.Broadcast(new SPlayerGameModeChangeAckMessage(plr.Account.Id, PlayerGameMode.Observer));
+                });
             }
         }
 
