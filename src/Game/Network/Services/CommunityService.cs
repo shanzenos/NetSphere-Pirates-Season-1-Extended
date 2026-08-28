@@ -23,6 +23,29 @@ namespace Netsphere.Network.Services
                     .ConfigureAwait(false);
             }
 
+            // Tutorial reward logic
+            const uint tutorialRoomId = 0xFFFFFFFD;
+            const uint tutorialReward = 5000;
+            const byte tutorialDone = 2;
+
+            if (message.UserData.RoomId == tutorialRoomId)
+            {
+                plr.InTutorial = true;
+            }
+            else if (plr.InTutorial)
+            {
+                plr.InTutorial = false;
+
+                if (plr.TutorialState != tutorialDone)
+                {
+                    plr.TutorialState = tutorialDone;
+                    plr.PEN += tutorialReward;
+                    plr.Save();
+
+                    plr.Session?.SendAsync(new Netsphere.Network.Message.Game.SRefreshCashInfoAckMessage(plr.PEN, plr.AP));
+                }
+            }
+
             // Save settings if any of them changed
             var settings = plr.Settings;
             var name = nameof(UserDataDto.AllowCombiInvite);
