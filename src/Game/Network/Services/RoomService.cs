@@ -552,8 +552,16 @@ namespace Netsphere.Network.Services
             if (room?.GameRuleManager.GameRule.GameRule != GameRule.Chaser)
                 return;
             //Logger.ForAccount(plr.Account).Information($"Charser Unk {message.Unk}");
+
+            var rule = (ChaserGameRule)room.GameRuleManager.GameRule;
+            if (rule.Chaser != session.Player)
+                return;
+
             var target = room.Players.GetValueOrDefault(message.AccountId);
-            ((ChaserGameRule)room.GameRuleManager.GameRule).OnScoreAttack(target, message.Unk1, message.Unk2);
+            if (target == null)
+                return;
+
+            rule.OnScoreAttack(target, message.Unk1, message.Unk2);
         }
 
         [MessageHandler(typeof(CSlaughterHealPointReqMessage))]
@@ -561,6 +569,10 @@ namespace Netsphere.Network.Services
         {
             var plr = session.Player;
             //Logger.ForAccount(plr.Account).Information($"Charser Unk {message.Unk}");
+
+            if (plr?.Room == null)
+                return;
+
             var resp = new SSlaughterHealPointAckMessage { AccountId = plr.Account.Id, Unk = message.Unk };
             plr.Room.Broadcast(resp);
         }
@@ -575,6 +587,10 @@ namespace Netsphere.Network.Services
             var killer = room.Players.GetValueOrDefault(message.Score.Killer.AccountId);
             if (killer == null)
                 return;
+
+            if (killer != plr && message.Score.Target.AccountId != plr.Account.Id)
+                return;
+
             killer.RoomInfo.PeerId = message.Score.Killer;
 
             //Only count kills on actual players, not sentry weapons (Unk: 1=Player, 2=Sentry, 3=Sentiforce)
