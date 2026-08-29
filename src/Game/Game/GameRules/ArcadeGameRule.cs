@@ -207,12 +207,14 @@ namespace Netsphere.Game.GameRules
                     score = new ArcadeScoreSyncDto { AccountId = entry.Key };
                     _scoreByAccount[entry.Key] = score;
                 }
-
-                score.Unk3 = entry.Value;
-                score.Unk4 = total > 0 ? (int)Math.Min(100, (100 * entry.Value) / total) : 0;
+                // Temp disable arcade stats, re-enable later
+                //score.Unk3 = entry.Value;
+                //score.Unk4 = total > 0 ? (int)Math.Min(100, (100 * entry.Value) / total) : 0;
             }
 
-            Room.Broadcast(new SArcadeScoreSyncAckMessage { Scores = _scoreByAccount.Values.ToArray() });
+            // Temp disable arcade stats, re-enable later
+            //Room.Broadcast(new SArcadeScoreSyncAckMessage { Scores = _scoreByAccount.Values.ToArray() });
+            Room.Broadcast(new SArcadeScoreSyncAckMessage {});
         }
 
         public void ScoreSync(ArcadeScoreSyncReqDto[] scores)
@@ -239,10 +241,13 @@ namespace Netsphere.Game.GameRules
                 _scoreByAccount[entry.AccountId] = new ArcadeScoreSyncDto
                 {
                     AccountId = entry.AccountId,
+                    // Temp disable arcade stats, re-enable later
+                    /*
                     Unk1 = entry.Unk1,
                     Unk2 = entry.Unk2,
                     Unk3 = mine,
                     Unk4 = total > 0 ? (int)Math.Min(100, (100 * mine) / total) : 0
+                    */
                 };
 
                 var record = target.RoomInfo.Stats as ArcadePlayerRecord;
@@ -250,7 +255,9 @@ namespace Netsphere.Game.GameRules
                     record.KilledMonster = (uint)mine;
             }
 
-            Room.Broadcast(new SArcadeScoreSyncAckMessage { Scores = _scoreByAccount.Values.ToArray() });
+            // Temp disable arcade stats, re-enable later
+            //Room.Broadcast(new SArcadeScoreSyncAckMessage { Scores = _scoreByAccount.Values.ToArray() });
+            Room.Broadcast(new SArcadeScoreSyncAckMessage {});
         }
 
         public void StageClear(ArcadeScoreSyncReqDto[] scores)
@@ -258,15 +265,19 @@ namespace Netsphere.Game.GameRules
             ScoreSync(scores);
 
             foreach (var score in _scoreByAccount.Values)
-                score.Unk4 = 100;
+                // Temp disable arcade stats, re-enable later
+                //score.Unk4 = 100;
 
-            Room.Broadcast(new SArcadeScoreSyncAckMessage { Scores = _scoreByAccount.Values.ToArray() });
+            // Temp disable arcade stats, re-enable later
+            //Room.Broadcast(new SArcadeScoreSyncAckMessage { Scores = _scoreByAccount.Values.ToArray() });
+            Room.Broadcast(new SArcadeScoreSyncAckMessage {});
 
             var difficulty = Difficulty;
 
             foreach (var plr in Room.TeamManager.PlayersPlaying.ToArray())
             {
-                plr.stats.Arcade.MarkStageCleared(difficulty, Stage);
+                // Temp disable arcade stats, re-enable later
+                //plr.stats.Arcade.MarkStageCleared(difficulty, Stage);
                 SendStageInfo(plr);
                 GiveAllClearReward(plr, difficulty);
             }
@@ -310,8 +321,11 @@ namespace Netsphere.Game.GameRules
         //Arcade Capsule rewards
         private void GiveAllClearReward(Player plr, byte difficulty)
         {
+            // Temp disable arcade stats, re-enable later
+            /*
             if (!plr.stats.Arcade.IsDifficultyCleared(difficulty))
                 return;
+            */
 
             var itemNumber = new ItemNumber((uint)(4030022 + difficulty));
             var shop = GameServer.Instance.ResourceCache.GetShop();
@@ -341,7 +355,8 @@ namespace Netsphere.Game.GameRules
                 }
             });
 
-            plr.stats.Arcade.ResetClears(difficulty);
+            // Temp disable arcade stats, re-enable later
+            //plr.stats.Arcade.ResetClears(difficulty);
             SendStageInfo(plr);
         }
 
@@ -358,7 +373,8 @@ namespace Netsphere.Game.GameRules
                               Unk1 = 50,
                               Unk2 = (uint)stage,
                               Unk3 = (uint)(difficulty - 1),
-                              Unk13 = (byte)(plr.stats.Arcade.IsStageCleared((byte)difficulty, (byte)stage) ? 1 : 0)
+                              // Temp disable arcade stats, re-enable later
+                              //Unk13 = (byte)(plr.stats.Arcade.IsStageCleared((byte)difficulty, (byte)stage) ? 1 : 0)
                           }).ToArray()
             });
         }

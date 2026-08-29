@@ -189,7 +189,8 @@ namespace Netsphere.Network
                 TrySessionCleanup(() => plr.Channel?.Leave(plr), gameSession, "leaving the channel");
                 TrySessionCleanup(() => plr.Save(), gameSession, "saving");
                 TrySessionCleanup(() => PlayerManager.Remove(plr), gameSession, "removing from the player list");
-                TrySessionCleanup(() => Netsphere.Shop.FumbiShop.Remove(plr), gameSession, "clearing the fumbi roll");
+                // Re-enable this later, disabled fumbi cleanup logic until fully implemented
+                //TrySessionCleanup(() => Netsphere.Shop.FumbiShop.Remove(plr), gameSession, "clearing the fumbi roll");
 
                 Logger.Debug()
                     .Account(gameSession)
