@@ -707,13 +707,23 @@ namespace Netsphere.Network.Message.GameRule
     public class SRefreshGameRuleInfoAckMessage: IGameRuleMessage
     {
         [BlubMember(0)]
-        public int Unk1 { get; set; }
+        public GameState State { get; set; }
 
         [BlubMember(1)]
-        public int Unk2 { get; set; }
+        public GameTimeState TimeState { get; set; }
 
         [BlubMember(2)]
-        public int Unk3 { get; set; }
+        public int ElapsedTime { get; set; }
+
+        public SRefreshGameRuleInfoAckMessage()
+        { }
+
+        public SRefreshGameRuleInfoAckMessage(GameState state, GameTimeState timeState, int elapsedTime)
+        {
+            State = state;
+            TimeState = timeState;
+            ElapsedTime = elapsedTime;
+        }
     }
 
     [BlubContract]

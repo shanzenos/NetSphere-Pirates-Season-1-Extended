@@ -100,6 +100,9 @@ namespace Netsphere.Network
                     .RegisterRule<CQuickStartReqMessage>(MustBeLoggedIn, MustBeInChannel, MustNotBeInRoom)
                     .RegisterRule<CJoinTunnelInfoReqMessage>(MustBeLoggedIn, MustBeInChannel, MustBeInRoom)
                     .RegisterRule<CChangeTeamReqMessage>(MustBeLoggedIn, MustBeInChannel, MustBeInRoom)
+                    .RegisterRule<CAutoMixingTeamReqMessage>(MustBeLoggedIn, MustBeInChannel, MustBeInRoom, MustBeRoomMaster)
+                    .RegisterRule<CAutoAssingTeamReqMessage>(MustBeLoggedIn, MustBeInChannel, MustBeInRoom, MustBeRoomMaster)
+                    .RegisterRule<CMixChangeTeamReqMessage>(MustBeLoggedIn, MustBeInChannel, MustBeInRoom, MustBeRoomMaster)
                     .RegisterRule<CPlayerGameModeChangeReqMessage>(MustBeLoggedIn, MustBeInChannel, MustBeInRoom)
                     .RegisterRule<CScoreKillReqMessage>(MustBeLoggedIn, MustBeInChannel, MustBeInRoom)
                     .RegisterRule<CScoreKillAssistReqMessage>(MustBeLoggedIn, MustBeInChannel, MustBeInRoom)
@@ -179,35 +182,41 @@ namespace Netsphere.Network
         protected override void OnDisconnected(ProudSession session)
         {
             var gameSession = (GameSession)session;
-            if (gameSession.Player != null)
+            var plr = gameSession.Player;
+            if (plr != null)
             {
-                gameSession.Player.Room?.Leave(gameSession.Player);
-                gameSession.Player.Channel?.Leave(gameSession.Player);
-
-                gameSession.Player.Save();
-
-                PlayerManager.Remove(gameSession.Player);
+                TrySessionCleanup(() => plr.Room?.Leave(plr), gameSession, "leaving the room");
+                TrySessionCleanup(() => plr.Channel?.Leave(plr), gameSession, "leaving the channel");
+                TrySessionCleanup(() => plr.Save(), gameSession, "saving");
+                TrySessionCleanup(() => PlayerManager.Remove(plr), gameSession, "removing from the player list");
+                TrySessionCleanup(() => Netsphere.Shop.FumbiShop.Remove(plr), gameSession, "clearing the fumbi roll");
 
                 Logger.Debug()
                     .Account(gameSession)
                     .Message("Disconnected")
                     .Write();
 
-                if (gameSession.Player.ChatSession != null)
+                TrySessionCleanup(() =>
                 {
-                    gameSession.Player.ChatSession.GameSession = null;
-                    gameSession.Player.ChatSession.Dispose();
-                }
+                    if (plr.ChatSession != null)
+                    {
+                        plr.ChatSession.GameSession = null;
+                        plr.ChatSession.Dispose();
+                    }
+                }, gameSession, "closing the chat session");
 
-                if (gameSession.Player.RelaySession != null)
+                TrySessionCleanup(() =>
                 {
-                    gameSession.Player.RelaySession.GameSession = null;
-                    gameSession.Player.RelaySession.Dispose();
-                }
+                    if (plr.RelaySession != null)
+                    {
+                        plr.RelaySession.GameSession = null;
+                        plr.RelaySession.Dispose();
+                    }
+                }, gameSession, "closing the relay session");
 
-                gameSession.Player.Session = null;
-                gameSession.Player.ChatSession = null;
-                gameSession.Player.RelaySession = null;
+                plr.Session = null;
+                plr.ChatSession = null;
+                plr.RelaySession = null;
                 gameSession.Player = null;
             }
 
@@ -240,9 +249,59 @@ namespace Netsphere.Network
             Broadcast(new SNoticeMessageAckMessage(message));
         }
 
+        private static void TrySessionCleanup(Action sessionCleanupLogic, GameSession session, string name)
+        {
+            try
+            {
+                sessionCleanupLogic();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error()
+                    .Account(session)
+                    .Exception(ex)
+                    .Message($"Session cleanup failed for {name}")
+                    .Write();
+            }
+        }
+
+        // Player client session cleanup logic
+        private static readonly TimeSpan DeadSessionTimeout = TimeSpan.FromSeconds(90);
+        private TimeSpan _deadSessionTimer;
+
+        private void DropDeadSessions(TimeSpan delta)
+        {
+            _deadSessionTimer += delta;
+            if (_deadSessionTimer < TimeSpan.FromSeconds(15))
+                return;
+
+            _deadSessionTimer = TimeSpan.Zero;
+
+            foreach (var session in Sessions.Values.ToArray())
+            {
+                var gameSession = session as GameSession;
+                if (gameSession?.Player == null)
+                    continue;
+
+                if (session.LastSpeedHackDetectorPing == DateTime.MinValue)
+                    continue;
+
+                if (DateTime.Now - session.LastSpeedHackDetectorPing < DeadSessionTimeout)
+                    continue;
+
+                Logger.Info()
+                    .Account(gameSession)
+                    .Message($"No ping for {(int)(DateTime.Now - session.LastSpeedHackDetectorPing).TotalSeconds}s, dropping")
+                    .Write();
+
+                TrySessionCleanup(() => session.Dispose(), gameSession, "dropping a dead session");
+            }
+        }
+
         private void Worker(TimeSpan delta)
         {
             ChannelManager.Update(delta);
+            DropDeadSessions(delta);
 
             // ToDo Use another thread for this?
             _saveTimer = _saveTimer.Add(delta);

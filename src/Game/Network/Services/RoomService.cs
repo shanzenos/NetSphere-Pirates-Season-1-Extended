@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using BlubLib.DotNetty.Handlers.MessageHandling;
 using Netsphere.Game.GameRules;
+using Netsphere.Network.Data.Game;
 using Netsphere.Network.Data.GameRule;
 using Netsphere.Network.Message.Game;
 using Netsphere.Network.Message.GameRule;
@@ -202,6 +203,87 @@ namespace Netsphere.Network.Services
             }
         }
 
+        private static readonly Random TeamRng = new Random();
+
+        [MessageHandler(typeof(CAutoMixingTeamReqMessage))]
+        public void CAutoMixingTeamReq(GameSession session)
+        {
+            var plr = session.Player;
+            var room = plr.Room;
+
+            if (room.Master != plr ||
+                !room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Waiting))
+                return;
+
+            var alpha = room.TeamManager[Team.Alpha];
+            var beta = room.TeamManager[Team.Beta];
+            if (alpha == null || beta == null)
+                return;
+
+            var players = room.TeamManager.Players
+                .Where(p => p.RoomInfo.Mode == PlayerGameMode.Normal)
+                .OrderBy(p => TeamRng.Next())
+                .ToArray();
+
+            for (var i = 0; i < players.Length; i++)
+            {
+                var target = (i % 2) == 0 ? alpha : beta;
+                if (players[i].RoomInfo.Team == target)
+                    continue;
+
+                try
+                {
+                    target.Join(players[i]);
+                }
+                catch (TeamLimitReachedException)
+                {
+                    // The other team is full, do not fill
+                }
+            }
+
+            room.BroadcastBriefing();
+        }
+
+        [MessageHandler(typeof(CAutoAssingTeamReqMessage))]
+        public void CAutoAssingTeamReq(GameSession session, CAutoAssingTeamReqMessage message)
+        {
+            var plr = session.Player;
+            var room = plr.Room;
+
+            if (room.Master != plr ||
+                !room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Waiting))
+                return;
+
+            var alpha = room.TeamManager[Team.Alpha];
+            var beta = room.TeamManager[Team.Beta];
+            if (alpha == null || beta == null)
+                return;
+
+            // Fill based on which side has less players
+            while (true)
+            {
+                var from = alpha.Players.Count() > beta.Players.Count() ? alpha : beta;
+                var to = from == alpha ? beta : alpha;
+                if (from.Players.Count() - to.Players.Count() < 2)
+                    break;
+
+                var moving = from.Players.LastOrDefault(p => p.RoomInfo.Mode == PlayerGameMode.Normal);
+                if (moving == null)
+                    break;
+
+                try
+                {
+                    to.Join(moving);
+                }
+                catch (TeamLimitReachedException)
+                {
+                    break;
+                }
+            }
+
+            room.BroadcastBriefing();
+        }
+
         [MessageHandler(typeof(CMixChangeTeamReqMessage))]
         public void CMixChangeTeamReq(GameSession session, CMixChangeTeamReqMessage message)
         {
@@ -280,13 +362,34 @@ namespace Netsphere.Network.Services
             //if (message.Event != GameEventMessage.StartGame)
             //    return;
 
-            if (plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing) && plr.RoomInfo.State == PlayerState.Lobby)
+            var intruding = plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing) && plr.RoomInfo.State == PlayerState.Lobby;
+
+            if (intruding)
             {
                 plr.RoomInfo.State = plr.RoomInfo.Mode == PlayerGameMode.Normal
                     ? PlayerState.Alive
                     : PlayerState.Spectating;
                 //Specific Implementation since in chaser mode it gets called when intrusion from inside the room
                 plr.Room.BroadcastBriefing(plr);
+
+                // When joining BR, if bonus target player is null, get it
+                var br = plr.Room.GameRuleManager.GameRule as BattleRoyalGameRule;
+                if (br?.First != null)
+                    session.SendAsync(new SGameRuleChangeTheFirstAckMessage(br.First.Account.Id));
+            }
+
+            plr.Room.Broadcast(new SEventMessageAckMessage(message.Event, session.Player.Account.Id, message.Unk1, message.Value, ""));
+
+            if (intruding && plr.RoomInfo.State == PlayerState.Dead)
+            {
+                var room = plr.Room;
+                Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(_ =>
+                {
+                    if (plr.Room != room || plr.RoomInfo.State != PlayerState.Dead)
+                        return;
+
+                    room.Broadcast(new SPlayerGameModeChangeAckMessage(plr.Account.Id, PlayerGameMode.Observer));
+                });
             }
         }
 
@@ -416,7 +519,7 @@ namespace Netsphere.Network.Services
             {
                 case RoomLeaveReason.Kicked:
                     // Only the master can kick people and kick is only allowed in the lobby
-                    if (room.Master != plr &&
+                    if (room.Master != plr ||
                         !room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Waiting))
                         return;
                     break;
@@ -449,8 +552,16 @@ namespace Netsphere.Network.Services
             if (room?.GameRuleManager.GameRule.GameRule != GameRule.Chaser)
                 return;
             //Logger.ForAccount(plr.Account).Information($"Charser Unk {message.Unk}");
+
+            var rule = (ChaserGameRule)room.GameRuleManager.GameRule;
+            if (rule.Chaser != session.Player)
+                return;
+
             var target = room.Players.GetValueOrDefault(message.AccountId);
-            ((ChaserGameRule)room.GameRuleManager.GameRule).OnScoreAttack(target, message.Unk1, message.Unk2);
+            if (target == null)
+                return;
+
+            rule.OnScoreAttack(target, message.Unk1, message.Unk2);
         }
 
         [MessageHandler(typeof(CSlaughterHealPointReqMessage))]
@@ -458,6 +569,10 @@ namespace Netsphere.Network.Services
         {
             var plr = session.Player;
             //Logger.ForAccount(plr.Account).Information($"Charser Unk {message.Unk}");
+
+            if (plr?.Room == null)
+                return;
+
             var resp = new SSlaughterHealPointAckMessage { AccountId = plr.Account.Id, Unk = message.Unk };
             plr.Room.Broadcast(resp);
         }
@@ -472,6 +587,10 @@ namespace Netsphere.Network.Services
             var killer = room.Players.GetValueOrDefault(message.Score.Killer.AccountId);
             if (killer == null)
                 return;
+
+            if (killer != plr && message.Score.Target.AccountId != plr.Account.Id)
+                return;
+
             killer.RoomInfo.PeerId = message.Score.Killer;
 
             //Only count kills on actual players, not sentry weapons (Unk: 1=Player, 2=Sentry, 3=Sentiforce)

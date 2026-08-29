@@ -50,6 +50,14 @@ namespace Netsphere.Game.GameRules
                 .OnEntry(() => { First = null; });
         }
 
+        public override void PlayerJoined(object room, RoomPlayerEventArgs e)
+        {
+            base.PlayerJoined(room, e);
+
+            if (_first != null && StateMachine.IsInState(GameRuleState.Playing))
+                e.Player.Session?.SendAsync(new SGameRuleChangeTheFirstAckMessage(_first.Account.Id));
+        }
+
         public override void Initialize() //fixed player displays
         {
 

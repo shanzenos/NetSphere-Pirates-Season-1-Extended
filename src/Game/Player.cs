@@ -50,6 +50,7 @@ namespace Netsphere
 
         internal bool SentPlayerList { get; set; }
 
+        public bool InTutorial { get; set; }
         public byte TutorialState
         {
             get { return _tutorialState; }

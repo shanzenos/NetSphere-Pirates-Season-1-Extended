@@ -36,7 +36,17 @@ namespace Netsphere.Resource
                 _prices = db.Find<ShopPriceGroupDto>(statement => statement
                         .Include<ShopPriceDto>(join => join.LeftOuterJoin()))
                     .ToArray()
-                    .Select(dto => new ShopPriceGroup(dto))
+                    .GroupBy(dto => dto.Id)
+                    .Select(rows =>
+                    {
+                        var dto = rows.First();
+                        dto.ShopPrices = rows
+                            .SelectMany(row => row.ShopPrices)
+                            .GroupBy(price => price.Id)
+                            .Select(price => price.First())
+                            .ToList();
+                        return new ShopPriceGroup(dto);
+                    })
                     .ToDictionary(x => x.Id);
 
                 _items = db.Find<ShopItemDto>(statement => statement
