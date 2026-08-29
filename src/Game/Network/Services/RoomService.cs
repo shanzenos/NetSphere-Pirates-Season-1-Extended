@@ -519,7 +519,7 @@ namespace Netsphere.Network.Services
             {
                 case RoomLeaveReason.Kicked:
                     // Only the master can kick people and kick is only allowed in the lobby
-                    if (room.Master != plr &&
+                    if (room.Master != plr ||
                         !room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Waiting))
                         return;
                     break;
