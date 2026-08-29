@@ -22,13 +22,13 @@ namespace ProudNet
         public P2PGroup P2PGroup { get; internal set; }
         public IPEndPoint UdpEndPoint { get; internal set; }
         public IPEndPoint UdpLocalEndPoint { get; internal set; }
-        
+        public DateTime LastSpeedHackDetectorPing { get; internal set; }
+
 
 
         internal bool UdpEnabled { get; set; }
         internal ushort UdpSessionId { get; set; }
         internal Crypt Crypt { get; set; }
-        internal DateTime LastSpeedHackDetectorPing { get; set; }
         internal AsyncManualResetEvent HandhsakeEvent { get; set; }
         internal Guid HolepunchMagicNumber { get; set; }
         internal UdpSocket UdpSocket { get; set; }
