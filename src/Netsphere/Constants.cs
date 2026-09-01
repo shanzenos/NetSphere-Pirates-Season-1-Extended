@@ -218,7 +218,7 @@
         AFK = 6,
         KickedByModerator = 7,
         BallReset = 8,
-        StartGame = 9,
+        PlayerStateSync = 9, // was StartGame before, its used to sync the state of the player in RoomService
         TouchdownAlpha = 10,
         TouchdownBeta = 11,
         ChatMessage = 13,

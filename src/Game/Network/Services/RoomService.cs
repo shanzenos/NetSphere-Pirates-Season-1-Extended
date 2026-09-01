@@ -371,37 +371,48 @@ namespace Netsphere.Network.Services
         [MessageHandler(typeof(CEventMessageReqMessage))]
         public void CEventMessageReq(GameSession session, CEventMessageReqMessage message)
         {
-            var plr = session.Player;
+            if (message.Unk2 > 1)
+                return; // anything else is unexpected here
 
-            var intruding = plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing)
-                            && plr.RoomInfo.State == PlayerState.Lobby;
+            var plr = session?.Player;
+            var room = plr?.Room;
+            if (room == null)
+                return;
 
-            if (intruding)
+            if (message.Event == GameEventMessage.PlayerStateSync)
             {
-                plr.RoomInfo.State = plr.RoomInfo.Mode == PlayerGameMode.Normal
-                    ? PlayerState.Alive
-                    : PlayerState.Spectating;
-                //Specific Implementation since in chaser mode it gets called when intrusion from inside the room
-                plr.Room.BroadcastBriefing(plr);
+                // message.AccountId here is actually a LongPeerId (actual account id is 48 bits out of 8 bytes),
+                // needs to be unpacked before comparing against plr.Account.Id, otherwise a client with a slot wont equal
+                if ((new LongPeerId(message.AccountId)).AccountId != plr.Account.Id)
+                    return; // clients only ever send this for themselves
 
-                var br = plr.Room.GameRuleManager.GameRule as BattleRoyalGameRule;
-                if (br?.First != null)
-                    session.SendAsync(new SGameRuleChangeTheFirstAckMessage(br.First.Account.Id));
-            }
+                var isPlaying = room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing);
+                var data = BitConverter.GetBytes(message.Unk1);
+                var prevState = (PlayerState)data[0];
+                var newState = (PlayerState)data[1];
 
-            plr.Room.Broadcast(new SEventMessageAckMessage(message.Event, session.Player.Account.Id, message.Unk1, message.Value, ""));
-
-            if (intruding && plr.RoomInfo.State == PlayerState.Dead)
-            {
-                var room = plr.Room;
-                Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(_ =>
+                // intrusion
+                if (isPlaying && plr.RoomInfo.State == prevState && prevState == PlayerState.Lobby && prevState != newState)
                 {
-                    if (plr.Room != room || plr.RoomInfo.State != PlayerState.Dead)
-                        return;
+                    var br = room.GameRuleManager.GameRule as BattleRoyalGameRule;
+                    if (br?.First != null)
+                        session.SendAsync(new SGameRuleChangeTheFirstAckMessage(br.First.Account.Id)); // the briefing already contains everything, so technically not needed?
+                }
 
-                    room.Broadcast(new SPlayerGameModeChangeAckMessage(plr.Account.Id, PlayerGameMode.Observer));
-                });
+                plr.RoomInfo.State = newState; // sync server, not necessary but convenient
             }
+            else if (message.Event == GameEventMessage.BallReset)
+            {
+                if (plr != room.Host)
+                    return; // only the host can send the packet to reset the ball
+            }
+            else
+            {
+                return; // only ever hit by cheats sending wrong packets
+            }
+
+            // These three (AccountId, Unk1 and Value) are 1 blob with different structs, data needs to be 1:1 to be passed as an ack, so dont touch them
+            room.Broadcast(new SEventMessageAckMessage(message.Event, message.AccountId, message.Unk1, message.Value, ""));
         }
 
         [MessageHandler(typeof(CItemsChangeReqMessage))]
