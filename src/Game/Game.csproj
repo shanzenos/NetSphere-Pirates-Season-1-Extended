@@ -111,7 +111,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="Commands\AdminCommands.cs" />
     <Compile Include="Commands\GMCommands.cs" />
+    <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Game\GameRules\ArcadeGameRule.cs" />
     <Compile Include="Game\GameRules\CaptainGameRule.cs" />
     <Compile Include="Game\GameRules\PracticeGameRule.cs" />
@@ -197,12 +199,12 @@
     <Compile Include="Resource\xml\GameInfoDto.cs" />
     <Compile Include="Resource\xml\ItemEffectDto.cs" />
     <Compile Include="Resource\xml\ItemInfoDto.cs" />
-    <Compile Include="Resource\xml\ItemRewardDto.cs" />
     <Compile Include="Resource\xml\StringTableDto.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="RoomCreationOptions.cs" />
     <Compile Include="RoomManager.cs" />
     <Compile Include="Shop\BuyItemInfo.cs" />
+    <Compile Include="Shop\FumbiShop.cs" />
     <Compile Include="Shop\ShopEffect.cs" />
     <Compile Include="Shop\ShopItem.cs" />
     <Compile Include="Shop\LicenseReward.cs" />

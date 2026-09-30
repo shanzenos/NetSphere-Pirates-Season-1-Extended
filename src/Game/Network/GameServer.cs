@@ -188,6 +188,8 @@ namespace Netsphere.Network
 
                 PlayerManager.Remove(gameSession.Player);
 
+                Netsphere.Shop.FumbiShop.Remove(gameSession.Player);
+
                 Logger.Debug()
                     .Account(gameSession)
                     .Message("Disconnected")

@@ -287,40 +287,41 @@ namespace Netsphere.Network.Message.Game
         [BlubMember(0)]
         public bool IsWeapon { get; set; }
 
+        // The shop's tab for item categories: Head, Shirt, Pants, Glove, Shoes
         [BlubMember(1)]
-        public byte Unk2 { get; set; }
+        public byte Category { get; set; }
 
         [BlubMember(2)]
-        public byte Unk3 { get; set; }
+        public byte HoldItem { get; set; }
 
         [BlubMember(3)]
-        public byte Unk4 { get; set; }
+        public byte HoldColor { get; set; }
 
         [BlubMember(4)]
-        public byte Unk5 { get; set; }
+        public byte HoldEffect { get; set; }
 
         [BlubMember(5)]
-        public uint Unk6 { get; set; }
+        public uint HeldItemNumber { get; set; }
 
         [BlubMember(6)]
-        public int Unk7 { get; set; }
+        public int HeldColor { get; set; }
 
         [BlubMember(7)]
-        public int Unk8 { get; set; }
+        public int HeldEffect { get; set; }
     }
 
     [BlubContract]
     public class CRandomShopItemGetReqMessage : IGameMessage
     {
         [BlubMember(0)]
-        public byte Unk { get; set; }
+        public byte Tab { get; set; }
     }
 
     [BlubContract]
     public class CRandomShopItemSaleReqMessage : IGameMessage
     {
         [BlubMember(0)]
-        public byte Unk { get; set; }
+        public byte Tab { get; set; }
     }
 
     [BlubContract]
