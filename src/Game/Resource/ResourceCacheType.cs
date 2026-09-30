@@ -9,6 +9,7 @@ namespace Netsphere.Resource
         Shop,
         Exp,
         Maps,
-        GameTempo
+        GameTempo,
+        Tasks
     }
 }

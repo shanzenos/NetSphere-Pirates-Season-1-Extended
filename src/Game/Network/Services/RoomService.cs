@@ -479,6 +479,7 @@ namespace Netsphere.Network.Services
                 return;
 
             room.GameRuleManager.GameRule.OnScoreKill(killer, null, plr, message.Score.Weapon);
+            MissionService.OnWeaponKill(killer, message.Score.Weapon);
         }
 
         [MessageHandler(typeof(CScoreKillAssistReqMessage))]

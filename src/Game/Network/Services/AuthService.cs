@@ -465,6 +465,7 @@ namespace Netsphere.Network.Services
 
             //session.Send(new SEquipedBoostItemAckMessage());
             //session.Send(new SClearInvalidateItemAckMessage());
+            await MissionService.SendMissionInfo(session).ConfigureAwait(false);
         }
 
         private static async Task<bool> IsNickAvailableAsync(string nickname)

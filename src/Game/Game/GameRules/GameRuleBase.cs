@@ -277,6 +277,9 @@ namespace Netsphere.Game.GameRules
                     foreach (var plr in Room.TeamManager.Players.Where(plr => plr.RoomInfo.State != PlayerState.Lobby))
                         plr.RoomInfo.State = PlayerState.Waiting;
 
+                    foreach (var plr in Room.TeamManager.PlayersPlaying)
+                        Network.Services.MissionService.OnGamePlayed(plr, GameRule, (int)Room.Options.MatchKey.Map);
+
                     Room.Broadcast(new SChangeStateAckMessage(GameState.Result));
                     Room.BroadcastBriefing(true);
                     break;

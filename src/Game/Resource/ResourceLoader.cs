@@ -201,6 +201,57 @@ namespace Netsphere.Resource
             }
         }
 
+        public IEnumerable<TaskInfo> LoadTasks()
+        {
+            var dto = Deserialize<TaskListDto>("xml/_eu_task_list.x7");
+
+            foreach (var task in ReadTasks(dto.compulsory_task, 1))
+                yield return task;
+
+            foreach (var task in ReadTasks(dto.weekly_task, 2))
+                yield return task;
+        }
+
+        private static IEnumerable<TaskInfo> ReadTasks(TaskBaseSettingDto[] baseSettings, byte type)
+        {
+            if (baseSettings == null)
+                yield break;
+
+            foreach (var baseSetting in baseSettings)
+            {
+                if (baseSetting.level_setting == null)
+                    continue;
+
+                foreach (var levelSetting in baseSetting.level_setting)
+                {
+                    yield return new TaskInfo
+                    {
+                        Id = levelSetting.id,
+                        Type = type,
+                        Level = levelSetting.level,
+                        Chance = levelSetting.chance_value,
+                        AddChance = levelSetting.add_chance_value,
+                        AddChanceLimitLevel = levelSetting.add_chan_limit_lv,
+                        Goal = ParseValue<ushort>(levelSetting.complet_condition?.repetetion?.value),
+                        Reward = ParseValue<uint>(levelSetting.reward?.pen?.value),
+                        MinLevel = ParseValue<byte>(levelSetting.select_condition?.min_level?.value),
+                        MaxLevel = ParseValue<byte>(levelSetting.select_condition?.max_level?.value),
+                        Checker = levelSetting.complet_condition?.checker_type?.value ?? "",
+                        CheckerData = levelSetting.complet_condition?.checker_type?.data ?? "",
+                        Mode = baseSetting.mode_type ?? ""
+                    };
+                }
+            }
+        }
+
+        private static T ParseValue<T>(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return default(T);
+
+            return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+        }
+
         #region DefaultItems
 
         public IEnumerable<DefaultItem> LoadDefaultItems()

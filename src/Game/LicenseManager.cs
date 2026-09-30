@@ -83,6 +83,8 @@ namespace Netsphere
                     .Write();
             }
 
+            Netsphere.Network.Services.MissionService.OnLicense(_player, itemLicense);
+
             return license;
         }
 

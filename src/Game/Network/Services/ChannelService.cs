@@ -65,7 +65,11 @@ namespace Netsphere.Network.Services
             {
                 await session.SendAsync(new SServerResultInfoAckMessage(ServerResult.ChannelLimitReached))
                     .ConfigureAwait(false);
+                return;
             }
+
+            if (session.Player.Channel != null)
+                await MissionService.SendMissionInfo(session).ConfigureAwait(false);
         }
 
         [MessageHandler(typeof(CChannelLeaveReqMessage))]

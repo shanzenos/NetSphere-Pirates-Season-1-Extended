@@ -131,6 +131,23 @@ namespace Netsphere.Database.Game
         public bool IsMailDeleted { get; set; }
     }
 
+    [Table("player_missions")]
+    public class PlayerMissionDto
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [ForeignKey(nameof(Player))]
+        public int PlayerId { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public int MissionId { get; set; }
+        public int Slot { get; set; }
+        public int Progress { get; set; }
+        public bool Completed { get; set; }
+    }
+
     [Table("player_settings")]
     public class PlayerSettingDto
     {

@@ -72,6 +72,7 @@ namespace Netsphere.Network
                     .AddHandler(new ChannelService())
                     .AddHandler(new ShopService())
                     .AddHandler(new InventoryService())
+                    .AddHandler(new MissionService())
                     .AddHandler(new RoomService())
                     .AddHandler(new ClubService())
 

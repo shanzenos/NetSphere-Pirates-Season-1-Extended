@@ -46,6 +46,9 @@ namespace Netsphere.Resource
 
             Logger.Info("Caching: GameTempos");
             GetGameTempos();
+
+            Logger.Info("Caching: Tasks");
+            GetTasks();
         }
 
         public IReadOnlyList<ChannelInfo> GetChannels()
@@ -170,6 +173,18 @@ namespace Netsphere.Resource
                 return;
             }
             _cache.Remove(type.ToString());
+        }
+
+        public IReadOnlyList<TaskInfo> GetTasks()
+        {
+            var value = _cache.Get<IReadOnlyList<TaskInfo>>(ResourceCacheType.Tasks);
+            if (value == null)
+            {
+                Logger.Debug("Caching...");
+                value = _loader.LoadTasks().ToList();
+                _cache.Set(ResourceCacheType.Tasks, value);
+            }
+            return value;
         }
     }
 

@@ -216,6 +216,8 @@ namespace Netsphere
             if (!leveledUp)
                 return false;
 
+            Netsphere.Network.Services.MissionService.OnLevelUp(this);
+
             Channel?.Broadcast(new SUserDataAckMessage(this.Map<Player, UserDataDto>()));
 
             // ToDo Do we need to update inside rooms too?
