@@ -15,6 +15,8 @@ namespace Netsphere.Commands
 
         public GameServer Server { get; }
 
+        public IEnumerable<ICommand> Commands => _commands;
+
         public CommandManager(GameServer server)
         {
             Server = server;

@@ -324,7 +324,20 @@ namespace Netsphere
         /// <param name="message">The message to send</param>
         public void SendConsoleMessage(string message)
         {
-            Session.SendAsync(new SAdminActionAckMessage { Result = 1, Message = message });
+            var color = message.StartsWith("{CB-") ? message.Substring(0, message.IndexOf('}') + 1) : "";
+
+            foreach (var line in message.Split('\n'))
+            {
+                var text = line.TrimEnd();
+                if (string.IsNullOrWhiteSpace(text))
+                    continue;
+
+                Session.SendAsync(new SAdminActionAckMessage
+                {
+                    Result = 0,
+                    Message = text.StartsWith(color) ? text : color + text
+                });
+            }
         }
 
         /// <summary>
