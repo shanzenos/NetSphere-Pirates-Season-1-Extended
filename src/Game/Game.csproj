@@ -166,6 +166,7 @@
     <Compile Include="Network\Services\CommunityService.cs" />
     <Compile Include="Network\Services\GeneralService.cs" />
     <Compile Include="Network\Services\InventoryService.cs" />
+    <Compile Include="Network\Services\MissionService.cs" />
     <Compile Include="Network\Services\PeerService.cs" />
     <Compile Include="Network\Services\PrivateMessageService.cs" />
     <Compile Include="Network\Services\RelayService.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Resource\ResourceCache.cs" />
     <Compile Include="Resource\ResourceCacheType.cs" />
     <Compile Include="Resource\ResourceLoader.cs" />
+    <Compile Include="Resource\TaskInfo.cs" />
     <Compile Include="Resource\ShopResources.cs" />
     <Compile Include="Resource\xml\ChannelSettingDto.cs" />
     <Compile Include="Resource\xml\ConstantInfoDto.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="Resource\xml\ItemEffectDto.cs" />
     <Compile Include="Resource\xml\ItemInfoDto.cs" />
     <Compile Include="Resource\xml\StringTableDto.cs" />
+    <Compile Include="Resource\xml\TaskListDto.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="RoomCreationOptions.cs" />
     <Compile Include="RoomManager.cs" />
