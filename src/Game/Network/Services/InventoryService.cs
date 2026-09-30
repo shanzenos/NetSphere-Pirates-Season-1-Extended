@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using BlubLib.DotNetty.Handlers.MessageHandling;
+using Netsphere.Network.Data.Game;
 using Netsphere.Network.Message.Game;
 using NLog;
 using NLog.Fluent;
@@ -13,6 +17,8 @@ namespace Netsphere.Network.Services
     {
         // ReSharper disable once InconsistentNaming
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private static readonly Random _capsuleRng = new Random();
 
         [MessageHandler(typeof(CUseItemReqMessage))]
         public async Task UseItemHandler(GameSession session, CUseItemReqMessage message)
@@ -209,11 +215,100 @@ namespace Netsphere.Network.Services
                 .ConfigureAwait(false);
         }
 
+        private static CapsuleRewardDto CreateShopItem(Player plr, uint itemNumber, byte color, uint effect)
+        {
+            try
+            {
+                var shop = GameServer.Instance.ResourceCache.GetShop();
+                var shopItem = shop.GetItem(itemNumber);
+                if (shopItem == null || shopItem.ItemInfos == null || shopItem.ItemInfos.Count == 0)
+                {
+                    Logger.Error($"[CAPSULE] reward item {itemNumber} not in shop, skipped");
+                    return null;
+                }
+
+                var info = shopItem.ItemInfos[0];
+                if (info.PriceGroup == null || info.PriceGroup.Prices == null || info.PriceGroup.Prices.Count == 0)
+                {
+                    Logger.Error($"[CAPSULE] reward item {itemNumber} has no price, skipped");
+                    return null;
+                }
+
+                var item = plr.Inventory.Create(info, info.PriceGroup.Prices[0], color, effect, 1);
+                return new CapsuleRewardDto(item.Id, 1);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"[CAPSULE] reward item {itemNumber} create failed: {ex.Message}");
+                return null;
+            }
+        }
+
         [MessageHandler(typeof(CUseCapsuleReqMessage))]
         public async Task UseCapsuleReq(GameSession session, CUseCapsuleReqMessage message)
         {
-            await session.SendAsync(new SServerResultInfoAckMessage((ServerResult)1))
-                .ConfigureAwait(false);
+            var plr = session.Player;
+            var capsule = plr.Inventory[message.ItemId];
+            if (capsule == null)
+            {
+                await session.SendAsync(new SUseCapsuleAckMessage(1)).ConfigureAwait(false);
+                return;
+            }
+
+            var rewards = new List<CapsuleRewardDto>();
+            var table = GameServer.Instance.ResourceCache.GetItemRewards();
+            Netsphere.Resource.xml.ItemRewardItemDto def;
+
+            if (!table.TryGetValue(capsule.ItemNumber, out def) || def.group == null)
+            {
+                Console.WriteLine($"[CAPSULE-TEST] no rewards for capsule {(uint)capsule.ItemNumber}, giving debug item 2000000");
+                var dbgReward = CreateShopItem(plr, 2000000, 0, 0);
+                if (dbgReward != null)
+                    rewards.Add(dbgReward);
+            }
+            else
+            {
+                foreach (var group in def.group)
+                {
+                    if (group.reward == null || group.reward.Length == 0)
+                        continue;
+
+                    var totalRate = group.reward.Sum(r => r.Rate);
+                    if (totalRate <= 0)
+                        continue;
+
+                    var roll = _capsuleRng.Next(0, totalRate);
+                    Netsphere.Resource.xml.ItemRewardEntryDto picked = null;
+                    var acc = 0;
+                    foreach (var r in group.reward)
+                    {
+                        acc += r.Rate;
+                        if (roll < acc) { picked = r; break; }
+                    }
+                    if (picked == null)
+                        continue;
+
+                    if (picked.Type == (uint)CapsuleRewardType.PEN)
+                    {
+                        plr.PEN += picked.Value;
+                        rewards.Add(new CapsuleRewardDto(picked.Value));
+                    }
+                    else
+                    {
+                        uint effect = 0;
+                        if (!string.IsNullOrEmpty(picked.Effects))
+                            uint.TryParse(picked.Effects.Split(',')[0], out effect);
+
+                        var itemReward = CreateShopItem(plr, picked.Data, picked.Color, effect);
+                        if (itemReward != null)
+                            rewards.Add(itemReward);
+                    }
+                }
+            }
+
+            plr.Inventory.Remove(capsule);
+            await session.SendAsync(new SUseCapsuleAckMessage(rewards.ToArray(), 3)).ConfigureAwait(false);
+            await session.SendAsync(new SRefreshCashInfoAckMessage { PEN = plr.PEN, AP = plr.AP }).ConfigureAwait(false);
         }
         //session.Send(new SUseCapsuleAckMessage(new List<CapsuleRewardDto>
         //{
