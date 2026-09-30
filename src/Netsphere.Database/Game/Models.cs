@@ -78,6 +78,21 @@ namespace Netsphere.Database.Game
         public int DenyPlayerId { get; set; }
     }
 
+    [Table("player_friends")]
+    public class PlayerFriendDto
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [ForeignKey(nameof(Player))]
+        public int PlayerId { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public int FriendId { get; set; }
+        public int PlayerState { get; set; }
+        public int FriendState { get; set; }
+    }
+
     [Table("player_items")]
     public class PlayerItemDto
     {

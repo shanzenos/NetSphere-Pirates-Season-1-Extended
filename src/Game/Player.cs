@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.Threading.Tasks;
@@ -38,6 +39,9 @@ namespace Netsphere
 
         public DenyManager DenyManager { get; }
         public Mailbox Mailbox { get; }
+
+        // friendAccountId -> FriendState (1=Requesting, 2=InList, 3=RequestDialog)
+        public ConcurrentDictionary<ulong, uint> Friends { get; } = new ConcurrentDictionary<ulong, uint>();
 
         public Account Account { get; set; }
         public LicenseManager LicenseManager { get; }
@@ -150,6 +154,21 @@ namespace Netsphere
             LicenseManager = new LicenseManager(this, dto);
             Inventory = new Inventory(this, dto);
             CharacterManager = new CharacterManager(this, dto);
+
+            using (var db = GameDatabase.Open())
+            {
+                var mine = db.Find<Netsphere.Database.Game.PlayerFriendDto>(s => s
+                    .Where($"{nameof(Netsphere.Database.Game.PlayerFriendDto.PlayerId):C} = @Id")
+                    .WithParameters(new { Id = (int)account.Id }));
+                foreach (var f in mine)
+                    Friends[(ulong)f.FriendId] = (uint)f.PlayerState;
+
+                var incoming = db.Find<Netsphere.Database.Game.PlayerFriendDto>(s => s
+                    .Where($"{nameof(Netsphere.Database.Game.PlayerFriendDto.FriendId):C} = @Id")
+                    .WithParameters(new { Id = (int)account.Id }));
+                foreach (var f in incoming)
+                    Friends[(ulong)f.PlayerId] = (uint)f.FriendState;
+            }
 
             RoomInfo = new PlayerRoomInfo();
         }

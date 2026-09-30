@@ -582,6 +582,7 @@ namespace Netsphere.Network.Services
                 .ConfigureAwait(false);
             await session.SendAsync(new Message.Chat.SDenyChatListAckMessage(plr.DenyManager.Select(d => d.Map<Deny, DenyDto>()).ToArray()))
                 .ConfigureAwait(false);
+            CommunityService.SyncFriendsOnLogin(plr);
         }
 
         [MessageHandler(typeof(Message.Relay.CRequestLoginMessage))]
