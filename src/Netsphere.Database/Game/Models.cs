@@ -93,6 +93,31 @@ namespace Netsphere.Database.Game
         public int FriendState { get; set; }
     }
 
+    [Table("combi")]
+    public class CombiRowDto
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [ForeignKey(nameof(Player))]
+        public int PlayerId { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public int CombiPlayerId { get; set; }
+        public long Exp { get; set; }
+        public long Battle { get; set; }
+
+        [Column("Match")]
+        public int MatchCount { get; set; }
+
+        public long Win { get; set; }
+        public long Defeat { get; set; }
+        public string CombiName { get; set; }
+        public string CombiMate { get; set; }
+        public string CombiDate { get; set; }
+        public int State { get; set; }
+    }
+
     [Table("player_items")]
     public class PlayerItemDto
     {

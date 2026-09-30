@@ -104,4 +104,24 @@ namespace Netsphere
             return Interlocked.Add(ref s_counter, 1);
         }
     }
+
+    internal static class CombiIdGenerator
+    {
+        private static int s_counter;
+
+        public static void Initialize()
+        {
+            using (var db = GameDatabase.Open())
+            {
+                var result = db.Find<CombiRowDto>();
+                if (result.Any())
+                    s_counter = result.Max(item => item.Id);
+            }
+        }
+
+        public static int GetNextId()
+        {
+            return Interlocked.Add(ref s_counter, 1);
+        }
+    }
 }
