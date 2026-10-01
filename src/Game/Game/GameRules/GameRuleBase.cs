@@ -123,6 +123,8 @@ namespace Netsphere.Game.GameRules
         public virtual void OnScoreKill(Player killer, Player assist, Player target, AttackAttribute attackAttribute)
         {
             killer.RoomInfo.Stats.Kills++;
+            killer.TotalKills++;
+            killer.stats.Kills++;
             //target.RoomInfo.Stats.Deaths++; //original
 
             //if (assist != null) //original
@@ -130,6 +132,8 @@ namespace Netsphere.Game.GameRules
             {
                 //assist.RoomInfo.Stats.KillAssists++;  //originaL
                 target.RoomInfo.Stats.Deaths++;
+                target.TotalDeaths++;
+                target.stats.Deaths++;
 
                 /* Room.Broadcast(
                      new SScoreKillAssistAckMessage(new ScoreAssistDto(killer.RoomInfo.PeerId, assist.RoomInfo.PeerId, //original
@@ -137,6 +141,7 @@ namespace Netsphere.Game.GameRules
                 if (assist != null)
                {
                     assist.RoomInfo.Stats.KillAssists++;
+                    assist.stats.KillAssists++;
 
                     Room.Broadcast(
                     new SScoreKillAssistAckMessage(new ScoreAssistDto(killer.RoomInfo.PeerId, assist.RoomInfo.PeerId,
@@ -161,6 +166,8 @@ namespace Netsphere.Game.GameRules
         public virtual void OnScoreTeamKill(Player killer, Player target, AttackAttribute attackAttribute)
         {
             target.RoomInfo.Stats.Deaths++;
+            target.TotalDeaths++;
+            target.stats.Deaths++;
 
             Room.Broadcast(
                 new SScoreTeamKillAckMessage(new Score2Dto(killer.RoomInfo.PeerId, target.RoomInfo.PeerId,
@@ -169,20 +176,81 @@ namespace Netsphere.Game.GameRules
 
         public virtual void OnScoreHeal(Player plr)
         {
+            plr.stats.Heal++;
             Room.Broadcast(new SScoreHealAssistAckMessage(plr.RoomInfo.PeerId));
         }
 
         public virtual void OnScoreSuicide(Player plr)
         {
             plr.RoomInfo.Stats.Deaths++;
+            plr.TotalDeaths++;
+            plr.stats.Deaths++;
             Room.Broadcast(new SScoreSuicideAckMessage(plr.RoomInfo.PeerId, AttackAttribute.KillOneSelf));
         }
 
         #endregion
 
+        private void AccumulateModeStats(Player plr, bool isBattleRoyalFirst)
+        {
+            if (!plr.stats.IsActive)
+                return;
+
+            switch (GameRule)
+            {
+                case GameRule.Touchdown:
+                    var td = plr.RoomInfo.Stats as TouchdownPlayerRecord;
+                    if (td != null)
+                    {
+                        plr.stats.TouchDown.TD += td.TDScore;
+                        plr.stats.TouchDown.TDAssist += td.TDAssistScore;
+                        plr.stats.TouchDown.Offense += td.OffenseScore;
+                        plr.stats.TouchDown.OffenseAssist += td.OffenseAssistScore;
+                        plr.stats.TouchDown.Defense += td.DefenseScore;
+                        plr.stats.TouchDown.DefenseAssist += td.DefenseAssistScore;
+                        plr.stats.TouchDown.OffenseRebound += td.OffenseReboundScore;
+                    }
+                    break;
+
+                case GameRule.BattleRoyal:
+                    var br = plr.RoomInfo.Stats as BattleRoyalPlayerRecord;
+                    if (br != null)
+                        plr.stats.BattleRoyal.FirstKilled += br.BonusKills;
+                    if (isBattleRoyalFirst)
+                        plr.stats.BattleRoyal.FirstPlace++;
+                    break;
+
+                case GameRule.Captain:
+                    var cpt = plr.RoomInfo.Stats as CaptainGameRule.CaptainPlayerRecord;
+                    if (cpt != null)
+                    {
+                        plr.stats.Captain.CPTKilled += cpt.KillCaptains;
+                        plr.stats.Captain.CPTCount += cpt.Domination;
+                    }
+                    break;
+
+                case GameRule.Chaser:
+                    var ch = plr.RoomInfo.Stats as ChaserPlayerRecord;
+                    if (ch != null)
+                    {
+                        plr.stats.Chaser.ChaserRounds += ch.ChaserCount;
+                        plr.stats.Chaser.ChaserWon += ch.Wins;
+                        plr.stats.Chaser.ChasedWon += ch.Survived;
+                        plr.stats.Chaser.ChasedRounds += ch.Survived;
+                    }
+                    break;
+            }
+        }
+
         private void StateMachine_OnTransition(StateMachine<GameRuleState, GameRuleStateTrigger>.Transition transition)
         {
             RoundTime = TimeSpan.Zero;
+
+            if (transition.Destination == GameRuleState.FirstHalf || transition.Destination == GameRuleState.Neutral)
+            {
+                foreach (var plr in Room.TeamManager.Players)
+                    plr.stats.OnJoin(this);
+            }
+
             switch (transition.Destination)
             {
                 //case GameRuleState.FullGame:
@@ -276,6 +344,24 @@ namespace Netsphere.Game.GameRules
 
                     foreach (var plr in Room.TeamManager.Players.Where(plr => plr.RoomInfo.State != PlayerState.Lobby))
                         plr.RoomInfo.State = PlayerState.Waiting;
+
+                    if (Room.TeamManager.Values.Any())
+                    {
+                        var maxScore = Room.TeamManager.Values.Max(t => t.Score);
+                        var winnerTeam = Room.TeamManager.Values.First(t => t.Score == maxScore).Team;
+                        var brFirst = Room.TeamManager.PlayersPlaying
+                            .OrderByDescending(p => p.RoomInfo.Stats.TotalScore)
+                            .FirstOrDefault();
+                        foreach (var plr in Room.TeamManager.PlayersPlaying.ToArray())
+                        {
+                            plr.TotalMatches++;
+                            if (plr.RoomInfo.Team != null && plr.RoomInfo.Team.Team == winnerTeam)
+                                plr.stats.Won++;
+                            else
+                                plr.stats.Loss++;
+                            AccumulateModeStats(plr, plr == brFirst);
+                        }
+                    }
 
                     Room.Broadcast(new SChangeStateAckMessage(GameState.Result));
                     Room.BroadcastBriefing(true);

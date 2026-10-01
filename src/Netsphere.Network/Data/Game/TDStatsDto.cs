@@ -6,40 +6,41 @@ namespace Netsphere.Network.Data.Game
     public class TDStatsDto
     {
         [BlubMember(0)]
-        public uint Unk1 { get; set; }
+        public uint Won { get; set; }
 
         [BlubMember(1)]
-        public uint Unk2 { get; set; }
+        public uint Lost { get; set; }
 
         [BlubMember(2)]
-        public uint Unk3 { get; set; }
+        public uint TD { get; set; }
 
+        // client divides every average by this / 20.0f
         [BlubMember(3)]
-        public uint Unk4 { get; set; }
+        public uint MatchesTimes20 { get; set; }
 
         [BlubMember(4)]
-        public uint Unk5 { get; set; }
+        public uint TDAssist { get; set; }
 
         [BlubMember(5)]
-        public uint Unk6 { get; set; }
+        public uint Kills { get; set; }
 
         [BlubMember(6)]
-        public uint Unk7 { get; set; }
+        public uint KillAssists { get; set; }
 
         [BlubMember(7)]
-        public uint Unk8 { get; set; }
+        public uint Offense { get; set; }
 
         [BlubMember(8)]
-        public uint Unk9 { get; set; }
+        public uint OffenseAssist { get; set; }
 
         [BlubMember(9)]
-        public uint Unk10 { get; set; }
+        public uint Defense { get; set; }
 
         [BlubMember(10)]
-        public uint Unk11 { get; set; }
+        public uint DefenseAssist { get; set; }
 
         [BlubMember(11)]
-        public uint Unk12 { get; set; }
+        public uint Heal { get; set; }
 
         [BlubMember(12)]
         public uint Unk13 { get; set; }
