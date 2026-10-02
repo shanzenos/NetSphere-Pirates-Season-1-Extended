@@ -69,7 +69,7 @@ namespace Netsphere.Commands
                     uptime.AppendFormat("{0} seconds ", ts.Seconds);
 
                 var message =
-                    $"Uptime: {uptime}{Environment.NewLine}Online: {server.Sessions.Cast<GameSession>().Count(c => c.IsLoggedIn())} Peak: {0}";
+                    $"Uptime: {uptime}{Environment.NewLine}Online: {server.Sessions.Values.OfType<GameSession>().Count(c => c.IsLoggedIn())} Peak: {0}";
                 if (plr == null)
                     Console.WriteLine(message);
                 else

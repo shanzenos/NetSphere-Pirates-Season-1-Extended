@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.Threading.Tasks;
@@ -39,6 +40,9 @@ namespace Netsphere
         public DenyManager DenyManager { get; }
         public Mailbox Mailbox { get; }
 
+        // friendAccountId -> FriendState (1=Requesting, 2=InList, 3=RequestDialog)
+        public ConcurrentDictionary<ulong, uint> Friends { get; } = new ConcurrentDictionary<ulong, uint>();
+
         public Account Account { get; set; }
         public LicenseManager LicenseManager { get; }
         public CharacterManager CharacterManager { get; }
@@ -50,6 +54,7 @@ namespace Netsphere
 
         internal bool SentPlayerList { get; set; }
 
+        public bool InTutorial { get; set; }
         public byte TutorialState
         {
             get { return _tutorialState; }
@@ -149,6 +154,21 @@ namespace Netsphere
             LicenseManager = new LicenseManager(this, dto);
             Inventory = new Inventory(this, dto);
             CharacterManager = new CharacterManager(this, dto);
+
+            using (var db = GameDatabase.Open())
+            {
+                var mine = db.Find<Netsphere.Database.Game.PlayerFriendDto>(s => s
+                    .Where($"{nameof(Netsphere.Database.Game.PlayerFriendDto.PlayerId):C} = @Id")
+                    .WithParameters(new { Id = (int)account.Id }));
+                foreach (var f in mine)
+                    Friends[(ulong)f.FriendId] = (uint)f.PlayerState;
+
+                var incoming = db.Find<Netsphere.Database.Game.PlayerFriendDto>(s => s
+                    .Where($"{nameof(Netsphere.Database.Game.PlayerFriendDto.FriendId):C} = @Id")
+                    .WithParameters(new { Id = (int)account.Id }));
+                foreach (var f in incoming)
+                    Friends[(ulong)f.PlayerId] = (uint)f.FriendState;
+            }
 
             RoomInfo = new PlayerRoomInfo();
         }
@@ -304,7 +324,20 @@ namespace Netsphere
         /// <param name="message">The message to send</param>
         public void SendConsoleMessage(string message)
         {
-            Session.SendAsync(new SAdminActionAckMessage { Result = 1, Message = message });
+            var color = message.StartsWith("{CB-") ? message.Substring(0, message.IndexOf('}') + 1) : "";
+
+            foreach (var line in message.Split('\n'))
+            {
+                var text = line.TrimEnd();
+                if (string.IsNullOrWhiteSpace(text))
+                    continue;
+
+                Session.SendAsync(new SAdminActionAckMessage
+                {
+                    Result = 0,
+                    Message = text.StartsWith(color) ? text : color + text
+                });
+            }
         }
 
         /// <summary>

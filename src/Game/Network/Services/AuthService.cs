@@ -411,6 +411,17 @@ namespace Netsphere.Network.Services
             await session.SendAsync(new SServerResultInfoAckMessage(ServerResult.WelcomeToS4World2))
                 .ConfigureAwait(false);
 
+            // Refresh client shop files from server's
+            var shopVersion = GameServer.Instance.ResourceCache.GetShop().Version;
+            await session.SendAsync(new SNewShopUpdateCheckAckMessage
+            {
+                Date01 = shopVersion,
+                Date02 = shopVersion,
+                Date03 = shopVersion,
+                Date04 = shopVersion,
+                Unk = 0
+            }).ConfigureAwait(false);
+
             if (plr.Inventory.Count == 0)
             {
                 IEnumerable<StartItemDto> startItems;
@@ -571,6 +582,8 @@ namespace Netsphere.Network.Services
                 .ConfigureAwait(false);
             await session.SendAsync(new Message.Chat.SDenyChatListAckMessage(plr.DenyManager.Select(d => d.Map<Deny, DenyDto>()).ToArray()))
                 .ConfigureAwait(false);
+            CommunityService.SyncFriendsOnLogin(plr);
+            CommunityService.SyncCombisOnLogin(plr);
         }
 
         [MessageHandler(typeof(Message.Relay.CRequestLoginMessage))]

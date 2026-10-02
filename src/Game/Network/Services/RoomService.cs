@@ -372,6 +372,19 @@ namespace Netsphere.Network.Services
         public void CEventMessageReq(GameSession session, CEventMessageReqMessage message)
         {
             var plr = session.Player;
+            plr.Room.Broadcast(new SEventMessageAckMessage(message.Event, session.Player.Account.Id, message.Unk1, message.Value, ""));
+            //if (message.Event == GameEventMessage.BallReset && plr == plr.Room.Host)
+            //{
+            //    plr.Room.Broadcast(new SEventMessageAckMessage(GameEventMessage.BallReset, 0, 0, 0, ""));
+            //    return;
+            //}
+
+            //if (message.Event != GameEventMessage.StartGame)
+            //    return;
+
+            var intruding = plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing) && plr.RoomInfo.State == PlayerState.Lobby;
+
+            if (intruding)
 
             var intruding = plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing)
                             && plr.RoomInfo.State == PlayerState.Lobby;
@@ -384,6 +397,7 @@ namespace Netsphere.Network.Services
                 //Specific Implementation since in chaser mode it gets called when intrusion from inside the room
                 plr.Room.BroadcastBriefing(plr);
 
+                // When joining BR, if bonus target player is null, get it
                 var br = plr.Room.GameRuleManager.GameRule as BattleRoyalGameRule;
                 if (br?.First != null)
                     session.SendAsync(new SGameRuleChangeTheFirstAckMessage(br.First.Account.Id));

@@ -178,6 +178,7 @@ namespace Netsphere
 
                 plr.RoomInfo.Slot = id;
 
+                // Make sure an old PeerID is not re-assigned to a rejoining player
                 var gen = _peerIdSeq.AddOrUpdate(plr.Account.Id, (byte)0, (_, prev) => (byte)(prev + 1));
                 plr.RoomInfo.PeerId = new LongPeerId(plr.Account.Id, new PeerId(gen, id, 1));
             }
