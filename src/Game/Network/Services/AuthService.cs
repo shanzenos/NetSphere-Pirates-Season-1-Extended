@@ -405,7 +405,14 @@ namespace Netsphere.Network.Services
                 AP = plr.AP,
                 PEN = plr.PEN,
                 TutorialState = (uint)(Config.Instance.Game.EnableTutorial ? plr.TutorialState : 2),
-                Nickname = plr.Account.Nickname
+                Nickname = plr.Account.Nickname,
+
+                // Send player Stats
+                DMStats = plr.stats.DeathMatch.GetStatsDto(),
+                TDStats = plr.stats.TouchDown.GetStatsDto(),
+                ChaserStats = plr.stats.Chaser.GetStatsDto(),
+                BRStats = plr.stats.BattleRoyal.GetStatsDto(),
+                CPTStats = plr.stats.Captain.GetStatsDto()
             }).ConfigureAwait(false);
 
             await session.SendAsync(new SServerResultInfoAckMessage(ServerResult.WelcomeToS4World2))

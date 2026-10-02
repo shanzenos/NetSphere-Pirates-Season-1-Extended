@@ -74,7 +74,9 @@ namespace Netsphere.Network.Services
         public async Task GetUserDataHandler(ChatSession session, CGetUserDataReqMessage message)
         {
             var plr = session.Player;
-            if (plr.Account.Id == message.AccountId)
+            var accountId = message.AccountId & 0x0000FFFFFFFFFFFF;
+
+            if (plr.Account.Id == accountId)
             {
                 await session.SendAsync(new SUserDataAckMessage(plr.Map<Player, UserDataDto>()))
                     .ConfigureAwait(false);
@@ -82,7 +84,7 @@ namespace Netsphere.Network.Services
             }
 
             Player target;
-            if (!plr.Channel.Players.TryGetValue(message.AccountId, out target))
+            if (plr.Channel == null || !plr.Channel.Players.TryGetValue(accountId, out target))
                 return;
 
             switch (target.Settings.Get<CommunitySetting>(nameof(UserDataDto.AllowInfoRequest)))

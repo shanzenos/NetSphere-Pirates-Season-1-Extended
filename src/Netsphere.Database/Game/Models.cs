@@ -27,7 +27,17 @@ namespace Netsphere.Database.Game
         public int Coins1 { get; set; }
         public int Coins2 { get; set; }
         public byte CurrentCharacterSlot { get; set; }
+        public int TotalMatches { get; set; }
+        public int TotalWins { get; set; }
+        public int TotalLosses { get; set; }
+        public int TotalKills { get; set; }
+        public int TotalDeaths { get; set; }
 
+        public IList<PlayerInfoDeathmatchDto> DeathmatchInfo { get; set; } = new List<PlayerInfoDeathmatchDto>();
+        public IList<PlayerInfoTouchdownDto> TouchdownInfo { get; set; } = new List<PlayerInfoTouchdownDto>();
+        public IList<PlayerInfoChaserDto> ChaserInfo { get; set; } = new List<PlayerInfoChaserDto>();
+        public IList<PlayerInfoBattleRoyalDto> BattleRoyalInfo { get; set; } = new List<PlayerInfoBattleRoyalDto>();
+        public IList<PlayerInfoCaptainDto> CaptainInfo { get; set; } = new List<PlayerInfoCaptainDto>();
         public IList<PlayerCharacterDto> Characters { get; set; } = new List<PlayerCharacterDto>();
         public IList<PlayerDenyDto> Ignores { get; set; } = new List<PlayerDenyDto>();
         public IList<PlayerItemDto> Items { get; set; } = new List<PlayerItemDto>();
@@ -76,6 +86,93 @@ namespace Netsphere.Database.Game
         public PlayerDto Player { get; set; }
 
         public int DenyPlayerId { get; set; }
+    }
+    [Table("player_info_deathmatch")]
+    public class PlayerInfoDeathmatchDto
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [ForeignKey(nameof(Player))]
+        public int PlayerId { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public ulong Won { get; set; }
+        public ulong Loss { get; set; }
+        public ulong Kills { get; set; }
+        public ulong KillAssists { get; set; }
+        public ulong Deaths { get; set; }
+        public ulong Heal { get; set; }
+    }
+
+    [Table("player_info_touchdown")]
+    public class PlayerInfoTouchdownDto
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [ForeignKey(nameof(Player))]
+        public int PlayerId { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public ulong Won { get; set; }
+        public ulong Loss { get; set; }
+        public ulong TD { get; set; }
+        public ulong TDAssist { get; set; }
+        public ulong Offense { get; set; }
+        public ulong OffenseAssist { get; set; }
+        public ulong Defense { get; set; }
+        public ulong DefenseAssist { get; set; }
+        public ulong Kill { get; set; }
+        public ulong KillAssist { get; set; }
+        public ulong OffenseRebound { get; set; }
+        public ulong Heal { get; set; }
+    }
+
+    [Table("player_info_chaser")]
+    public class PlayerInfoChaserDto
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [ForeignKey(nameof(Player))]
+        public int PlayerId { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public ulong ChasedWon { get; set; }
+        public ulong ChasedRounds { get; set; }
+        public ulong ChaserWon { get; set; }
+        public ulong ChaserRounds { get; set; }
+        public ulong Kills { get; set; }
+    }
+
+    [Table("player_info_battleroyal")]
+    public class PlayerInfoBattleRoyalDto
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [ForeignKey(nameof(Player))]
+        public int PlayerId { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public ulong Won { get; set; }
+        public ulong Loss { get; set; }
+        public ulong Kills { get; set; }
+        public ulong KillAssists { get; set; }
+        public ulong FirstKilled { get; set; }
+        public ulong FirstPlace { get; set; }
+    }
+
+    [Table("player_info_captain")]
+    public class PlayerInfoCaptainDto
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [ForeignKey(nameof(Player))]
+        public int PlayerId { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public ulong Won { get; set; }
+        public ulong Loss { get; set; }
+        public ulong CPTKilled { get; set; }
+        public ulong CPTCount { get; set; }
     }
 
     [Table("player_friends")]
