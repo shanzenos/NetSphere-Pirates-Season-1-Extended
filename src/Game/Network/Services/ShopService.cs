@@ -335,9 +335,17 @@ namespace Netsphere.Network.Services
                 return;
             }
 
-            var entry = FumbiShop.Roll(message.IsWeapon,
-                plr.CharacterManager.CurrentCharacter.Gender,
-                message.Category,
+            // the shop item carries Gender (None/Male/Female), the character a CharacterGender
+            // (Male/Female), and the request the same 0/1 as the character, 2 for either
+            var gender = plr.CharacterManager.CurrentCharacter.Gender == CharacterGender.Female
+                ? Gender.Female
+                : Gender.Male;
+            if (message.Gender == 0)
+                gender = Gender.Male;
+            else if (message.Gender == 1)
+                gender = Gender.Female;
+
+            var entry = FumbiShop.Roll(message.IsWeapon, gender,
                 FumbiShop.Selected(plr, message.HeldItemNumber),
                 message.HoldItem != 0);
             if (entry == null)
@@ -381,14 +389,21 @@ namespace Netsphere.Network.Services
 
             FumbiShop.SetLastRoll(plr, rolled.Id, entry.ItemNumber);
 
+            var color = message.HoldColor != 0 && message.HeldColor >= 0
+                ? (uint)message.HeldColor
+                : entry.Color;
+            var effect = message.HoldEffect != 0 && message.HeldEffect >= 0
+                ? (uint)message.HeldEffect
+                : 0u;
+
             await session.SendAsync(new SRandomShopItemInfoAckMessage
             {
                 Item = new RandomShopItemDto
                 {
                     Tab = tab,
                     ItemNumber = entry.ItemNumber,
-                    Effect = 0,
-                    Color = entry.Color,
+                    Effect = effect,
+                    Color = color,
                     PeriodType = entry.PeriodType,
                     Period = entry.Period
                 }
@@ -407,7 +422,6 @@ namespace Netsphere.Network.Services
 
             FumbiShop.ClearLastRoll(plr);
 
-            // the game only closes its "Requesting" popup when it gets a result with item number 0 for this tab
             await session.SendAsync(new SRandomShopItemInfoAckMessage
             {
                 Item = new RandomShopItemDto { Tab = message.Tab }
