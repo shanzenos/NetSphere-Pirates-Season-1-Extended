@@ -729,18 +729,13 @@ namespace Netsphere.Network.Message.GameRule
     [BlubContract]
     public class SArcadeScoreSyncAckMessage : IGameRuleMessage
     {
+        [BlubMember(0, typeof(ArrayWithIntPrefixSerializer))]
+        public ArcadeScoreSyncDto[] Scores { get; set; }
+
         public SArcadeScoreSyncAckMessage()
         {
-
+            Scores = Array.Empty<ArcadeScoreSyncDto>();
         }
-
-        public SArcadeScoreSyncAckMessage(ArcadeScoreSyncReqDto[] scores)
-        {
-            Scores = scores;
-        }
-
-        [BlubMember(0, typeof(ArrayWithIntPrefixSerializer))]
-        public ArcadeScoreSyncReqDto[] Scores { get; set; }
     }
 
     [BlubContract]
@@ -751,13 +746,10 @@ namespace Netsphere.Network.Message.GameRule
 
         [BlubMember(1)]
         public byte Unk2 { get; set; }
-
-        [BlubMember(2)]
-        public byte Unk3 { get; set; }
     }
 
     [BlubContract]
-    public class SArcadeStageBriefingAckMessage: IGameRuleMessage
+    public class SArcadeStageBriefingAckMessage : IGameRuleMessage
     {
         [BlubMember(0)]
         public byte Unk1 { get; set; }
@@ -775,7 +767,7 @@ namespace Netsphere.Network.Message.GameRule
     }
 
     [BlubContract]
-    public class SArcadeEnablePlayeTimeAckMessage: IGameRuleMessage
+    public class SArcadeEnablePlayeTimeAckMessage : IGameRuleMessage
     {
         [BlubMember(0)]
         public byte Unk { get; set; }
@@ -784,17 +776,6 @@ namespace Netsphere.Network.Message.GameRule
     [BlubContract]
     public class SArcadeStageInfoAckMessage : IGameRuleMessage
     {
-        public SArcadeStageInfoAckMessage()
-        {
-
-        }
-
-        public SArcadeStageInfoAckMessage(byte unk, int unk2)
-        {
-            Unk1 = unk;
-            Unk2 = unk2;
-        }
-
         [BlubMember(0)]
         public byte Unk1 { get; set; }
 
@@ -803,14 +784,14 @@ namespace Netsphere.Network.Message.GameRule
     }
 
     [BlubContract]
-    public class SArcadeRespawnAckMessage: IGameRuleMessage
+    public class SArcadeRespawnAckMessage : IGameRuleMessage
     {
         [BlubMember(0)]
         public int Unk { get; set; }
     }
 
     [BlubContract]
-    public class SArcadeDeathPlayerInfoAckMessage: IGameRuleMessage
+    public class SArcadeDeathPlayerInfoAckMessage : IGameRuleMessage
     {
         [BlubMember(0)]
         public byte Unk { get; set; }
@@ -825,14 +806,14 @@ namespace Netsphere.Network.Message.GameRule
     }
 
     [BlubContract]
-    public class SArcadeStageReadyAckMessage: IGameRuleMessage
+    public class SArcadeStageReadyAckMessage : IGameRuleMessage
     {
         [BlubMember(0)]
         public ulong AccountId { get; set; }
     }
 
     [BlubContract]
-    public class SArcadeRespawnFailAckMessage: IGameRuleMessage
+    public class SArcadeRespawnFailAckMessage : IGameRuleMessage
     {
         [BlubMember(0)]
         public uint Result { get; set; }
@@ -844,7 +825,7 @@ namespace Netsphere.Network.Message.GameRule
         [BlubMember(0)]
         public float Value { get; set; }
 
-        public SChangeHPAckMessage() //used by chaser's hacky HP fix
+        public SChangeHPAckMessage()
         { }
 
         public SChangeHPAckMessage(float value)
