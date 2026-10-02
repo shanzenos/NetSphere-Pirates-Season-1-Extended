@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BlubLib.IO;
+using ExpressMapper.Extensions;
 using Netsphere.Network;
 using Netsphere.Network.Message.GameRule;
 
@@ -27,6 +28,8 @@ namespace Netsphere.Game.GameRules
         private bool _scoringDisabled = false;
 
         private Player LastChaser;
+
+        private readonly List<Player> _forcedSpectators = new List<Player>();
 
         public override GameRule GameRule => GameRule.Chaser;
         public override Briefing Briefing { get; }
@@ -84,6 +87,17 @@ namespace Netsphere.Game.GameRules
                     Bonus = null;
                     Chaser = null;
                     _waitingNextChaser = false;
+
+                    foreach (var spectator in _forcedSpectators.ToArray())
+                    {
+                        _forcedSpectators.Remove(spectator);
+                        if (spectator.Room != Room)
+                            continue;
+
+                        spectator.RoomInfo.Mode = PlayerGameMode.Normal;
+                        Room.Broadcast(new SPlayerGameModeChangeAckMessage(spectator.Account.Id, PlayerGameMode.Normal));
+                    }
+
                     // Fix for chaser display lingering after match ends
                     Room.Broadcast(new SChangeSlaughtererAckMessage(0));
                 });
@@ -125,7 +139,7 @@ namespace Netsphere.Game.GameRules
                 if (e.Player == Chaser)
                 {
                     Chaser = null;
-                    ChaserLose();
+                    ChaserLose(false);
                 }
 
                 else if (e.Player != Chaser)
@@ -183,11 +197,7 @@ namespace Netsphere.Game.GameRules
                     _nextChaserTimer += delta;
 
                     if (_nextChaserTimer >= s_nextChaserWaitTime)
-                    {
                         NextChaser();
-                        // Re-enable scoring after chaser change
-                        _scoringDisabled = false;
-                    }
                 }
                 else
                 {
@@ -207,6 +217,9 @@ namespace Netsphere.Game.GameRules
             }
         }
 
+        public TimeSpan ChaserRoundTime => _chaserRoundTime;
+        public TimeSpan ChaserElapsed => _chaserTimer;
+
         public override PlayerRecord GetPlayerRecord(Player plr)
         {
             return new ChaserPlayerRecord(plr);
@@ -215,8 +228,7 @@ namespace Netsphere.Game.GameRules
         public void OnScoreAttack(Player plr, float unk1, float unk2)
         {
             var stats = GetRecord(plr);
-            stats.Kills++;
-            stats.SwordRanking += unk1;
+            stats.SwordRanking += 1;
             stats.GunRanking += unk2;
 
             foreach (var plrInRoom in Room.TeamManager.PlayersPlaying)
@@ -231,7 +243,7 @@ namespace Netsphere.Game.GameRules
                     plrInRoom.Session.SendAsync(new SSlaughterAttackPointAckMessage
                     {
                         AccountId = plr.Account.Id,
-                        Unk1 = unk1, // Send sword ranking
+                        Unk1 = 1,
                         Unk2 = unk2 // Send gun ranking
 
                     });
@@ -248,13 +260,6 @@ namespace Netsphere.Game.GameRules
             }
 
             var stats = GetRecord(killer);
-            stats.Kills++;
-
-            if (killer == Chaser && target == Bonus)
-            {
-                stats.BonusKills++; // Award bonus points to the chaser for killing the bonus target
-                Bonus = GetBonus(); // Assign a new bonus target if the previous one is killed
-            }
 
             target.RoomInfo.State = PlayerState.Dead;
 
@@ -276,13 +281,14 @@ namespace Netsphere.Game.GameRules
 
             if (killer == Chaser && target == Bonus)
             {
-                stats.BonusKills++; // Award bonus points to the chaser for killing the bonus target
+                if (stats.Kills > 0)
+                    stats.Kills--;
+                stats.BonusKills++;
 
-                NextTarget(); // Try to select new bonus target // Assign a new bonus target if the previous one is killed
+                NextTarget(); // Try to select new bonus target
             }
 
         }
-
 
         // Log scores for players
         private void LogScore(Player player, string phase)
@@ -290,7 +296,6 @@ namespace Netsphere.Game.GameRules
             var record = GetRecord(player);
             Console.WriteLine($"[{phase}] Player: {player.Account.Id}, Kills: {record.Kills}, BonusKills: {record.BonusKills}, TotalScore: {record.TotalScore}");
         }
-
 
         public override void OnScoreSuicide(Player plr)
         {
@@ -334,7 +339,6 @@ namespace Netsphere.Game.GameRules
             // Try to select a new bonus target from alive non-chaser players
             Bonus = GetBonus();
 
-
             if ( Bonus != null) {
                 Room.Broadcast(new SChangeBonusTargetAckMessage(Bonus.Account.Id));// Notify players of new bonus target
             }
@@ -351,13 +355,39 @@ namespace Netsphere.Game.GameRules
 
         }
 
+        public void ParkIntruder(Player plr)
+        {
+            plr.RoomInfo.State = PlayerState.Dead;
 
+            if (!_forcedSpectators.Contains(plr))
+                _forcedSpectators.Add(plr);
 
+            Room.Broadcast(new SEnterPlayerAckMessage(plr.Account.Id, plr.Account.Nickname,
+                (byte)plr.RoomInfo.Team.Team, plr.RoomInfo.Mode, (int)plr.TotalExperience));
+
+            var timeState = StateMachine.IsInState(GameRuleState.Neutral)
+                ? GameTimeState.Neutral
+                : GameTimeState.FirstHalf;
+            plr.Session.SendAsync(new SRefreshGameRuleInfoAckMessage(GameState.Playing, timeState,
+                (int)RoundTime.TotalMilliseconds));
+        }
+        
         public void RoundEnd()
         {
+            if (Chaser != null)
+                GetRecord(Chaser).ChaserCount++;
+
             _roundComplete = true;
             _waitingNextChaser = true;
             _nextChaserTimer = TimeSpan.Zero;
+
+            foreach (var spectator in _forcedSpectators)
+            {
+                if (spectator.Room != Room)
+                    continue;
+
+                spectator.Session?.SendAsync(new SBriefingAckMessage(false, false, Briefing.ToArray(false)));
+            }
 
             //Check remaining room time against chaser round time
             var diff = Room.Options.TimeLimit - RoundTime;
@@ -373,6 +403,26 @@ namespace Netsphere.Game.GameRules
         public void NextChaser()
         {
             _roundComplete = false;
+
+            _scoringDisabled = false;
+
+            foreach (var spectator in _forcedSpectators.ToArray())
+            {
+                _forcedSpectators.Remove(spectator);
+                if (spectator.Room != Room)
+                    continue;
+
+                spectator.RoomInfo.Mode = PlayerGameMode.Normal;
+                spectator.RoomInfo.State = PlayerState.Alive;
+                spectator.RoomInfo.State = PlayerState.Alive;
+                Room.Broadcast(new SPlayerGameModeChangeAckMessage(spectator.Account.Id, PlayerGameMode.Normal));
+
+                Room.Broadcast(new SEnterPlayerAckMessage(spectator.Account.Id, spectator.Account.Nickname,
+                    (byte)spectator.RoomInfo.Team.Team, PlayerGameMode.Normal, (int)spectator.TotalExperience));
+
+                spectator.Session?.SendAsync(new SBeginRoundAckMessage());
+            }
+
             //Round duration based on player count, TODO: Needs adjusting to specific times per player #
             _chaserRoundTime = Room.Players.Count < 7
                 ? TimeSpan.FromSeconds(60)
@@ -405,7 +455,6 @@ namespace Netsphere.Game.GameRules
             foreach (var plr in Room.TeamManager.PlayersPlaying)
                 plr.RoomInfo.State = PlayerState.Alive;
 
-            GetRecord(Chaser).ChaserCount++;
             LastChaser = Chaser;
 
             if (GetPlayersAlive() == null)
@@ -424,34 +473,44 @@ namespace Netsphere.Game.GameRules
             ));
 
             NextTarget();
+
             _waitingNextChaser = false;
         }
-
 
         public void ChaserWin()
         {
             if (_waitingNextChaser)
                 return;
 
-            GetRecord(Chaser).Wins++;
-
             // Broadcast the round win message
             Room.Broadcast(new SScoreSLRoundWinAckMessage());
             RoundEnd();
         }
 
-        public void ChaserLose()
+        public void ChaserLose(bool paysOut = true)
         {
             if (_waitingNextChaser)
                 return;
 
-            foreach (var plr in GetPlayersAlive())
+            if (paysOut)
             {
-                GetRecord(plr).Survived++;
+                foreach (var plr in Room.TeamManager.PlayersPlaying)
+                {
+                    if (plr == Chaser)
+                        continue;
+
+                    if (_forcedSpectators.Contains(plr))
+                        continue;
+
+                    GetRecord(plr).Wins++;
+
+                    if (plr.RoomInfo.State == PlayerState.Alive)
+                        GetRecord(plr).Survived++;
+                }
             }
 
-            //Chaser loss message
             Room.Broadcast(new SScoreRoundWinAckMessage());
+
             RoundEnd();
         }
 
@@ -525,6 +584,10 @@ internal class ChaserBriefing : Briefing
 
             Unk6 = 1;
 
+            Unk3 = (int)gameRule.ChaserElapsed.TotalMilliseconds;
+            Unk4 = (int)gameRule.ChaserRoundTime.TotalMilliseconds;
+            Unk5 = (int)gameRule.ChaserRoundTime.TotalMilliseconds;
+
             w.Write(CurrentChaser);
             w.Write(CurrentChaserTarget);
             w.Write(Unk3);
@@ -543,13 +606,14 @@ internal class ChaserBriefing : Briefing
         }
     }
 
-
     //Chaser Player Record
     internal class ChaserPlayerRecord : PlayerRecord
     {
         public ChaserPlayerRecord(Player plr) : base(plr) { }
 
         public override uint TotalScore => GetTotalScore();
+
+        public static bool ProbeFields = false;
 
         // Additional stats
         public int Unk1 { get; set; }
@@ -585,6 +649,42 @@ internal class ChaserBriefing : Briefing
         public override void Serialize(BinaryWriter w, bool isResult)
         {
             base.Serialize(w, isResult);
+
+            Console.WriteLine($"[wire] {Player.Account.Nickname}: kills={Kills} bonus={BonusKills} " +
+                              $"wins={Wins} survived={Survived} chaser={ChaserCount} " +
+                              $"sword={SwordRanking} gun={GunRanking} state={Player.RoomInfo.State} " +
+                              $"points={Kills * 2 + BonusKills * 4 + Wins * 5 + Survived * 10}");
+
+            if (ProbeFields)
+            {
+                w.Write(11);       // Unk1
+                w.Write(12);       // Unk2
+                w.Write(13);       // Unk3
+                w.Write(14);       // Unk4
+                w.Write(15u);      // Kills
+                w.Write(16u);      // BonusKills
+                w.Write(17);       // Unk5
+                w.Write(18);       // Unk6
+                w.Write(19);       // Unk7
+                w.Write(20);       // Unk8
+                w.Write(21u);      // Wins
+                w.Write(22u);      // Survived
+                w.Write(23);       // Unk9
+                w.Write(24);       // Unk10
+                w.Write(25u);      // ChaserCount
+                w.Write(26);       // Unk11
+                w.Write(27);       // Unk12
+                w.Write(28);       // Unk13
+                w.Write(29);       // Unk14
+                w.Write(30);       // Unk15
+                w.Write(31);       // Unk16
+                w.Write(32f);      // SwordRanking
+                w.Write(33f);      // GunRanking
+                w.Write(34f);      // Unk19
+                w.Write(35f);      // Unk20
+                w.Write((byte)36); // Unk21
+                return;
+            }
 
             w.Write(Unk1);
             w.Write(Unk2);
