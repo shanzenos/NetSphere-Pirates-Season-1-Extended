@@ -385,11 +385,6 @@ namespace Netsphere.Network.Services
             var intruding = plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing) && plr.RoomInfo.State == PlayerState.Lobby;
 
             if (intruding)
-
-            var intruding = plr.Room.GameRuleManager.GameRule.StateMachine.IsInState(GameRuleState.Playing)
-                            && plr.RoomInfo.State == PlayerState.Lobby;
-
-            if (intruding)
             {
                 plr.RoomInfo.State = plr.RoomInfo.Mode == PlayerGameMode.Normal
                     ? PlayerState.Alive
