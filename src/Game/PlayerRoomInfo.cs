@@ -14,6 +14,7 @@ namespace Netsphere
         public PlayerRecord Stats { get; set; }
         public PlayerState State { get; set; }
         public PlayerGameMode Mode { get; set; }
+        public int ArcadeRespawnCount { get; set; }
         public bool IsReady { get; set; }
 
         public TimeSpan PlayTime { get; set; }
@@ -22,6 +23,7 @@ namespace Netsphere
         public void Reset()
         {
             Stats?.Reset();
+            ArcadeRespawnCount = 0;
             PlayTime = TimeSpan.Zero;
             for (var i = 0; i < CharacterPlayTime.Length; i++)
                 CharacterPlayTime[i] = TimeSpan.Zero;
