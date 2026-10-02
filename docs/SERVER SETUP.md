@@ -181,7 +181,7 @@ Configure the HJSON server configuration files as shown below. Update database c
 
 ---
 
-## 3. Executive Permissions & Firewall Setup
+## 3. Windows Permissions & Firewall Setup
 
 1. **Administrator Rights:**  
    Navigate to the server folder, right-click `Auth.exe` and `Game.exe`, go to **Properties > Compatibility**, and check **Run this program as an administrator**.
