@@ -862,7 +862,10 @@ namespace Netsphere.Network.Services
 
         [MessageHandler(typeof(CArcadeStageFailedReqMessage))]
         public void CArcadeStageFailedReq(GameSession session, CArcadeStageFailedReqMessage message)
-        { }
+        {
+            var arcade = GetArcade(session);
+            arcade?.StageFailed(session.Player);
+        }
 
         [MessageHandler(typeof(CArcadeStageInfoReqMessage))]
         public void CArcadeStageInfoReq(GameSession session, CArcadeStageInfoReqMessage message)
@@ -919,13 +922,19 @@ namespace Netsphere.Network.Services
         [MessageHandler(typeof(CArcadeLoadingSucceesReqMessage))]
         public void CArcadeLoadingSucceesReq(GameSession session, CArcadeLoadingSucceesReqMessage message)
         {
-
             var plr = session.Player;
+            var room = plr.Room;
 
-            if (plr?.Room == null || (plr.Room.GameRuleManager.GameRule.GameRule != GameRule.Arcade))
+            var target = room.Players.GetValueOrDefault(plr.Account.Id);
+            if (target == null)
                 return;
 
-            session.SendAsync(new SArcadeLoadingSucceedAckMessage { AccountId = session.Player.Account.Id });
+            if (room.Options.MatchKey.GameRule != GameRule.Arcade)
+                return;
+
+            var Arcade = ((ArcadeGameRule)room.GameRuleManager.GameRule);
+
+            Arcade.OnLoadingOk(plr);
         }
 
         #endregion
