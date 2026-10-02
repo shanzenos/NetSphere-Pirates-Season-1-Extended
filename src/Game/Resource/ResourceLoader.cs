@@ -489,6 +489,19 @@ namespace Netsphere.Resource
 
         #endregion
 
+        public IEnumerable<ItemRewardItemDto> LoadItemRewards()
+        {
+            try
+            {
+                var dto = Deserialize<ItemRewardDto>("xml/itembag.xml");
+                return dto.item ?? new ItemRewardItemDto[0];
+            }
+            catch
+            {
+                return new ItemRewardItemDto[0];
+            }
+        }
+
         private T Deserialize<T>(string fileName)
         {
             var serializer = new XmlSerializer(typeof(T));

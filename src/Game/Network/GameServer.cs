@@ -193,6 +193,8 @@ namespace Netsphere.Network
                 TrySessionCleanup(() => PlayerManager.Remove(plr), gameSession, "removing from the player list");
                 TrySessionCleanup(() => Netsphere.Shop.FumbiShop.Remove(plr), gameSession, "clearing the fumbi roll");
 
+                Netsphere.Shop.FumbiShop.Remove(gameSession.Player);
+
                 Logger.Debug()
                     .Account(gameSession)
                     .Message("Disconnected")

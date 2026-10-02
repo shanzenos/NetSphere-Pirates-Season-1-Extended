@@ -287,8 +287,9 @@ namespace Netsphere.Network.Message.Game
         [BlubMember(0)]
         public bool IsWeapon { get; set; }
 
+        // The shop's tab for item categories: Head, Shirt, Pants, Glove, Shoes
         [BlubMember(1)]
-        public byte Gender { get; set; }
+        public byte Category { get; set; }
 
         [BlubMember(2)]
         public byte HoldItem { get; set; }
