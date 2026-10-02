@@ -335,8 +335,7 @@ namespace Netsphere.Network.Services
                 return;
             }
 
-            // the shop item carries Gender (None/Male/Female), the character a CharacterGender
-            // (Male/Female), and the request the same 0/1 as the character, 2 for either
+            // The shop item's character costume gender, 0 = Male, 1 = Female, 2 = Unisex
             var gender = plr.CharacterManager.CurrentCharacter.Gender == CharacterGender.Female
                 ? Gender.Female
                 : Gender.Male;
@@ -422,6 +421,7 @@ namespace Netsphere.Network.Services
 
             FumbiShop.ClearLastRoll(plr);
 
+            // the game only closes its "Requesting" popup when it gets a result with item number 0 for this tab
             await session.SendAsync(new SRandomShopItemInfoAckMessage
             {
                 Item = new RandomShopItemDto { Tab = message.Tab }
