@@ -157,12 +157,31 @@ namespace Netsphere.Network.Services
                     .Write();
             }
         }
+        
+        private const int MaxBasketSize = 24;
 
         [MessageHandler(typeof(CBuyItemReqMessage))]
         public async Task BuyItemHandler(GameSession session, CBuyItemReqMessage message)
         {
             var shop = GameServer.Instance.ResourceCache.GetShop();
             var plr = session.Player;
+
+            if (item.Effect != 0 && shopItemInfo.EffectGroup?.Effects?.All(effect => effect.Effect != item.Effect) == true)
+                {
+                    Logger.Error()
+                        .Account(session)
+                        .Message($"Shop entry {item.ItemNumber} {item.PriceType} {item.Period}{item.PeriodType} has no effect {item.Effect}")
+                        .Write();
+
+                    await session.SendAsync(new SBuyItemAckMessage(ItemBuyResult.UnkownItem))
+                        .ConfigureAwait(false);
+
+                    return;
+                }
+
+            var lines = new List<Tuple<ShopItemDto, ShopItemInfo, ShopPrice>>();
+            var pen = 0L;
+            var ap = 0L;
 
             foreach (var item in message.Items)
             {
@@ -214,7 +233,18 @@ namespace Netsphere.Network.Services
 
                     await session.SendAsync(new SBuyItemAckMessage(ItemBuyResult.UnkownItem))
                         .ConfigureAwait(false);
+                        return;
+                }
 
+                if (price.Price <= 0)
+                {
+                    Logger.Error()
+                        .Account(session)
+                        .Message($"Shop entry {item.ItemNumber} {item.PriceType} {item.Period}{item.PeriodType} costs {price.Price}")
+                        .Write();
+
+                    await session.SendAsync(new SBuyItemAckMessage(ItemBuyResult.UnkownItem))
+                        .ConfigureAwait(false);
                     return;
                 }
 
@@ -294,6 +324,9 @@ namespace Netsphere.Network.Services
                             .Account(session)
                             .Message($"Unknown PriceType {shopItemInfo.PriceGroup.PriceType}")
                             .Write();
+                            
+                        await session.SendAsync(new SBuyItemAckMessage(ItemBuyResult.UnkownItem))
+                            .ConfigureAwait(false);
                         return;
                 }
 
