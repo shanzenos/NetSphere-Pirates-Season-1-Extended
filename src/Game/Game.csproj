@@ -197,6 +197,7 @@
     <Compile Include="Resource\xml\ChannelSettingDto.cs" />
     <Compile Include="Resource\xml\ConstantInfoDto.cs" />
     <Compile Include="Resource\xml\DefaultItemDto.cs" />
+	<Compile Include="Resource\xml\GmSupportItemDto.cs" />
     <Compile Include="Resource\xml\ExperienceDto.cs" />
     <Compile Include="Resource\xml\GameInfoDto.cs" />
     <Compile Include="Resource\xml\ItemEffectDto.cs" />

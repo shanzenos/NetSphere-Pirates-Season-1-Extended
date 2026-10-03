@@ -14,6 +14,7 @@ using Netsphere.Database.Game;
 using Netsphere.Network.Data.Chat;
 using Netsphere.Network.Data.Game;
 using Netsphere.Network.Message.Game;
+using Netsphere.Shop;
 using NLog;
 using NLog.Fluent;
 using ProudNet.Handlers;
@@ -478,6 +479,46 @@ namespace Netsphere.Network.Services
                         count = 0;
 
                     plr.Inventory.Create(itemInfo, price, color, effect.Effect, (uint)count);
+                }
+            }
+
+            if (plr.Account.SecurityLevel > SecurityLevel.User)
+            {
+                var shop = GameServer.Instance.ResourceCache.GetShop();
+
+                foreach (var itemNumber in GameServer.Instance.ResourceCache.GetGmSupportItems())
+                {
+                    if (plr.Inventory.Any(i => i.ItemNumber == itemNumber))
+                        continue;
+
+                    ShopItem shopItem;
+                    if (!shop.Items.TryGetValue(itemNumber, out shopItem))
+                    {
+                        Logger.Warn($"Gm support item {itemNumber} is not in the shop");
+                        continue;
+                    }
+
+                    // whatever it costs is beside the point, it is given away. The permanent
+                    // price is the one worth handing out, and only if the item has none does it
+                    // fall back to the first one it finds
+                    var itemInfo = shopItem.ItemInfos.FirstOrDefault(i => i.PriceGroup.Prices.Any(p => p.PeriodType == ItemPeriodType.None))
+                                   ?? shopItem.ItemInfos.FirstOrDefault();
+
+                    var price = itemInfo?.PriceGroup.Prices.FirstOrDefault(p => p.PeriodType == ItemPeriodType.None)
+                                ?? itemInfo?.PriceGroup.Prices.FirstOrDefault();
+
+                    if (price == null)
+                    {
+                        Logger.Warn($"Gm support item {itemNumber} has no price to give it away with");
+                        continue;
+                    }
+
+                    plr.Inventory.Create(itemInfo, price, 0, 0, 0);
+
+                    Logger.Info()
+                        .Account(session)
+                        .Message($"Gave the gm support item {itemNumber}")
+                        .Write();
                 }
             }
 

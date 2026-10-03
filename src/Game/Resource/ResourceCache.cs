@@ -35,6 +35,9 @@ namespace Netsphere.Resource
             Logger.Info("Caching: DefaultItems");
             GetDefaultItems();
 
+            Logger.Info("Caching: GmSupportItems");
+            GetGmSupportItems();
+
             Logger.Info("Caching: Shop");
             GetShop();
 
@@ -94,6 +97,19 @@ namespace Netsphere.Resource
                 Logger.Debug("Caching...");
                 value = _loader.LoadDefaultItems().ToList();
                 _cache.Set(ResourceCacheType.DefaultItems, value);
+            }
+
+            return value;
+        }
+
+        public IReadOnlyList<ItemNumber> GetGmSupportItems()
+        {
+            var value = _cache.Get<IReadOnlyList<ItemNumber>>(ResourceCacheType.GmSupportItems);
+            if (value == null)
+            {
+                Logger.Debug("Caching...");
+                value = _loader.LoadGmSupportItems().ToList();
+                _cache.Set(ResourceCacheType.GmSupportItems, value);
             }
 
             return value;

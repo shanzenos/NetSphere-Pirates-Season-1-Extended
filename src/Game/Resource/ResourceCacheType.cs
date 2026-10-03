@@ -6,6 +6,7 @@ namespace Netsphere.Resource
         Effects,
         Items,
         DefaultItems,
+        GmSupportItems,
         Shop,
         Exp,
         Maps,

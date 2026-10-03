@@ -201,6 +201,26 @@ namespace Netsphere.Resource
             }
         }
 
+        #region GmSupportItems
+
+        public IEnumerable<ItemNumber> LoadGmSupportItems()
+        {
+            // Load the GM exclusive items from server & grant to GM's on login
+            var path = Path.Combine(ResourcePath, Path.Combine("xml", "gm_support_item.x7"));
+            if (!File.Exists(path))
+                yield break;
+
+            var dto = Deserialize<GmSupportItemDto>("xml/gm_support_item.x7");
+
+            if (dto.item == null)
+                yield break;
+
+            foreach (var itemDto in dto.item)
+                yield return new ItemNumber(itemDto.category, itemDto.sub_category, itemDto.number);
+        }
+
+        #endregion
+
         #region DefaultItems
 
         public IEnumerable<DefaultItem> LoadDefaultItems()
