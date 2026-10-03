@@ -6,7 +6,7 @@ This is an extended, bug fixed &amp; improved upon version of Wtfblub's Netspher
 Special thanks for VV, JuanCMC, Santana5322 & Wizzardo for helping contribute to the codebase.
 
 Here's a quick overview of what's working, for a more detailed breakdown please refer to the issues tab.
-* Deathmatch, TouchDown, BattleRoyale & Chaser game modes are all working
+* Deathmatch, TouchDown, BattleRoyale, Captain, Arcade & Chaser game modes are all working
 * General gameplay during matches working fine
 * Shop, inventory & character system
 * Room management & match settings working fine
