@@ -9,6 +9,8 @@
             // C2S
             Register<ReliablePingMessage>(ProudOpCode.ReliablePing);
             Register<P2P_NotifyDirectP2PDisconnectedMessage>(ProudOpCode.P2P_NotifyDirectP2PDisconnected);
+            Register<P2P_NotifyDirectP2PDisconnected2Message>(ProudOpCode.P2P_NotifyDirectP2PDisconnected2);
+            Register<NotifyUdpToTcpFallbackByClientMessage>(ProudOpCode.NotifyUdpToTcpFallbackByClient);
             Register<P2PGroup_MemberJoin_AckMessage>(ProudOpCode.P2PGroup_MemberJoin_Ack);
             Register<NotifyP2PHolepunchSuccessMessage>(ProudOpCode.NotifyP2PHolepunchSuccess);
             Register<ShutdownTcpMessage>(ProudOpCode.ShutdownTcp);

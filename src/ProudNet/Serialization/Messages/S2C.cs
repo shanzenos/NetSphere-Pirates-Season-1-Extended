@@ -186,6 +186,25 @@ namespace ProudNet.Serialization.Messages
     }
 
     [BlubContract]
+    internal class P2P_NotifyDirectP2PDisconnected2Message : IMessage
+    {
+        [BlubMember(0)]
+        public uint HostId { get; set; }
+
+        [BlubMember(1)]
+        public uint Reason { get; set; }
+
+        public P2P_NotifyDirectP2PDisconnected2Message()
+        { }
+
+        public P2P_NotifyDirectP2PDisconnected2Message(uint hostId, uint reason)
+        {
+            HostId = hostId;
+            Reason = reason;
+        }
+    }
+
+    [BlubContract]
     internal class NotifyDirectP2PEstablishMessage : IMessage
     {
         [BlubMember(0)]
