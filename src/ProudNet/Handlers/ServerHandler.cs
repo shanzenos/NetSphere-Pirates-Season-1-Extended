@@ -17,6 +17,32 @@ namespace ProudNet.Handlers
             return session.SendAsync(new ReliablePongMessage()); //--> sends this message, CORE gets classic tcp protocol info that client got the message and calcs ping, missing here!!
         }
 
+        [MessageHandler(typeof(P2P_NotifyDirectP2PDisconnectedMessage))]
+        public void P2P_NotifyDirectP2PDisconnected(ProudSession session, P2P_NotifyDirectP2PDisconnectedMessage message)
+        {
+            if (session.P2PGroup == null)
+                return;
+
+            var peer = session.P2PGroup.Members.GetValueOrDefault(session.HostId);
+            var stateA = peer?.ConnectionStates.GetValueOrDefault(message.RemotePeerHostId);
+            var stateB = stateA?.RemotePeer.ConnectionStates.GetValueOrDefault(session.HostId);
+
+            if (stateA != null && stateA.HolepunchSuccess)
+            {
+                stateA.HolepunchSuccess = false;
+                stateA.RemotePeer.SendAsync(new P2P_NotifyDirectP2PDisconnected2Message(session.HostId, message.Reason));
+            }
+
+            if (stateB != null && stateB.HolepunchSuccess)
+                stateB.HolepunchSuccess = false;
+        }
+
+        [MessageHandler(typeof(NotifyUdpToTcpFallbackByClientMessage))]
+        public void NotifyUdpToTcpFallbackByClient(ProudServer server, ProudSession session)
+        {
+            session.UdpEnabled = false;
+        }
+
         [MessageHandler(typeof(P2PGroup_MemberJoin_AckMessage))] //client->response->joined p2p group (unreliable, cuz only for p2p)
         public void P2PGroupMemberJoinAck(ProudSession session, P2PGroup_MemberJoin_AckMessage message)
         {
