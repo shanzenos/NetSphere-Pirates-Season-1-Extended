@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using BlubLib.DotNetty.Handlers.MessageHandling;
-using ExpressMapper.Extensions;
 using Netsphere.Game.GameRules;
 using Netsphere.Network.Data.Game;
 using Netsphere.Network.Data.GameRule;
@@ -27,29 +26,10 @@ namespace Netsphere.Network.Services
         {
             var plr = session.Player;
 
-            plr.Room.Broadcast(new SEnterPlayerAckMessage(plr.Account.Id, plr.Account.Nickname,
-                (byte)plr.RoomInfo.Team.Team, plr.RoomInfo.Mode, (int)plr.TotalExperience));
+            plr.Room.Broadcast(new SEnterPlayerAckMessage(plr.Account.Id, plr.Account.Nickname, 0, plr.RoomInfo.Mode, 0));
             session.SendAsync(new SChangeMasterAckMessage(plr.Room.Master.Account.Id));
             session.SendAsync(new SChangeRefeReeAckMessage(plr.Room.Host.Account.Id));
-            plr.Room.BroadcastBriefing(false, plr);
-
-            foreach (var other in plr.Room.Players.Values)
-            {
-                if (other == plr)
-                    continue;
-
-                plr.ChatSession?.SendAsync(
-                    new Netsphere.Network.Message.Chat.SUserDataAckMessage(
-                        other.Map<Player, Netsphere.Network.Data.Chat.UserDataDto>()));
-
-                session.SendAsync(new SAvatarChangeAckMessage(BuildAvatar(other, null), Array.Empty<ChangeAvatarUnk2Dto>()));
-
-                other.ChatSession?.SendAsync(
-                    new Netsphere.Network.Message.Chat.SUserDataAckMessage(
-                        plr.Map<Player, Netsphere.Network.Data.Chat.UserDataDto>()));
-
-                other.Session?.SendAsync(new SAvatarChangeAckMessage(BuildAvatar(plr, null), Array.Empty<ChangeAvatarUnk2Dto>()));
-            }
+            plr.Room.BroadcastBriefing();
         }
 
         [MessageHandler(typeof(CMakeRoomReqMessage))]
@@ -447,8 +427,24 @@ namespace Netsphere.Network.Services
             plr.Room.Broadcast(new SItemsChangeAckMessage(unk1, message.Unk2));
         }
 
-        private static ChangeAvatarUnk1Dto BuildAvatar(Player plr, ChangeAvatarUnk1Dto from)
+        [MessageHandler(typeof(CAvatarChangeReqMessage))]
+        public void CAvatarChangeReq(GameSession session, CAvatarChangeReqMessage message)
         {
+            var plr = session.Player;
+
+            Logger.Debug()
+                .Account(session)
+                .Message($"Avatar sync - {JsonConvert.SerializeObject(message.Unk1, Formatting.Indented)}")
+                .Write();
+
+            if (message.Unk2.Length > 0)
+            {
+                Logger.Warn()
+                    .Account(session)
+                    .Message($"Unk2: {JsonConvert.SerializeObject(message.Unk2, Formatting.Indented)}")
+                    .Write();
+            }
+
             var @char = plr.CharacterManager.CurrentCharacter;
             var unk1 = new ChangeAvatarUnk1Dto
             {
@@ -456,13 +452,13 @@ namespace Netsphere.Network.Services
                 Skills = @char.Skills.GetItems().Select(item => item?.ItemNumber ?? 0).ToArray(),
                 Weapons = @char.Weapons.GetItems().Select(item => item?.ItemNumber ?? 0).ToArray(),
                 Costumes = new ItemNumber[(int)CostumeSlot.Max],
-                Unk5 = from?.Unk5 ?? Array.Empty<int>(),
-                Unk6 = from?.Unk6 ?? Array.Empty<int>(),
-                Unk7 = from?.Unk7 ?? Array.Empty<int>(),
-                Unk8 = from?.Unk8 ?? 0,
-                Gender = @char.Gender,
+                Unk5 = message.Unk1.Unk5,
+                Unk6 = message.Unk1.Unk6,
+                Unk7 = message.Unk1.Unk7,
+                Unk8 = message.Unk1.Unk8,
+                Gender = plr.CharacterManager.CurrentCharacter.Gender,
                 HP = plr.GetMaxHP(),
-                Unk11 = from?.Unk11 ?? 0
+                Unk11 = message.Unk1.Unk11
             };
 
             // If no item equipped use the default item the character was created with
@@ -504,28 +500,6 @@ namespace Netsphere.Network.Services
                 unk1.Costumes[(int)slot] = item;
             }
 
-            return unk1;
-        }
-
-        [MessageHandler(typeof(CAvatarChangeReqMessage))]
-        public void CAvatarChangeReq(GameSession session, CAvatarChangeReqMessage message)
-        {
-            var plr = session.Player;
-
-            Logger.Debug()
-                .Account(session)
-                .Message($"Avatar sync - {JsonConvert.SerializeObject(message.Unk1, Formatting.Indented)}")
-                .Write();
-
-            if (message.Unk2.Length > 0)
-            {
-                Logger.Warn()
-                    .Account(session)
-                    .Message($"Unk2: {JsonConvert.SerializeObject(message.Unk2, Formatting.Indented)}")
-                    .Write();
-            }
-
-            var unk1 = BuildAvatar(plr, message.Unk1);
             plr.Room.Broadcast(new SAvatarChangeAckMessage(unk1, message.Unk2));
         }
 

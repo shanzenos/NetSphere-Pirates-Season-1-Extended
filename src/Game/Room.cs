@@ -202,47 +202,10 @@ namespace Netsphere
             }
 
             Broadcast(new SEnteredPlayerAckMessage(plr.Map<Player, RoomPlayerDto>()));
-
-            var gameRule = GameRuleManager.GameRule;
-            var enterInfo = new EnterRoomInfoDto
-            {
-                RoomId = Id,
-                MatchKey = Options.MatchKey,
-                State = gameRule.StateMachine.IsInState(GameRuleState.Waiting) ? GameState.Waiting
-                    : gameRule.StateMachine.IsInState(GameRuleState.Result) ? GameState.Result
-                    : GameState.Playing,
-                TimeState = gameRule.StateMachine.IsInState(GameRuleState.HalfTime) ? GameTimeState.HalfTime
-                    : gameRule.StateMachine.IsInState(GameRuleState.SecondHalf) ? GameTimeState.SecondHalf
-                    : gameRule.StateMachine.IsInState(GameRuleState.Neutral) ? GameTimeState.Neutral
-                    : GameTimeState.FirstHalf,
-                TimeLimit = (uint)Options.TimeLimit.TotalMilliseconds,
-                TimeSync = (uint)gameRule.RoundTime.TotalMilliseconds,
-                ScoreLimit = Options.ScoreLimit,
-                IsFriendly = Options.IsFriendly,
-                IsBalanced = Options.IsBalanced,
-                MinLevel = Options.MinLevel,
-                MaxLevel = Options.MaxLevel,
-                ItemLimit = Options.ItemLimit,
-                IsNoIntrusion = Options.IsNoIntrusion,
-                RelayEndPoint = Options.ServerEndPoint
-            };
-
-            plr.Session.SendAsync(new SSuccessEnterRoomAckMessage(enterInfo));
-            plr.Session.SendAsync(new SIdsInfoAckMessage(plr.CharacterManager.CurrentSlot, plr.RoomInfo.Slot));
+            plr.Session.SendAsync(new SSuccessEnterRoomAckMessage(this.Map<Room, EnterRoomInfoDto>()));
+            //plr.Session.SendAsync(new SIdsInfoAckMessage(0, plr.RoomInfo.Slot)); //edited here
+            plr.Session.SendAsync(new SIdsInfoAckMessage(1, plr.RoomInfo.Slot));
             plr.Session.SendAsync(new SEnteredPlayerListAckMessage(_players.Values.Select(p => p.Map<Player, RoomPlayerDto>()).ToArray()));
-
-            foreach (var other in _players.Values)
-            {
-                if (other == plr)
-                    continue;
-
-                other.ChatSession?.SendAsync(
-                    new Netsphere.Network.Message.Chat.SUserDataAckMessage(
-                        plr.Map<Player, Netsphere.Network.Data.Chat.UserDataDto>()));
-            }
-
-            BroadcastBriefing(false, plr);
-
             OnPlayerJoining(new RoomPlayerEventArgs(plr));
         }
 
@@ -495,15 +458,12 @@ namespace Netsphere
                 plr.Session.SendAsync(message);
         }
 
-        public void BroadcastBriefing(bool isResult = false, Player only = null)
+        public void BroadcastBriefing(bool isResult = false)
         {
             var gameRule = GameRuleManager.GameRule;
-            var message = new SBriefingAckMessage(isResult, false, gameRule.Briefing.ToArray(isResult));
+            //var isResult = gameRule.StateMachine.IsInState(GameRuleState.Result);
+            Broadcast(new SBriefingAckMessage(isResult, false, gameRule.Briefing.ToArray(isResult)));
 
-            if (only != null && gameRule.StateMachine.IsInState(GameRuleState.Playing))
-                only.Session.SendAsync(message);
-            else
-                Broadcast(message);
         }
         public void BroadcastBriefing(Player plr)
         {
