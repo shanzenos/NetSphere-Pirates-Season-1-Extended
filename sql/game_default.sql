@@ -1,2788 +1,2520 @@
--- Valentina Studio --
--- MySQL dump --
--- ---------------------------------------------------------
-
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Server version:               5.5.23 - MySQL Community Server (GPL)
+-- Server OS:                    Win32
+-- HeidiSQL Version:             12.21.0.7344
+-- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "license_rewards" --------------------------
-CREATE TABLE `license_rewards` ( 
-	`Id` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`ShopItemInfoId` Int( 11 ) NOT NULL,
-	`ShopPriceId` Int( 11 ) NOT NULL,
-	`Color` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "player_characters" ------------------------
-CREATE TABLE `player_characters` ( 
-	`Id` Int( 11 ) NOT NULL,
-	`PlayerId` Int( 11 ) NOT NULL,
-	`Slot` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`Gender` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`BasicHair` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`BasicFace` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`BasicShirt` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`BasicPants` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`Weapon1Id` Int( 11 ) NULL,
-	`Weapon2Id` Int( 11 ) NULL,
-	`Weapon3Id` Int( 11 ) NULL,
-	`SkillId` Int( 11 ) NULL,
-	`HairId` Int( 11 ) NULL,
-	`FaceId` Int( 11 ) NULL,
-	`ShirtId` Int( 11 ) NULL,
-	`PantsId` Int( 11 ) NULL,
-	`GlovesId` Int( 11 ) NULL,
-	`ShoesId` Int( 11 ) NULL,
-	`AccessoryId` Int( 11 ) NULL,
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "player_deny" ------------------------------
-CREATE TABLE `player_deny` ( 
-	`Id` Int( 11 ) NOT NULL,
-	`PlayerId` Int( 11 ) NOT NULL,
-	`DenyPlayerId` Int( 11 ) NOT NULL,
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "player_items" -----------------------------
-CREATE TABLE `player_items` ( 
-	`Id` Int( 11 ) NOT NULL,
-	`PlayerId` Int( 11 ) NOT NULL,
-	`ShopItemInfoId` Int( 11 ) NOT NULL,
-	`ShopPriceId` Int( 11 ) NOT NULL,
-	`Effect` Int( 11 ) NOT NULL DEFAULT '0',
-	`Color` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`PurchaseDate` BigInt( 20 ) NOT NULL DEFAULT '0',
-	`Durability` Int( 11 ) NOT NULL DEFAULT '0',
-	`Count` Int( 11 ) NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "player_licenses" --------------------------
-CREATE TABLE `player_licenses` ( 
-	`Id` Int( 11 ) NOT NULL,
-	`PlayerId` Int( 11 ) NOT NULL,
-	`License` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`FirstCompletedDate` BigInt( 20 ) NOT NULL DEFAULT '0',
-	`CompletedCount` Int( 11 ) NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "player_mails" -----------------------------
-CREATE TABLE `player_mails` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`PlayerId` Int( 11 ) NOT NULL,
-	`SenderPlayerId` Int( 11 ) NOT NULL,
-	`SentDate` BigInt( 20 ) NOT NULL DEFAULT '0',
-	`Title` VarChar( 100 ) NOT NULL,
-	`Message` VarChar( 500 ) NOT NULL,
-	`IsMailNew` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`IsMailDeleted` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 10;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "player_settings" --------------------------
-CREATE TABLE `player_settings` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`PlayerId` Int( 11 ) NOT NULL,
-	`Setting` VarChar( 512 ) NOT NULL,
-	`Value` VarChar( 512 ) NOT NULL,
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 18049;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "players" ----------------------------------
-CREATE TABLE `players` ( 
-	`Id` Int( 11 ) NOT NULL,
-	`TutorialState` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`Level` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`TotalExperience` Int( 11 ) NOT NULL DEFAULT '63703100',
-	`PEN` Int( 11 ) NOT NULL DEFAULT '0',
-	`AP` Int( 11 ) NOT NULL DEFAULT '0',
-	`Coins1` Int( 11 ) NOT NULL DEFAULT '0',
-	`Coins2` Int( 11 ) NOT NULL DEFAULT '0',
-	`CurrentCharacterSlot` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-COLLATE = utf8_bin
-ENGINE = InnoDB;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "shop_effect_groups" -----------------------
-CREATE TABLE `shop_effect_groups` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`Name` VarChar( 20 ) NOT NULL,
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 27;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "shop_effects" -----------------------------
-CREATE TABLE `shop_effects` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`EffectGroupId` Int( 11 ) NOT NULL,
-	`Effect` BigInt( 20 ) NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 26;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "shop_iteminfos" ---------------------------
-CREATE TABLE `shop_iteminfos` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`ShopItemId` Int( 11 ) UNSIGNED NOT NULL,
-	`PriceGroupId` Int( 11 ) NOT NULL,
-	`EffectGroupId` Int( 11 ) NOT NULL,
-	`DiscountPercentage` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`IsEnabled` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 1042;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "shop_items" -------------------------------
-CREATE TABLE `shop_items` ( 
-	`Id` Int( 10 ) UNSIGNED NOT NULL,
-	`RequiredGender` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`RequiredLicense` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`Colors` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`UniqueColors` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`RequiredLevel` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`LevelLimit` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`RequiredMasterLevel` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`IsOneTimeUse` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`IsDestroyable` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "shop_price_groups" ------------------------
-CREATE TABLE `shop_price_groups` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`Name` VarChar( 20 ) NULL,
-	`PriceType` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 3;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "shop_prices" ------------------------------
-CREATE TABLE `shop_prices` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`PriceGroupId` Int( 11 ) NOT NULL,
-	`PeriodType` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`Period` Int( 11 ) NOT NULL DEFAULT '0',
-	`Price` Int( 11 ) NOT NULL DEFAULT '0',
-	`IsRefundable` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`Durability` Int( 11 ) NOT NULL DEFAULT '0',
-	`IsEnabled` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 3;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "shop_version" -----------------------------
-CREATE TABLE `shop_version` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`Version` VarChar( 40 ) NOT NULL,
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 2;
--- ---------------------------------------------------------
-
-
--- CREATE TABLE "start_items" ------------------------------
-CREATE TABLE `start_items` ( 
-	`Id` Int( 11 ) AUTO_INCREMENT NOT NULL,
-	`ShopItemInfoId` Int( 11 ) NOT NULL,
-	`ShopPriceId` Int( 11 ) NOT NULL,
-	`ShopEffectId` Int( 11 ) NOT NULL,
-	`Color` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	`Count` Int( 11 ) NOT NULL DEFAULT '0',
-	`RequiredSecurityLevel` TinyInt( 3 ) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY ( `Id` ) )
-ENGINE = InnoDB
-AUTO_INCREMENT = 1;
--- ---------------------------------------------------------
-
-
--- Dump data of "license_rewards" --------------------------
--- ---------------------------------------------------------
-
-
--- Dump data of "player_characters" ------------------------
--- ---------------------------------------------------------
-
-
--- Dump data of "player_deny" ------------------------------
--- ---------------------------------------------------------
-
-
--- Dump data of "player_items" -----------------------------
--- ---------------------------------------------------------
-
-
--- Dump data of "player_licenses" --------------------------
--- ---------------------------------------------------------
-
-
--- Dump data of "player_mails" -----------------------------
--- ---------------------------------------------------------
-
-
--- Dump data of "player_settings" --------------------------
--- ---------------------------------------------------------
-
-
--- Dump data of "players" ----------------------------------
--- ---------------------------------------------------------
-
-
--- Dump data of "shop_effect_groups" -----------------------
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '1', 'None' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '2', 'HP+30' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '3', 'HP+15' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '4', 'SP+40' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '5', 'HP+20 & SP+20' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '6', 'SP+3' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '7', 'Defense+7' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '8', 'hp+3' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '9', 'Attack+7' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '10', 'Head Defense+7' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '11', 'Head Defense+3' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '12', 'Defense+4' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '13', 'Attack+3' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '14', 'Attack+6' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '15', 'Melee Defense+2' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '16', 'Melee Defense+4' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '17', 'Melee Defense+5' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '18', 'Melee Defense+6' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '19', 'Melee Defense+7' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '20', 'Shooting Defense+2' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '21', 'Shooting Defense+4' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '22', 'Shooting Defense+5' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '23', 'Shooting Defense+6' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '24', 'Shooting Defense+7' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '25', 'Defense+8' );
-INSERT INTO `shop_effect_groups`(`Id`,`Name`) VALUES ( '26', 'Defense+9' );
--- ---------------------------------------------------------
-
-
--- Dump data of "shop_effects" -----------------------------
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '1', '2', '1030' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '2', '3', '1015' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '3', '4', '2040' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '4', '5', '4001' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '5', '6', '2003' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '6', '7', '19907' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '7', '8', '1003' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '8', '9', '29907' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '9', '10', '19807' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '10', '11', '19803' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '11', '12', '19904' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '12', '13', '29903' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '13', '14', '29906' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '14', '15', '10002' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '15', '16', '10004' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '16', '17', '10005' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '17', '18', '10006' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '18', '19', '10007' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '19', '20', '11002' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '20', '21', '11004' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '21', '22', '11005' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '22', '23', '11006' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '23', '24', '11007' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '24', '25', '19908' );
-INSERT INTO `shop_effects`(`Id`,`EffectGroupId`,`Effect`) VALUES ( '25', '26', '19909' );
--- ---------------------------------------------------------
-
-
--- Dump data of "shop_iteminfos" ---------------------------
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1', '1001002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '2', '1001001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '3', '1000035', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '4', '1000034', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '5', '1000033', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '6', '1000032', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '7', '1000031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '8', '1000030', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '9', '1000028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '10', '1000027', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '11', '1000026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '12', '1000025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '13', '1000024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '14', '1000023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '15', '1000022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '16', '1000021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '17', '1000020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '18', '1000019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '19', '1000018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '20', '1000017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '21', '1000016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '22', '1000015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '23', '1000014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '24', '1000013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '25', '1000012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '26', '1000011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '27', '1000010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '28', '1000009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '29', '1000008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '30', '1000007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '31', '1000006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '32', '1000005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '33', '1000004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '34', '1000003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '35', '1000002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '36', '1000001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '37', '1000000', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '38', '1011002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '39', '1011001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '40', '1010035', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '41', '1010034', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '42', '1010033', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '43', '1010032', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '44', '1010031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '45', '1010028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '46', '1010026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '47', '1010025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '48', '1010024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '49', '1010023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '50', '1010022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '51', '1010020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '52', '1010019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '53', '1010018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '54', '1010017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '55', '1010016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '56', '1010015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '57', '1010014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '58', '1010013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '59', '1010012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '60', '1010011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '61', '1010010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '62', '1010009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '63', '1010008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '64', '1010007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '65', '1010006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '66', '1010005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '67', '1010004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '68', '1010003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '69', '1010002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '70', '1010001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '71', '1021018', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '72', '1021017', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '73', '1021016', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '74', '1021015', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '75', '1021011', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '76', '1021010', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '77', '1021009', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '78', '1021008', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '79', '1021007', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '80', '1021006', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '81', '1021005', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '82', '1021004', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '83', '1021003', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '84', '1021002', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '85', '1021001', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '86', '1020077', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '87', '1020076', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '88', '1020075', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '89', '1020074', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '90', '1020073', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '91', '1020072', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '92', '1020071', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '93', '1020070', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '94', '1020069', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '95', '1020068', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '96', '1020067', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '97', '1020066', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '98', '1020065', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '99', '1020064', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '100', '1020063', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '101', '1020062', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '102', '1020061', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '103', '1020059', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '104', '1020058', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '105', '1020056', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '106', '1020055', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '107', '1020054', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '108', '1020053', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '109', '1020052', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '110', '1020051', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '111', '1020050', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '112', '1020049', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '113', '1020048', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '114', '1020047', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '115', '1020046', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '116', '1020045', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '117', '1020044', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '118', '1020043', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '119', '1020042', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '120', '1020041', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '121', '1020040', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '122', '1020039', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '123', '1020038', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '124', '1020037', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '125', '1020036', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '126', '1020035', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '127', '1020034', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '128', '1020033', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '129', '1020032', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '130', '1020031', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '131', '1020030', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '132', '1020029', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '133', '1020028', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '134', '1020027', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '135', '1020026', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '136', '1020025', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '137', '1020024', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '138', '1020022', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '139', '1020021', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '140', '1020020', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '141', '1020019', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '142', '1020018', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '143', '1020017', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '144', '1020016', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '145', '1020015', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '146', '1020014', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '147', '1020013', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '148', '1020012', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '149', '1020011', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '150', '1020010', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '151', '1020009', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '152', '1020008', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '153', '1020007', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '154', '1020006', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '155', '1020005', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '156', '1020004', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '157', '1020003', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '158', '1020002', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '159', '1020001', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '160', '1020000', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '161', '1031018', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '162', '1031017', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '163', '1031016', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '164', '1031015', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '165', '1031011', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '166', '1031010', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '167', '1031009', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '168', '1031008', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '169', '1031007', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '170', '1031006', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '171', '1031005', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '172', '1031004', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '173', '1031003', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '174', '1031002', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '175', '1031001', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '176', '1030074', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '177', '1030073', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '178', '1030072', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '179', '1030071', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '180', '1030070', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '181', '1030069', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '182', '1030068', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '183', '1030067', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '184', '1030066', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '185', '1030065', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '186', '1030064', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '187', '1030063', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '188', '1030062', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '189', '1030061', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '190', '1030060', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '191', '1030059', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '192', '1030057', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '193', '1030056', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '194', '1030054', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '195', '1030053', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '196', '1030052', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '197', '1030051', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '198', '1030050', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '199', '1030049', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '200', '1030048', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '201', '1030047', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '202', '1030046', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '203', '1030045', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '204', '1030044', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '205', '1030043', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '206', '1030042', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '207', '1030041', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '208', '1030040', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '209', '1030039', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '210', '1030038', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '211', '1030037', '2', '7', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '212', '1030036', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '213', '1030035', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '214', '1030034', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '215', '1030033', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '216', '1030032', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '217', '1030031', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '218', '1030030', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '219', '1030029', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '220', '1030028', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '221', '1030027', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '222', '1030026', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '223', '1030025', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '224', '1030024', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '225', '1030023', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '226', '1030022', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '227', '1030021', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '228', '1030020', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '229', '1030019', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '230', '1030018', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '231', '1030017', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '232', '1030016', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '233', '1030015', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '234', '1030014', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '235', '1030013', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '236', '1030012', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '237', '1030011', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '238', '1030010', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '239', '1030009', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '240', '1030008', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '241', '1030007', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '242', '1030006', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '243', '1030005', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '244', '1030004', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '245', '1030003', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '246', '1030002', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '247', '1030001', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '248', '1030000', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '249', '1041018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '250', '1041017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '251', '1041016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '252', '1041015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '253', '1041011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '254', '1041010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '255', '1041009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '256', '1041008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '257', '1041007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '258', '1041006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '259', '1041003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '260', '1041002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '261', '1041001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '262', '1040066', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '263', '1040065', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '264', '1040064', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '265', '1040063', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '266', '1040062', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '267', '1040061', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '268', '1040060', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '269', '1040059', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '270', '1040058', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '271', '1040057', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '272', '1040056', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '273', '1040055', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '274', '1040053', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '275', '1040052', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '276', '1040050', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '277', '1040049', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '278', '1040048', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '279', '1040047', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '280', '1040046', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '281', '1040045', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '282', '1040044', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '283', '1040043', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '284', '1040042', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '285', '1040041', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '286', '1040040', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '287', '1040039', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '288', '1040038', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '289', '1040037', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '290', '1040036', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '291', '1040035', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '292', '1040034', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '293', '1040033', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '294', '1040032', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '295', '1040031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '296', '1040030', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '297', '1040029', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '298', '1040028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '299', '1040027', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '300', '1040026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '301', '1040025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '302', '1040024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '303', '1040023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '304', '1040022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '305', '1040021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '306', '1040020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '307', '1040019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '308', '1040018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '309', '1040017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '310', '1040016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '311', '1040015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '312', '1040014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '313', '1040013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '314', '1040012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '315', '1040011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '316', '1040010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '317', '1040009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '318', '1040008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '319', '1040007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '320', '1040006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '321', '1040005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '322', '1040004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '323', '1040003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '324', '1040002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '325', '1040001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '326', '1051018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '327', '1051017', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '328', '1051016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '329', '1051015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '330', '1051011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '331', '1051010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '332', '1051009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '333', '1051008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '334', '1051007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '335', '1051006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '336', '1051003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '337', '1051002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '338', '1051001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '339', '1050067', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '340', '1050066', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '341', '1050065', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '342', '1050064', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '343', '1050063', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '344', '1050062', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '345', '1050061', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '346', '1050060', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '347', '1050059', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '348', '1050058', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '349', '1050057', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '350', '1050056', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '351', '1050055', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '352', '1050054', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '353', '1050052', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '354', '1050051', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '355', '1050049', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '356', '1050048', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '357', '1050047', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '358', '1050046', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '359', '1050045', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '360', '1050044', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '361', '1050043', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '362', '1050042', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '363', '1050041', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '364', '1050040', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '365', '1050039', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '366', '1050038', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '367', '1050037', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '368', '1050036', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '369', '1050035', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '370', '1050034', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '371', '1050033', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '372', '1050032', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '373', '1050031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '374', '1050030', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '375', '1050029', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '376', '1050028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '377', '1050027', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '378', '1050026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '379', '1050025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '380', '1050024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '381', '1050023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '382', '1050022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '383', '1050021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '384', '1050020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '385', '1050019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '386', '1050018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '387', '1050017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '388', '1050016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '389', '1050015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '390', '1050014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '391', '1050013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '392', '1050012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '393', '1050011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '394', '1050010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '395', '1050009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '396', '1050008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '397', '1050007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '398', '1050006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '399', '1050005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '400', '1050004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '401', '1050003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '402', '1050001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '403', '1050002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '404', '1060088', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '405', '1060087', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '406', '1060086', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '407', '1061017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '408', '1061016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '409', '1061015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '410', '1060085', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '411', '1060084', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '412', '1061014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '413', '1061013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '414', '1061012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '415', '1061011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '416', '1061010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '417', '1061009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '418', '1060083', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '419', '1060082', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '420', '1061008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '421', '1061005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '422', '1061004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '423', '1060081', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '424', '1060080', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '425', '1060079', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '426', '1060078', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '427', '1060077', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '428', '1061003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '431', '1060072', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '432', '1060071', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '433', '1060070', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '434', '1060069', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '435', '1060068', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '436', '1060067', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '439', '1060064', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '444', '1060059', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '445', '1060058', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '450', '1060053', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '452', '1060051', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '453', '1060050', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '454', '1060049', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '455', '1060048', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '456', '1060047', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '457', '1060046', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '462', '1060041', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '464', '1060039', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '465', '1060032', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '466', '1060031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '467', '1060030', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '468', '1060029', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '469', '1060028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '470', '1060027', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '471', '1060026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '472', '1060025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '473', '1060024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '474', '1060023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '475', '1060022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '476', '1060021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '477', '1060020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '478', '1060019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '479', '1060018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '480', '1060017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '481', '1060016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '482', '1060015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '483', '1060014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '484', '1060013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '485', '1060012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '486', '1060011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '488', '1060009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '494', '1060003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '497', '1060000', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '498', '1060038', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '499', '1060037', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '500', '1060036', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '501', '1060035', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '502', '1060034', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '503', '1060033', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '505', '2000001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '506', '2000002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '507', '2000003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '508', '2000004', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '509', '2000005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '510', '2000007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '511', '2000008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '512', '2000009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '514', '2010001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '515', '2010002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '516', '2010004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '517', '2010006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '518', '2010007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '519', '2010008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '522', '2010011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '524', '2010013', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '526', '2010016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '527', '2010017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '529', '2010019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '530', '2010020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '531', '2020001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '532', '2020002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '533', '2020003', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '534', '2020004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '535', '2030001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '536', '2030002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '538', '2030004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '539', '2030005', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '540', '2030006', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '541', '2040001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '542', '2040002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '543', '2040003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '546', '2050001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '549', '2060001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '550', '2060002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '551', '2060003', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '553', '3000000', '1', '3', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '554', '3000001', '1', '2', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '555', '3000002', '1', '4', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '557', '3010001', '1', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '558', '3020001', '1', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '559', '3030001', '1', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '560', '3040001', '1', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '561', '3050001', '1', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '562', '3060001', '1', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '563', '3070001', '1', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '564', '3080001', '1', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '565', '2000012', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '566', '2000500', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '567', '2000501', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '568', '2000502', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '569', '2000010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '570', '1022000', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '571', '1031020', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '572', '1031021', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '573', '1060090', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '574', '1060091', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '575', '1041020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '576', '1051020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '577', '1001003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '578', '1060092', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '579', '1011007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '580', '1011006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '582', '1011004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '583', '1011003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '584', '1022001', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '585', '1022002', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '586', '1022003', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '587', '1022004', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '588', '1022005', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '589', '1022006', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '590', '1022007', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '591', '1022008', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '592', '1022009', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '593', '1022010', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '594', '1031022', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '595', '1031023', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '596', '1031024', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '597', '1031025', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '598', '1031026', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '599', '1031027', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '600', '1031028', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '601', '1031029', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '602', '1031030', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '603', '1031031', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '604', '1041021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '605', '1041022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '606', '1041023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '607', '1041024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '608', '1041025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '609', '1041026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '610', '1041027', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '611', '1041028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '612', '1041029', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '613', '1041030', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '615', '1001005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '616', '1001006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '617', '1001007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '618', '1051021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '619', '1051022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '620', '1051023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '621', '1051024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '622', '1051025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '623', '1051026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '624', '1051027', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '625', '1051028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '626', '1051029', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '627', '1051030', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '628', '2000503', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '629', '2000504', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '630', '1022011', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '631', '1022012', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '632', '1051031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '633', '1051032', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '635', '1001009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '636', '1041031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '637', '1041032', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '638', '1031032', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '639', '1031033', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '640', '2000505', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '641', '2010601', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '642', '2010602', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '643', '2010603', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '644', '2020605', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '645', '2010606', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '646', '1001010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '647', '1001011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '648', '1001012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '649', '1001013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '650', '1001014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '651', '1001015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '652', '1060093', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '653', '1001016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '654', '1011008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '655', '1022013', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '656', '1031034', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '657', '1051033', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '658', '1041033', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '659', '1060094', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '660', '1001017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '661', '1011009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '662', '1022014', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '663', '1031035', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '664', '1051034', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '665', '1041034', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '666', '1022016', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '667', '1031037', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '668', '1051036', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '669', '1041036', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '670', '1022015', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '671', '1031036', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '672', '1051035', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '673', '1041035', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '674', '1022017', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '675', '1031038', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '676', '1051037', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '677', '1041037', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '678', '1022018', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '679', '1031039', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '680', '1051038', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '681', '1041038', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '682', '1060095', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '683', '2000506', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '684', '2000507', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '685', '1060002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '686', '1060001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '687', '2000508', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '688', '1060096', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '689', '1031041', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '690', '1022019', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '691', '1031040', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '692', '1041039', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '693', '1051039', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '695', '1001018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '696', '1001019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '697', '1001020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '698', '1060098', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '699', '1060099', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '700', '1060100', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '701', '1022020', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '702', '1022021', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '704', '1031042', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '705', '1031043', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '706', '1051040', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '707', '1051041', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '708', '1041040', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '709', '1041041', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '710', '2000511', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '711', '2000510', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '712', '2010607', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '713', '2000608', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '714', '2000609', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '715', '2000512', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '716', '2000513', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '717', '2000610', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '718', '2000611', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '719', '2010015', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '720', '2010018', '2', '1', '0', '0' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '721', '2000612', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '722', '1041042', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '723', '1001021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '724', '1001022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '725', '1031044', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '726', '1022022', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '727', '1022023', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '728', '1022024', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '729', '1051042', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '730', '1051043', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '731', '1051044', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '732', '1031045', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '733', '1041043', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '734', '1041044', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '735', '1022025', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '736', '1031046', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '737', '1022026', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '738', '1031047', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '739', '1022027', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '740', '1041045', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '741', '1051045', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '742', '1051046', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '743', '1041046', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '744', '1022028', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '745', '1031048', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '746', '1031049', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '747', '1041047', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '748', '1031050', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '749', '1041048', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '750', '1041049', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '751', '1041050', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '752', '1041051', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '753', '1060101', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '754', '1001023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '757', '1022029', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '758', '1051047', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '759', '1022030', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '760', '1022031', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '761', '1022032', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '762', '1031052', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '763', '1051048', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '764', '1051049', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '765', '1022033', '2', '7', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '766', '1001025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '767', '2000613', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '768', '2010614', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '769', '2000614', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '770', '1060075', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '771', '1060074', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '772', '1060066', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '773', '1060065', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '774', '1060063', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '775', '1060062', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '776', '1060061', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '777', '1060060', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '778', '1060057', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '779', '1060056', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '780', '1060055', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '781', '1060054', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '782', '1060052', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '783', '1060045', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '784', '1060044', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '785', '1060043', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '786', '1060042', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '787', '1060040', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '788', '1060010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '789', '1060008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '790', '1060007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '791', '1060006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '792', '1060005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '793', '1060004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '794', '2000000', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '795', '2000006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '796', '2000011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '797', '2010000', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '798', '2010009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '799', '2010010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '800', '2010012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '801', '2010014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '802', '2030003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '803', '2040005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '804', '2050002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '805', '2050003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '806', '2060004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '807', '3000003', '1', '5', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '808', '4000001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '809', '4000002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '810', '4000003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '811', '4000004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '812', '4000005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '813', '4010001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '814', '4020001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '815', '4020002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '816', '4020003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '817', '4020004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '818', '4020005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '819', '4020006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '820', '4030003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '821', '4030004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '822', '4030005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '823', '4030006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '824', '4030007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '825', '4030008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '826', '4030009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '827', '4030010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '828', '4030011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '829', '4030012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '830', '4030013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '831', '4030014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '832', '4030015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '833', '4030016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '834', '4030017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '835', '4030018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '836', '4030019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '837', '4030020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '838', '4030021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '839', '4030022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '840', '4030023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '841', '4030024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '842', '4030025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '843', '4030026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '844', '4030027', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '845', '4030028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '846', '4030029', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '847', '4030030', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '848', '4030031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '849', '4030032', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '850', '4030033', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '851', '4030034', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '852', '4030035', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '853', '4030036', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '854', '4030037', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '855', '4030038', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '856', '4030039', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '857', '4030040', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '858', '4030041', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '859', '4030042', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '860', '4030043', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '861', '4030044', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '862', '4030045', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '863', '4030046', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '864', '4030047', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '865', '4030048', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '866', '4030049', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '867', '4030050', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '868', '4030051', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '869', '4030052', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '870', '4030053', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '871', '4030054', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '872', '4030055', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '873', '4030056', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '874', '4030057', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '875', '4030058', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '876', '4030059', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '877', '4030060', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '878', '4060001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '879', '4060002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '880', '4060003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '881', '4060004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '882', '4060005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '883', '4060006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '884', '4060007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '885', '4060008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '886', '4060009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '887', '4060010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '888', '4060011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '889', '4060012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '890', '4060013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '891', '4060014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '892', '4040001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '893', '4040002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '894', '4050001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '895', '4050002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '896', '4050003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '897', '4050004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '898', '4050005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '899', '4050006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '900', '4050007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '901', '4050008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '902', '4050009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '903', '4050010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '904', '4050011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '905', '4050012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '906', '4050013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '907', '4050014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '908', '4050015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '909', '4050016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '910', '4050017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '911', '4050018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '912', '4050019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '913', '4050020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '914', '4050021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '915', '4050022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '916', '4050023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '917', '4050024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '918', '4050025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '919', '4050026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '920', '4050027', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '921', '4050028', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '922', '4050029', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '923', '4050030', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '924', '4050031', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '925', '4050032', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '926', '4050033', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '927', '4050034', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '928', '4050035', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '929', '4050036', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '930', '4050037', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '931', '4050038', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '932', '4050039', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '933', '4050040', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '934', '4050041', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '935', '4050042', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '936', '4050043', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '937', '4050044', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '938', '4050045', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '939', '4050046', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '940', '4050047', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '941', '4050048', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '942', '4050049', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '943', '4050050', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '944', '4050051', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '945', '4050052', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '946', '4050053', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '947', '4050054', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '948', '4050055', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '949', '4050056', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '950', '4050057', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '951', '4050058', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '952', '4050059', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '953', '4050060', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '954', '4050061', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '955', '4050062', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '956', '4050063', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '957', '4050064', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '958', '4050065', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '959', '4050066', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '960', '4050067', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '961', '4050068', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '962', '4050069', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '963', '4050070', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '964', '4050071', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '965', '4050072', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '966', '4050073', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '967', '4050074', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '968', '4050075', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '969', '4050076', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '970', '4050077', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '971', '4050078', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '972', '4050079', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '973', '4050080', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '974', '4050081', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '975', '4050082', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '976', '4050083', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '977', '4050084', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '978', '4050085', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '979', '4050086', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '980', '4050087', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '981', '4050088', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '982', '4050089', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '983', '4050090', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '984', '4050091', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '985', '4050092', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '986', '4050093', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '987', '4050094', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '988', '4050095', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '989', '4050096', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '990', '4050097', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '991', '4050098', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '992', '4050099', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '993', '4050100', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '994', '5000001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '995', '5000002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '996', '5020001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '997', '6000001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '998', '6000002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '999', '6000003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1000', '6000004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1001', '6000005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1002', '6000006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1003', '6000007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1004', '6000008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1005', '6000009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1006', '6000010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1007', '6000011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1008', '6000012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1009', '6000013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1010', '6000014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1011', '6000015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1012', '6000016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1013', '6000017', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1014', '6000018', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1015', '6000019', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1016', '6000020', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1017', '6000021', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1018', '6000022', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1019', '6000023', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1020', '6000024', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1021', '6000025', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1022', '6000026', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1023', '7000001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1024', '7000002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1025', '7000003', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1026', '7000004', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1027', '7000005', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1028', '7000006', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1029', '7000007', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1030', '7000008', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1031', '7000009', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1032', '7000010', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1033', '7000011', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1034', '7000012', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1035', '7000013', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1036', '7000014', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1037', '7000015', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1038', '7000016', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1039', '7010001', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1040', '7010002', '2', '1', '0', '1' );
-INSERT INTO `shop_iteminfos`(`Id`,`ShopItemId`,`PriceGroupId`,`EffectGroupId`,`DiscountPercentage`,`IsEnabled`) VALUES ( '1041', '7010003', '2', '1', '0', '1' );
--- ---------------------------------------------------------
-
-
--- Dump data of "shop_items" -------------------------------
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000000', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000001', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000002', '2', '0', '7', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000003', '2', '0', '7', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000004', '2', '0', '7', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000005', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000006', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000007', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000008', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000009', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000010', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000011', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000012', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000013', '1', '0', '8', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000014', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000015', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000016', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000017', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000018', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000019', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000020', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000021', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000022', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000023', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000024', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000025', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000026', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000027', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000028', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000030', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000031', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000032', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000033', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000034', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1000035', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001001', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001002', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001003', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001005', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001006', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001007', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001009', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001010', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001011', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001012', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001013', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001014', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001015', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001016', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001017', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001018', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001019', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001020', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001021', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001022', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001023', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1001025', '1', '0', '7', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010001', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010002', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010003', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010004', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010005', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010006', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010007', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010008', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010009', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010010', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010011', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010012', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010013', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010014', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010015', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010016', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010017', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010018', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010019', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010020', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010022', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010023', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010024', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010025', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010026', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010028', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010031', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010032', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010033', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010034', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1010035', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1011001', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1011002', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1011003', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1011004', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1011006', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1011007', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1011008', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1011009', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020000', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020001', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020002', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020003', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020004', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020005', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020006', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020007', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020008', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020009', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020010', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020011', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020012', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020013', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020014', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020015', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020016', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020017', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020018', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020019', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020020', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020021', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020022', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020024', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020025', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020026', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020027', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020028', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020029', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020030', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020031', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020032', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020033', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020034', '1', '0', '7', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020035', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020036', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020037', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020038', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020039', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020040', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020041', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020042', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020043', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020044', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020045', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020046', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020047', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020048', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020049', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020050', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020051', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020052', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020053', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020054', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020055', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020056', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020058', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020059', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020061', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020062', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020063', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020064', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020065', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020066', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020067', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020068', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020069', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020070', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020071', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020072', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020073', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020074', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020075', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020076', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1020077', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021001', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021002', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021003', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021004', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021005', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021006', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021007', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021008', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021009', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021010', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021011', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021015', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021016', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021017', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1021018', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022000', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022001', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022002', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022003', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022004', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022005', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022006', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022007', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022008', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022009', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022010', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022011', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022012', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022013', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022014', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022015', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022016', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022017', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022018', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022019', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022020', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022021', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022022', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022023', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022024', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022025', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022026', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022027', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022028', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022029', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022030', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022031', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022032', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1022033', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030000', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030001', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030002', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030003', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030004', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030005', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030006', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030007', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030008', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030009', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030010', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030011', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030012', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030013', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030014', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030015', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030016', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030017', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030018', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030019', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030020', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030021', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030022', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030023', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030024', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030025', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030026', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030027', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030028', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030029', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030030', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030031', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030032', '1', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030033', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030034', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030035', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030036', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030037', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030038', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030039', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030040', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030041', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030042', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030043', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030044', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030045', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030046', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030047', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030048', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030049', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030050', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030051', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030052', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030053', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030054', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030056', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030057', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030059', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030060', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030061', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030062', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030063', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030064', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030065', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030066', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030067', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030068', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030069', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030070', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030071', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030072', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030073', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1030074', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031001', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031002', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031003', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031004', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031005', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031006', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031007', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031008', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031009', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031010', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031011', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031015', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031016', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031017', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031018', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031020', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031021', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031022', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031023', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031024', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031025', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031026', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031027', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031028', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031029', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031030', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031031', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031032', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031033', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031034', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031035', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031036', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031037', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031038', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031039', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031040', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031041', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031042', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031043', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031044', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031045', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031046', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031047', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031048', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031049', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031050', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1031052', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040001', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040002', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040003', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040004', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040005', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040006', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040007', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040008', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040009', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040010', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040011', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040012', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040013', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040014', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040015', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040016', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040017', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040018', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040019', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040020', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040021', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040022', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040023', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040024', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040025', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040026', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040027', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040028', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040029', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040030', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040031', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040032', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040033', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040034', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040035', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040036', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040037', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040038', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040039', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040040', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040041', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040042', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040043', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040044', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040045', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040046', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040047', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040048', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040049', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040050', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040052', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040053', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040055', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040056', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040057', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040058', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040059', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040060', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040061', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040062', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040063', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040064', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040065', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1040066', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041001', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041002', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041003', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041006', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041007', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041008', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041009', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041010', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041011', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041015', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041016', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041017', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041018', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041020', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041021', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041022', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041023', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041024', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041025', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041026', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041027', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041028', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041029', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041030', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041031', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041032', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041033', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041034', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041035', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041036', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041037', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041038', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041039', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041040', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041041', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041042', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041043', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041044', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041045', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041046', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041047', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041048', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041049', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041050', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1041051', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050001', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050002', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050003', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050004', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050005', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050006', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050007', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050008', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050009', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050010', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050011', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050012', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050013', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050014', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050015', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050016', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050017', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050018', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050019', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050020', '2', '0', '6', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050021', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050022', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050023', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050024', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050025', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050026', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050027', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050028', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050029', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050030', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050031', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050032', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050033', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050034', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050035', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050036', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050037', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050038', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050039', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050040', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050041', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050042', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050043', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050044', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050045', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050046', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050047', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050048', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050049', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050051', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050052', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050054', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050055', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050056', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050057', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050058', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050059', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050060', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050061', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050062', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050063', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050064', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050065', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050066', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1050067', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051001', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051002', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051003', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051006', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051007', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051008', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051009', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051010', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051011', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051015', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051016', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051017', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051018', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051020', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051021', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051022', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051023', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051024', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051025', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051026', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051027', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051028', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051029', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051030', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051031', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051032', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051033', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051034', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051035', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051036', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051037', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051038', '1', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051039', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051040', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051041', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051042', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051043', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051044', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051045', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051046', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051047', '2', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051048', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1051049', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060000', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060001', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060002', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060003', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060006', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060007', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060008', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060009', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060010', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060011', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060012', '0', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060013', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060014', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060015', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060016', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060017', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060018', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060019', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060020', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060021', '2', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060022', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060023', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060024', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060025', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060026', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060027', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060028', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060029', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060030', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060031', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060032', '1', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060033', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060034', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060035', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060036', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060037', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060038', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060039', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060040', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060041', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060042', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060043', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060044', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060045', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060046', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060047', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060048', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060049', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060050', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060051', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060052', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060053', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060054', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060055', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060056', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060057', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060058', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060059', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060060', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060061', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060062', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060063', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060064', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060065', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060066', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060067', '1', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060068', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060069', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060070', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060071', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060072', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060074', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060075', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060077', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060078', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060079', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060080', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060081', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060082', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060083', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060084', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060085', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060086', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060087', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060088', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060090', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060091', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060092', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060093', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060094', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060095', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060096', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060098', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060099', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060100', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1060101', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061003', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061004', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061005', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061008', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061009', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061010', '2', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061011', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061012', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061013', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061014', '1', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061015', '2', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061016', '1', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '1061017', '2', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000000', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000001', '0', '1', '7', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000002', '0', '2', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000003', '0', '26', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000004', '0', '26', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000005', '0', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000006', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000007', '0', '1', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000008', '0', '1', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000009', '0', '2', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000010', '0', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000011', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000012', '0', '2', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000500', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000501', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000502', '0', '26', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000503', '0', '1', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000504', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000505', '0', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000506', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000507', '0', '26', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000508', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000510', '0', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000511', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000512', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000513', '0', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000608', '0', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000609', '0', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000610', '0', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000611', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000612', '0', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000613', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2000614', '0', '26', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010000', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010001', '0', '3', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010002', '0', '4', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010004', '0', '25', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010006', '0', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010007', '0', '0', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010008', '0', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010009', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010010', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010011', '0', '25', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010012', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010013', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010014', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010015', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010016', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010017', '0', '3', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010018', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010019', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010020', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010601', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010602', '0', '0', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010603', '0', '0', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010606', '0', '4', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010607', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2010614', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2020001', '0', '5', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2020002', '0', '27', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2020003', '0', '27', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2020004', '0', '5', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2020605', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2030001', '0', '6', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2030002', '0', '7', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2030003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2030004', '0', '7', '2', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2030005', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2030006', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2040001', '0', '8', '4', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2040002', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2040003', '0', '28', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2040004', '0', '0', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2040005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2050001', '0', '10', '5', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2050002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2050003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2060001', '0', '11', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2060002', '0', '12', '3', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2060003', '0', '11', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '2060004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3000000', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3000001', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3000002', '0', '0', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3000003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3010001', '0', '13', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3020001', '0', '14', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3030001', '0', '15', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3040001', '0', '16', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3050001', '0', '17', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3060001', '0', '18', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3070001', '0', '19', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '3080001', '0', '20', '0', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4000001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4000002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4000003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4000004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4000005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4010001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4020001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4020002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4020003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4020004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4020005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4020006', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030006', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030007', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030008', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030009', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030010', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030011', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030012', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030013', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030014', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030015', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030016', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030017', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030018', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030019', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030020', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030021', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030022', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030023', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030024', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030025', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030026', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030027', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030028', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030029', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030030', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030031', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030032', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030033', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030034', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030035', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030036', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030037', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030038', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030039', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030040', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030041', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030042', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030043', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030044', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030045', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030046', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030047', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030048', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030049', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030050', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030051', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030052', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030053', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030054', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030055', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030056', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030057', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030058', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030059', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4030060', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4040001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4040002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050006', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050007', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050008', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050009', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050010', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050011', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050012', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050013', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050014', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050015', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050016', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050017', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050018', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050019', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050020', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050021', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050022', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050023', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050024', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050025', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050026', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050027', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050028', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050029', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050030', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050031', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050032', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050033', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050034', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050035', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050036', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050037', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050038', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050039', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050040', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050041', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050042', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050043', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050044', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050045', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050046', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050047', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050048', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050049', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050050', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050051', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050052', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050053', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050054', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050055', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050056', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050057', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050058', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050059', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050060', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050061', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050062', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050063', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050064', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050065', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050066', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050067', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050068', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050069', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050070', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050071', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050072', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050073', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050074', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050075', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050076', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050077', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050078', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050079', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050080', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050081', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050082', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050083', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050084', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050085', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050086', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050087', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050088', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050089', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050090', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050091', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050092', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050093', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050094', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050095', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050096', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050097', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050098', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050099', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4050100', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060006', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060007', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060008', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060009', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060010', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060011', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060012', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060013', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '4060014', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '5000001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '5000002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '5020001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000006', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000007', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000008', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000009', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000010', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000011', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000012', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000013', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000014', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000015', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000016', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000017', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000018', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000019', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000020', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000021', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000022', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000023', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000024', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000025', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '6000026', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000004', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000005', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000006', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000007', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000008', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000009', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000010', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000011', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000012', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000013', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000014', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000015', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7000016', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7010001', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7010002', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
-INSERT INTO `shop_items`(`Id`,`RequiredGender`,`RequiredLicense`,`Colors`,`UniqueColors`,`RequiredLevel`,`LevelLimit`,`RequiredMasterLevel`,`IsOneTimeUse`,`IsDestroyable`) VALUES ( '7010003', '1', '0', '1', '0', '0', '0', '0', '0', '1' );
--- ---------------------------------------------------------
-
-
--- Dump data of "shop_price_groups" ------------------------
-INSERT INTO `shop_price_groups`(`Id`,`Name`,`PriceType`) VALUES ( '1', 'PEN', '1' );
-INSERT INTO `shop_price_groups`(`Id`,`Name`,`PriceType`) VALUES ( '2', 'PREM', '3' );
--- ---------------------------------------------------------
-
-
--- Dump data of "shop_prices" ------------------------------
-INSERT INTO `shop_prices`(`Id`,`PriceGroupId`,`PeriodType`,`Period`,`Price`,`IsRefundable`,`Durability`,`IsEnabled`) VALUES ( '1', '1', '1', '0', '1', '1', '1000000', '1' );
-INSERT INTO `shop_prices`(`Id`,`PriceGroupId`,`PeriodType`,`Period`,`Price`,`IsRefundable`,`Durability`,`IsEnabled`) VALUES ( '2', '2', '1', '0', '1', '1', '1000000', '1' );
--- ---------------------------------------------------------
-
-
--- Dump data of "shop_version" -----------------------------
-INSERT INTO `shop_version`(`Id`,`Version`) VALUES ( '1', '201708291500' );
--- ---------------------------------------------------------
-
-
--- Dump data of "start_items" ------------------------------
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShopItemInfoId" ---------------------------
-CREATE INDEX `ShopItemInfoId` USING BTREE ON `license_rewards`( `ShopItemInfoId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShopPriceId" ------------------------------
-CREATE INDEX `ShopPriceId` USING BTREE ON `license_rewards`( `ShopPriceId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "AccessoryId" ------------------------------
-CREATE INDEX `AccessoryId` USING BTREE ON `player_characters`( `AccessoryId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "FaceId" -----------------------------------
-CREATE INDEX `FaceId` USING BTREE ON `player_characters`( `FaceId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "GlovesId" ---------------------------------
-CREATE INDEX `GlovesId` USING BTREE ON `player_characters`( `GlovesId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "HairId" -----------------------------------
-CREATE INDEX `HairId` USING BTREE ON `player_characters`( `HairId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PantsId" ----------------------------------
-CREATE INDEX `PantsId` USING BTREE ON `player_characters`( `PantsId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PlayerId" ---------------------------------
-CREATE INDEX `PlayerId` USING BTREE ON `player_characters`( `PlayerId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShirtId" ----------------------------------
-CREATE INDEX `ShirtId` USING BTREE ON `player_characters`( `ShirtId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShoesId" ----------------------------------
-CREATE INDEX `ShoesId` USING BTREE ON `player_characters`( `ShoesId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "SkillId" ----------------------------------
-CREATE INDEX `SkillId` USING BTREE ON `player_characters`( `SkillId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "Weapon1Id" --------------------------------
-CREATE INDEX `Weapon1Id` USING BTREE ON `player_characters`( `Weapon1Id` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "Weapon2Id" --------------------------------
-CREATE INDEX `Weapon2Id` USING BTREE ON `player_characters`( `Weapon2Id` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "Weapon3Id" --------------------------------
-CREATE INDEX `Weapon3Id` USING BTREE ON `player_characters`( `Weapon3Id` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "DenyPlayerId" -----------------------------
-CREATE INDEX `DenyPlayerId` USING BTREE ON `player_deny`( `DenyPlayerId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PlayerId" ---------------------------------
-CREATE INDEX `PlayerId` USING BTREE ON `player_deny`( `PlayerId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PlayerId" ---------------------------------
-CREATE INDEX `PlayerId` USING BTREE ON `player_items`( `PlayerId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShopItemInfoId" ---------------------------
-CREATE INDEX `ShopItemInfoId` USING BTREE ON `player_items`( `ShopItemInfoId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShopPriceId" ------------------------------
-CREATE INDEX `ShopPriceId` USING BTREE ON `player_items`( `ShopPriceId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PlayerId" ---------------------------------
-CREATE INDEX `PlayerId` USING BTREE ON `player_licenses`( `PlayerId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PlayerId" ---------------------------------
-CREATE INDEX `PlayerId` USING BTREE ON `player_mails`( `PlayerId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "SenderPlayerId" ---------------------------
-CREATE INDEX `SenderPlayerId` USING BTREE ON `player_mails`( `SenderPlayerId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PlayerId" ---------------------------------
-CREATE INDEX `PlayerId` USING BTREE ON `player_settings`( `PlayerId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "EffectGroupId" ----------------------------
-CREATE INDEX `EffectGroupId` USING BTREE ON `shop_effects`( `EffectGroupId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "EffectGroupId" ----------------------------
-CREATE INDEX `EffectGroupId` USING BTREE ON `shop_iteminfos`( `EffectGroupId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PriceGroupId" -----------------------------
-CREATE INDEX `PriceGroupId` USING BTREE ON `shop_iteminfos`( `PriceGroupId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShopItemId" -------------------------------
-CREATE INDEX `ShopItemId` USING BTREE ON `shop_iteminfos`( `ShopItemId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "PriceGroupId" -----------------------------
-CREATE INDEX `PriceGroupId` USING BTREE ON `shop_prices`( `PriceGroupId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShopEffectId" -----------------------------
-CREATE INDEX `ShopEffectId` USING BTREE ON `start_items`( `ShopEffectId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShopItemInfoId" ---------------------------
-CREATE INDEX `ShopItemInfoId` USING BTREE ON `start_items`( `ShopItemInfoId` );
--- ---------------------------------------------------------
-
-
--- CREATE INDEX "ShopPriceId" ------------------------------
-CREATE INDEX `ShopPriceId` USING BTREE ON `start_items`( `ShopPriceId` );
--- ---------------------------------------------------------
-
-
--- CREATE LINK "license_rewards_ibfk_2" --------------------
-ALTER TABLE `license_rewards`
-	ADD CONSTRAINT `license_rewards_ibfk_2` FOREIGN KEY ( `ShopPriceId` )
-	REFERENCES `shop_prices`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "license_rewards_ibfk_1" --------------------
-ALTER TABLE `license_rewards`
-	ADD CONSTRAINT `license_rewards_ibfk_1` FOREIGN KEY ( `ShopItemInfoId` )
-	REFERENCES `shop_iteminfos`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_9" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_9` FOREIGN KEY ( `PantsId` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_1" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_1` FOREIGN KEY ( `PlayerId` )
-	REFERENCES `players`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_10" -----------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_10` FOREIGN KEY ( `GlovesId` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_11" -----------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_11` FOREIGN KEY ( `ShoesId` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_12" -----------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_12` FOREIGN KEY ( `AccessoryId` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_2" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_2` FOREIGN KEY ( `Weapon1Id` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_3" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_3` FOREIGN KEY ( `Weapon2Id` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_4" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_4` FOREIGN KEY ( `Weapon3Id` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_5" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_5` FOREIGN KEY ( `SkillId` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_6" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_6` FOREIGN KEY ( `HairId` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_7" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_7` FOREIGN KEY ( `FaceId` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_characters_ibfk_8" ------------------
-ALTER TABLE `player_characters`
-	ADD CONSTRAINT `player_characters_ibfk_8` FOREIGN KEY ( `ShirtId` )
-	REFERENCES `player_items`( `Id` )
-	ON DELETE Set NULL
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_deny_ibfk_2" ------------------------
-ALTER TABLE `player_deny`
-	ADD CONSTRAINT `player_deny_ibfk_2` FOREIGN KEY ( `DenyPlayerId` )
-	REFERENCES `players`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_deny_ibfk_1" ------------------------
-ALTER TABLE `player_deny`
-	ADD CONSTRAINT `player_deny_ibfk_1` FOREIGN KEY ( `PlayerId` )
-	REFERENCES `players`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_items_ibfk_3" -----------------------
-ALTER TABLE `player_items`
-	ADD CONSTRAINT `player_items_ibfk_3` FOREIGN KEY ( `ShopPriceId` )
-	REFERENCES `shop_prices`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_items_ibfk_1" -----------------------
-ALTER TABLE `player_items`
-	ADD CONSTRAINT `player_items_ibfk_1` FOREIGN KEY ( `PlayerId` )
-	REFERENCES `players`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_items_ibfk_2" -----------------------
-ALTER TABLE `player_items`
-	ADD CONSTRAINT `player_items_ibfk_2` FOREIGN KEY ( `ShopItemInfoId` )
-	REFERENCES `shop_iteminfos`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_licenses_ibfk_1" --------------------
-ALTER TABLE `player_licenses`
-	ADD CONSTRAINT `player_licenses_ibfk_1` FOREIGN KEY ( `PlayerId` )
-	REFERENCES `players`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_mails_ibfk_2" -----------------------
-ALTER TABLE `player_mails`
-	ADD CONSTRAINT `player_mails_ibfk_2` FOREIGN KEY ( `SenderPlayerId` )
-	REFERENCES `players`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_mails_ibfk_1" -----------------------
-ALTER TABLE `player_mails`
-	ADD CONSTRAINT `player_mails_ibfk_1` FOREIGN KEY ( `PlayerId` )
-	REFERENCES `players`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "player_settings_ibfk_1" --------------------
-ALTER TABLE `player_settings`
-	ADD CONSTRAINT `player_settings_ibfk_1` FOREIGN KEY ( `PlayerId` )
-	REFERENCES `players`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "shop_effects_ibfk_1" -----------------------
-ALTER TABLE `shop_effects`
-	ADD CONSTRAINT `shop_effects_ibfk_1` FOREIGN KEY ( `EffectGroupId` )
-	REFERENCES `shop_effect_groups`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "shop_iteminfos_ibfk_4" ---------------------
-ALTER TABLE `shop_iteminfos`
-	ADD CONSTRAINT `shop_iteminfos_ibfk_4` FOREIGN KEY ( `ShopItemId` )
-	REFERENCES `shop_items`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "shop_iteminfos_ibfk_2" ---------------------
-ALTER TABLE `shop_iteminfos`
-	ADD CONSTRAINT `shop_iteminfos_ibfk_2` FOREIGN KEY ( `PriceGroupId` )
-	REFERENCES `shop_price_groups`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "shop_iteminfos_ibfk_3" ---------------------
-ALTER TABLE `shop_iteminfos`
-	ADD CONSTRAINT `shop_iteminfos_ibfk_3` FOREIGN KEY ( `EffectGroupId` )
-	REFERENCES `shop_effect_groups`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "shop_prices_ibfk_1" ------------------------
-ALTER TABLE `shop_prices`
-	ADD CONSTRAINT `shop_prices_ibfk_1` FOREIGN KEY ( `PriceGroupId` )
-	REFERENCES `shop_price_groups`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "start_items_ibfk_3" ------------------------
-ALTER TABLE `start_items`
-	ADD CONSTRAINT `start_items_ibfk_3` FOREIGN KEY ( `ShopEffectId` )
-	REFERENCES `shop_effects`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "start_items_ibfk_1" ------------------------
-ALTER TABLE `start_items`
-	ADD CONSTRAINT `start_items_ibfk_1` FOREIGN KEY ( `ShopItemInfoId` )
-	REFERENCES `shop_iteminfos`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
--- CREATE LINK "start_items_ibfk_2" ------------------------
-ALTER TABLE `start_items`
-	ADD CONSTRAINT `start_items_ibfk_2` FOREIGN KEY ( `ShopPriceId` )
-	REFERENCES `shop_prices`( `Id` )
-	ON DELETE Cascade
-	ON UPDATE No Action;
--- ---------------------------------------------------------
-
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+-- Dumping structure for table s4_dump_game.combi
+DROP TABLE IF EXISTS `combi`;
+CREATE TABLE IF NOT EXISTS `combi` (
+  `Id` int(11) NOT NULL,
+  `PlayerId` int(11) NOT NULL,
+  `CombiPlayerId` int(11) NOT NULL,
+  `Exp` bigint(20) NOT NULL DEFAULT '0',
+  `Battle` bigint(20) NOT NULL DEFAULT '0',
+  `Match` int(11) NOT NULL DEFAULT '0',
+  `Win` bigint(20) NOT NULL DEFAULT '0',
+  `Defeat` bigint(20) NOT NULL DEFAULT '0',
+  `CombiName` varchar(64) NOT NULL,
+  `CombiMate` varchar(64) NOT NULL,
+  `CombiDate` varchar(32) NOT NULL,
+  `State` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `CombiPlayerId` (`CombiPlayerId`) USING BTREE,
+  KEY `PlayerId` (`PlayerId`) USING BTREE,
+  CONSTRAINT `combi_ibfk_1` FOREIGN KEY (`PlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `combi_ibfk_2` FOREIGN KEY (`CombiPlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table s4_dump_game.combi: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.license_rewards
+DROP TABLE IF EXISTS `license_rewards`;
+CREATE TABLE IF NOT EXISTS `license_rewards` (
+  `Id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `ShopItemInfoId` int(11) NOT NULL,
+  `ShopPriceId` int(11) NOT NULL,
+  `Color` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `ShopItemInfoId` (`ShopItemInfoId`) USING BTREE,
+  KEY `ShopPriceId` (`ShopPriceId`) USING BTREE,
+  CONSTRAINT `license_rewards_ibfk_1` FOREIGN KEY (`ShopItemInfoId`) REFERENCES `shop_iteminfos` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `license_rewards_ibfk_2` FOREIGN KEY (`ShopPriceId`) REFERENCES `shop_prices` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.license_rewards: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_characters
+DROP TABLE IF EXISTS `player_characters`;
+CREATE TABLE IF NOT EXISTS `player_characters` (
+  `Id` int(11) NOT NULL,
+  `PlayerId` int(11) NOT NULL,
+  `Slot` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `Gender` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `BasicHair` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `BasicFace` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `BasicShirt` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `BasicPants` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `Weapon1Id` int(11) DEFAULT NULL,
+  `Weapon2Id` int(11) DEFAULT NULL,
+  `Weapon3Id` int(11) DEFAULT NULL,
+  `SkillId` int(11) DEFAULT NULL,
+  `HairId` int(11) DEFAULT NULL,
+  `FaceId` int(11) DEFAULT NULL,
+  `ShirtId` int(11) DEFAULT NULL,
+  `PantsId` int(11) DEFAULT NULL,
+  `GlovesId` int(11) DEFAULT NULL,
+  `ShoesId` int(11) DEFAULT NULL,
+  `AccessoryId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `AccessoryId` (`AccessoryId`) USING BTREE,
+  KEY `FaceId` (`FaceId`) USING BTREE,
+  KEY `GlovesId` (`GlovesId`) USING BTREE,
+  KEY `HairId` (`HairId`) USING BTREE,
+  KEY `PantsId` (`PantsId`) USING BTREE,
+  KEY `PlayerId` (`PlayerId`) USING BTREE,
+  KEY `ShirtId` (`ShirtId`) USING BTREE,
+  KEY `ShoesId` (`ShoesId`) USING BTREE,
+  KEY `SkillId` (`SkillId`) USING BTREE,
+  KEY `Weapon1Id` (`Weapon1Id`) USING BTREE,
+  KEY `Weapon2Id` (`Weapon2Id`) USING BTREE,
+  KEY `Weapon3Id` (`Weapon3Id`) USING BTREE,
+  CONSTRAINT `player_characters_ibfk_1` FOREIGN KEY (`PlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_10` FOREIGN KEY (`GlovesId`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_11` FOREIGN KEY (`ShoesId`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_12` FOREIGN KEY (`AccessoryId`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_2` FOREIGN KEY (`Weapon1Id`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_3` FOREIGN KEY (`Weapon2Id`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_4` FOREIGN KEY (`Weapon3Id`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_5` FOREIGN KEY (`SkillId`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_6` FOREIGN KEY (`HairId`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_7` FOREIGN KEY (`FaceId`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_8` FOREIGN KEY (`ShirtId`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `player_characters_ibfk_9` FOREIGN KEY (`PantsId`) REFERENCES `player_items` (`Id`) ON DELETE SET NULL ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_characters: ~405 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_deny
+DROP TABLE IF EXISTS `player_deny`;
+CREATE TABLE IF NOT EXISTS `player_deny` (
+  `Id` int(11) NOT NULL,
+  `PlayerId` int(11) NOT NULL,
+  `DenyPlayerId` int(11) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `DenyPlayerId` (`DenyPlayerId`) USING BTREE,
+  KEY `PlayerId` (`PlayerId`) USING BTREE,
+  CONSTRAINT `player_deny_ibfk_1` FOREIGN KEY (`PlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `player_deny_ibfk_2` FOREIGN KEY (`DenyPlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_deny: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_friends
+DROP TABLE IF EXISTS `player_friends`;
+CREATE TABLE IF NOT EXISTS `player_friends` (
+  `Id` int(11) NOT NULL,
+  `PlayerId` int(11) NOT NULL,
+  `FriendId` int(11) NOT NULL,
+  `PlayerState` int(11) NOT NULL DEFAULT '0',
+  `FriendState` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `FriendId` (`FriendId`) USING BTREE,
+  KEY `PlayerId` (`PlayerId`) USING BTREE,
+  CONSTRAINT `player_friends_ibfk_1` FOREIGN KEY (`PlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `player_friends_ibfk_2` FOREIGN KEY (`FriendId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table s4_dump_game.player_friends: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_info_arcade
+DROP TABLE IF EXISTS `player_info_arcade`;
+CREATE TABLE IF NOT EXISTS `player_info_arcade` (
+  `PlayerId` int(11) NOT NULL,
+  `ClearedStages` tinyint(3) unsigned NOT NULL,
+  `Difficulty` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`PlayerId`,`ClearedStages`,`Difficulty`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table s4_dump_game.player_info_arcade: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_info_battleroyal
+DROP TABLE IF EXISTS `player_info_battleroyal`;
+CREATE TABLE IF NOT EXISTS `player_info_battleroyal` (
+  `PlayerId` int(11) NOT NULL,
+  `Won` bigint(20) NOT NULL DEFAULT '0',
+  `Loss` bigint(20) NOT NULL DEFAULT '0',
+  `Kills` bigint(20) NOT NULL DEFAULT '0',
+  `KillAssists` bigint(20) NOT NULL DEFAULT '0',
+  `FirstKilled` bigint(20) NOT NULL DEFAULT '0',
+  `FirstPlace` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`PlayerId`),
+  UNIQUE KEY `PlayerId` (`PlayerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_info_battleroyal: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_info_captain
+DROP TABLE IF EXISTS `player_info_captain`;
+CREATE TABLE IF NOT EXISTS `player_info_captain` (
+  `PlayerId` int(11) NOT NULL,
+  `Won` bigint(20) NOT NULL DEFAULT '0',
+  `Loss` bigint(20) NOT NULL DEFAULT '0',
+  `CPTKilled` bigint(20) NOT NULL DEFAULT '0',
+  `CPTCount` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`PlayerId`),
+  UNIQUE KEY `PlayerId` (`PlayerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_info_captain: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_info_chaser
+DROP TABLE IF EXISTS `player_info_chaser`;
+CREATE TABLE IF NOT EXISTS `player_info_chaser` (
+  `PlayerId` int(11) NOT NULL,
+  `ChasedWon` bigint(20) NOT NULL DEFAULT '0',
+  `ChasedRounds` bigint(20) NOT NULL DEFAULT '0',
+  `ChaserWon` bigint(20) NOT NULL DEFAULT '0',
+  `ChaserRounds` bigint(20) NOT NULL DEFAULT '0',
+  `Kills` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`PlayerId`),
+  UNIQUE KEY `PlayerId` (`PlayerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_info_chaser: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_info_deathmatch
+DROP TABLE IF EXISTS `player_info_deathmatch`;
+CREATE TABLE IF NOT EXISTS `player_info_deathmatch` (
+  `PlayerId` int(11) NOT NULL,
+  `Won` bigint(20) NOT NULL,
+  `Loss` bigint(20) NOT NULL,
+  `Kills` bigint(20) NOT NULL,
+  `KillAssists` bigint(20) NOT NULL,
+  `Deaths` bigint(20) NOT NULL,
+  `Heal` bigint(20) NOT NULL,
+  PRIMARY KEY (`PlayerId`),
+  UNIQUE KEY `PlayerId` (`PlayerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_info_deathmatch: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_info_touchdown
+DROP TABLE IF EXISTS `player_info_touchdown`;
+CREATE TABLE IF NOT EXISTS `player_info_touchdown` (
+  `PlayerId` int(11) NOT NULL,
+  `Won` bigint(20) NOT NULL DEFAULT '0',
+  `Loss` bigint(20) NOT NULL DEFAULT '0',
+  `TD` bigint(20) NOT NULL DEFAULT '0',
+  `TDAssist` bigint(20) NOT NULL DEFAULT '0',
+  `Offense` bigint(20) NOT NULL DEFAULT '0',
+  `OffenseAssist` bigint(20) NOT NULL DEFAULT '0',
+  `Defense` bigint(20) NOT NULL DEFAULT '0',
+  `DefenseAssist` bigint(20) NOT NULL DEFAULT '0',
+  `Kill` bigint(20) NOT NULL DEFAULT '0',
+  `KillAssist` bigint(20) NOT NULL DEFAULT '0',
+  `OffenseRebound` bigint(20) NOT NULL DEFAULT '0',
+  `Heal` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`PlayerId`),
+  UNIQUE KEY `PlayerId` (`PlayerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_info_touchdown: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_items
+DROP TABLE IF EXISTS `player_items`;
+CREATE TABLE IF NOT EXISTS `player_items` (
+  `Id` int(11) NOT NULL,
+  `PlayerId` int(11) NOT NULL,
+  `ShopItemInfoId` int(11) NOT NULL,
+  `ShopPriceId` int(11) NOT NULL,
+  `Effect` int(11) NOT NULL DEFAULT '0',
+  `Color` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `PurchaseDate` bigint(20) NOT NULL DEFAULT '0',
+  `Durability` int(11) NOT NULL DEFAULT '0',
+  `Count` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `PlayerId` (`PlayerId`) USING BTREE,
+  KEY `ShopItemInfoId` (`ShopItemInfoId`) USING BTREE,
+  KEY `ShopPriceId` (`ShopPriceId`) USING BTREE,
+  CONSTRAINT `player_items_ibfk_1` FOREIGN KEY (`PlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `player_items_ibfk_2` FOREIGN KEY (`ShopItemInfoId`) REFERENCES `shop_iteminfos` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `player_items_ibfk_3` FOREIGN KEY (`ShopPriceId`) REFERENCES `shop_prices` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_items: ~7,246 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_licenses
+DROP TABLE IF EXISTS `player_licenses`;
+CREATE TABLE IF NOT EXISTS `player_licenses` (
+  `Id` int(11) NOT NULL,
+  `PlayerId` int(11) NOT NULL,
+  `License` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `FirstCompletedDate` bigint(20) NOT NULL DEFAULT '0',
+  `CompletedCount` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `PlayerId` (`PlayerId`) USING BTREE,
+  CONSTRAINT `player_licenses_ibfk_1` FOREIGN KEY (`PlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_licenses: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_mails
+DROP TABLE IF EXISTS `player_mails`;
+CREATE TABLE IF NOT EXISTS `player_mails` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `PlayerId` int(11) NOT NULL,
+  `SenderPlayerId` int(11) NOT NULL,
+  `SentDate` bigint(20) NOT NULL DEFAULT '0',
+  `Title` varchar(100) NOT NULL,
+  `Message` varchar(500) NOT NULL,
+  `IsMailNew` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `IsMailDeleted` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `PlayerId` (`PlayerId`) USING BTREE,
+  KEY `SenderPlayerId` (`SenderPlayerId`) USING BTREE,
+  CONSTRAINT `player_mails_ibfk_1` FOREIGN KEY (`PlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `player_mails_ibfk_2` FOREIGN KEY (`SenderPlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_mails: ~0 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_missions
+DROP TABLE IF EXISTS `player_missions`;
+CREATE TABLE IF NOT EXISTS `player_missions` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `PlayerId` int(11) NOT NULL,
+  `MissionId` int(11) NOT NULL,
+  `Slot` int(11) NOT NULL DEFAULT '0',
+  `Progress` int(11) NOT NULL DEFAULT '0',
+  `Completed` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `unique_player_mission` (`PlayerId`,`MissionId`)
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_missions: ~120 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.player_settings
+DROP TABLE IF EXISTS `player_settings`;
+CREATE TABLE IF NOT EXISTS `player_settings` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `PlayerId` int(11) NOT NULL,
+  `Setting` varchar(512) NOT NULL,
+  `Value` varchar(512) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `PlayerId` (`PlayerId`) USING BTREE,
+  CONSTRAINT `player_settings_ibfk_1` FOREIGN KEY (`PlayerId`) REFERENCES `players` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=18085 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.player_settings: ~19 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.players
+DROP TABLE IF EXISTS `players`;
+CREATE TABLE IF NOT EXISTS `players` (
+  `Id` int(11) NOT NULL,
+  `TutorialState` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `Level` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `TotalExperience` int(11) NOT NULL DEFAULT '63703100',
+  `PEN` int(11) NOT NULL DEFAULT '0',
+  `AP` int(11) NOT NULL DEFAULT '0',
+  `Coins1` int(11) NOT NULL DEFAULT '0',
+  `Coins2` int(11) NOT NULL DEFAULT '0',
+  `CurrentCharacterSlot` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `TotalMatches` int(11) NOT NULL DEFAULT '0',
+  `TotalWins` int(11) NOT NULL DEFAULT '0',
+  `TotalLosses` int(11) NOT NULL DEFAULT '0',
+  `TotalKills` int(11) NOT NULL DEFAULT '0',
+  `TotalDeaths` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- Dumping data for table s4_dump_game.players: ~210 rows (approximately)
+
+-- Dumping structure for table s4_dump_game.shop_effect_groups
+DROP TABLE IF EXISTS `shop_effect_groups`;
+CREATE TABLE IF NOT EXISTS `shop_effect_groups` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(20) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.shop_effect_groups: ~26 rows (approximately)
+INSERT INTO `shop_effect_groups` (`Id`, `Name`) VALUES
+	(1, 'None'),
+	(2, 'HP+30'),
+	(3, 'HP+15'),
+	(4, 'SP+40'),
+	(5, 'HP+20 & SP+20'),
+	(6, 'SP+3'),
+	(7, 'Defense+7'),
+	(8, 'hp+3'),
+	(9, 'Attack+7'),
+	(10, 'Head Defense+7'),
+	(11, 'Head Defense+3'),
+	(12, 'Defense+4'),
+	(13, 'Attack+3'),
+	(14, 'Attack+6'),
+	(15, 'Melee Defense+2'),
+	(16, 'Melee Defense+4'),
+	(17, 'Melee Defense+5'),
+	(18, 'Melee Defense+6'),
+	(19, 'Melee Defense+7'),
+	(20, 'Shooting Defense+2'),
+	(21, 'Shooting Defense+4'),
+	(22, 'Shooting Defense+5'),
+	(23, 'Shooting Defense+6'),
+	(24, 'Shooting Defense+7'),
+	(25, 'Defense+8'),
+	(26, 'Defense+9');
+
+-- Dumping structure for table s4_dump_game.shop_effects
+DROP TABLE IF EXISTS `shop_effects`;
+CREATE TABLE IF NOT EXISTS `shop_effects` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `EffectGroupId` int(11) NOT NULL,
+  `Effect` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `EffectGroupId` (`EffectGroupId`) USING BTREE,
+  CONSTRAINT `shop_effects_ibfk_1` FOREIGN KEY (`EffectGroupId`) REFERENCES `shop_effect_groups` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.shop_effects: ~25 rows (approximately)
+INSERT INTO `shop_effects` (`Id`, `EffectGroupId`, `Effect`) VALUES
+	(1, 2, 1030),
+	(2, 3, 1015),
+	(3, 4, 2040),
+	(4, 5, 4001),
+	(5, 6, 2003),
+	(6, 7, 19907),
+	(7, 8, 1003),
+	(8, 9, 29907),
+	(9, 10, 19807),
+	(10, 11, 19803),
+	(11, 12, 19904),
+	(12, 13, 29903),
+	(13, 14, 29906),
+	(14, 15, 10002),
+	(15, 16, 10004),
+	(16, 17, 10005),
+	(17, 18, 10006),
+	(18, 19, 10007),
+	(19, 20, 11002),
+	(20, 21, 11004),
+	(21, 22, 11005),
+	(22, 23, 11006),
+	(23, 24, 11007),
+	(24, 25, 19908),
+	(25, 26, 19909);
+
+-- Dumping structure for table s4_dump_game.shop_iteminfos
+DROP TABLE IF EXISTS `shop_iteminfos`;
+CREATE TABLE IF NOT EXISTS `shop_iteminfos` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `ShopItemId` int(11) unsigned NOT NULL,
+  `PriceGroupId` int(11) NOT NULL,
+  `EffectGroupId` int(11) NOT NULL,
+  `DiscountPercentage` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `IsEnabled` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `EffectGroupId` (`EffectGroupId`) USING BTREE,
+  KEY `PriceGroupId` (`PriceGroupId`) USING BTREE,
+  KEY `ShopItemId` (`ShopItemId`) USING BTREE,
+  CONSTRAINT `shop_iteminfos_ibfk_2` FOREIGN KEY (`PriceGroupId`) REFERENCES `shop_price_groups` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `shop_iteminfos_ibfk_3` FOREIGN KEY (`EffectGroupId`) REFERENCES `shop_effect_groups` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `shop_iteminfos_ibfk_4` FOREIGN KEY (`ShopItemId`) REFERENCES `shop_items` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1042 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.shop_iteminfos: ~996 rows (approximately)
+INSERT INTO `shop_iteminfos` (`Id`, `ShopItemId`, `PriceGroupId`, `EffectGroupId`, `DiscountPercentage`, `IsEnabled`) VALUES
+	(1, 1001002, 2, 1, 0, 1),
+	(2, 1001001, 2, 1, 0, 1),
+	(3, 1000035, 2, 1, 0, 1),
+	(4, 1000034, 2, 1, 0, 1),
+	(5, 1000033, 2, 1, 0, 0),
+	(6, 1000032, 2, 1, 0, 0),
+	(7, 1000031, 2, 1, 0, 1),
+	(8, 1000030, 2, 1, 0, 1),
+	(9, 1000028, 2, 1, 0, 1),
+	(10, 1000027, 2, 1, 0, 0),
+	(11, 1000026, 2, 1, 0, 1),
+	(12, 1000025, 2, 1, 0, 1),
+	(13, 1000024, 2, 1, 0, 1),
+	(14, 1000023, 2, 1, 0, 1),
+	(15, 1000022, 2, 1, 0, 1),
+	(16, 1000021, 2, 1, 0, 1),
+	(17, 1000020, 2, 1, 0, 1),
+	(18, 1000019, 2, 1, 0, 1),
+	(19, 1000018, 2, 1, 0, 1),
+	(20, 1000017, 2, 1, 0, 1),
+	(21, 1000016, 2, 1, 0, 1),
+	(22, 1000015, 2, 1, 0, 1),
+	(23, 1000014, 2, 1, 0, 1),
+	(24, 1000013, 2, 1, 0, 1),
+	(25, 1000012, 2, 1, 0, 1),
+	(26, 1000011, 2, 1, 0, 1),
+	(27, 1000010, 2, 1, 0, 1),
+	(28, 1000009, 2, 1, 0, 1),
+	(29, 1000008, 2, 1, 0, 1),
+	(30, 1000007, 2, 1, 0, 1),
+	(31, 1000006, 2, 1, 0, 1),
+	(32, 1000005, 2, 1, 0, 1),
+	(33, 1000004, 2, 1, 0, 1),
+	(34, 1000003, 2, 1, 0, 1),
+	(35, 1000002, 2, 1, 0, 1),
+	(36, 1000001, 2, 1, 0, 1),
+	(37, 1000000, 2, 1, 0, 1),
+	(38, 1011002, 2, 1, 0, 1),
+	(39, 1011001, 2, 1, 0, 1),
+	(40, 1010035, 2, 1, 0, 1),
+	(41, 1010034, 2, 1, 0, 1),
+	(42, 1010033, 2, 1, 0, 1),
+	(43, 1010032, 2, 1, 0, 1),
+	(44, 1010031, 2, 1, 0, 1),
+	(45, 1010028, 2, 1, 0, 1),
+	(46, 1010026, 2, 1, 0, 1),
+	(47, 1010025, 2, 1, 0, 1),
+	(48, 1010024, 2, 1, 0, 1),
+	(49, 1010023, 2, 1, 0, 1),
+	(50, 1010022, 2, 1, 0, 1),
+	(51, 1010020, 2, 1, 0, 1),
+	(52, 1010019, 2, 1, 0, 1),
+	(53, 1010018, 2, 1, 0, 1),
+	(54, 1010017, 2, 1, 0, 1),
+	(55, 1010016, 2, 1, 0, 1),
+	(56, 1010015, 2, 1, 0, 1),
+	(57, 1010014, 2, 1, 0, 1),
+	(58, 1010013, 2, 1, 0, 1),
+	(59, 1010012, 2, 1, 0, 1),
+	(60, 1010011, 2, 1, 0, 1),
+	(61, 1010010, 2, 1, 0, 1),
+	(62, 1010009, 2, 1, 0, 1),
+	(63, 1010008, 2, 1, 0, 1),
+	(64, 1010007, 2, 1, 0, 1),
+	(65, 1010006, 2, 1, 0, 1),
+	(66, 1010005, 2, 1, 0, 1),
+	(67, 1010004, 2, 1, 0, 1),
+	(68, 1010003, 2, 1, 0, 1),
+	(69, 1010002, 2, 1, 0, 1),
+	(70, 1010001, 2, 1, 0, 1),
+	(71, 1021018, 2, 7, 0, 0),
+	(72, 1021017, 2, 7, 0, 1),
+	(73, 1021016, 2, 7, 0, 1),
+	(74, 1021015, 2, 7, 0, 1),
+	(75, 1021011, 2, 7, 0, 1),
+	(76, 1021010, 2, 7, 0, 1),
+	(77, 1021009, 2, 7, 0, 1),
+	(78, 1021008, 2, 7, 0, 1),
+	(79, 1021007, 2, 7, 0, 1),
+	(80, 1021006, 2, 7, 0, 1),
+	(81, 1021005, 2, 7, 0, 1),
+	(82, 1021004, 2, 7, 0, 1),
+	(83, 1021003, 2, 7, 0, 1),
+	(84, 1021002, 2, 7, 0, 1),
+	(85, 1021001, 2, 7, 0, 1),
+	(86, 1020077, 2, 7, 0, 1),
+	(87, 1020076, 2, 7, 0, 1),
+	(88, 1020075, 2, 7, 0, 1),
+	(89, 1020074, 2, 7, 0, 1),
+	(90, 1020073, 2, 7, 0, 0),
+	(91, 1020072, 2, 7, 0, 1),
+	(92, 1020071, 2, 7, 0, 1),
+	(93, 1020070, 2, 7, 0, 1),
+	(94, 1020069, 2, 7, 0, 1),
+	(95, 1020068, 2, 7, 0, 1),
+	(96, 1020067, 2, 7, 0, 0),
+	(97, 1020066, 2, 7, 0, 0),
+	(98, 1020065, 2, 7, 0, 0),
+	(99, 1020064, 2, 7, 0, 0),
+	(100, 1020063, 2, 7, 0, 1),
+	(101, 1020062, 2, 7, 0, 1),
+	(102, 1020061, 2, 7, 0, 0),
+	(103, 1020059, 2, 7, 0, 1),
+	(104, 1020058, 2, 7, 0, 1),
+	(105, 1020056, 2, 7, 0, 1),
+	(106, 1020055, 2, 7, 0, 1),
+	(107, 1020054, 2, 7, 0, 1),
+	(108, 1020053, 2, 7, 0, 1),
+	(109, 1020052, 2, 7, 0, 1),
+	(110, 1020051, 2, 7, 0, 1),
+	(111, 1020050, 2, 7, 0, 1),
+	(112, 1020049, 2, 7, 0, 1),
+	(113, 1020048, 2, 7, 0, 1),
+	(114, 1020047, 2, 7, 0, 1),
+	(115, 1020046, 2, 7, 0, 1),
+	(116, 1020045, 2, 7, 0, 1),
+	(117, 1020044, 2, 7, 0, 1),
+	(118, 1020043, 2, 7, 0, 1),
+	(119, 1020042, 2, 7, 0, 1),
+	(120, 1020041, 2, 7, 0, 1),
+	(121, 1020040, 2, 7, 0, 1),
+	(122, 1020039, 2, 7, 0, 1),
+	(123, 1020038, 2, 7, 0, 1),
+	(124, 1020037, 2, 7, 0, 1),
+	(125, 1020036, 2, 7, 0, 1),
+	(126, 1020035, 2, 7, 0, 1),
+	(127, 1020034, 2, 7, 0, 1),
+	(128, 1020033, 2, 7, 0, 1),
+	(129, 1020032, 2, 7, 0, 1),
+	(130, 1020031, 2, 7, 0, 1),
+	(131, 1020030, 2, 7, 0, 1),
+	(132, 1020029, 2, 7, 0, 1),
+	(133, 1020028, 2, 7, 0, 1),
+	(134, 1020027, 2, 7, 0, 1),
+	(135, 1020026, 2, 7, 0, 1),
+	(136, 1020025, 2, 7, 0, 1),
+	(137, 1020024, 2, 7, 0, 1),
+	(138, 1020022, 2, 7, 0, 1),
+	(139, 1020021, 2, 7, 0, 1),
+	(140, 1020020, 2, 7, 0, 1),
+	(141, 1020019, 2, 7, 0, 1),
+	(142, 1020018, 2, 7, 0, 1),
+	(143, 1020017, 2, 7, 0, 1),
+	(144, 1020016, 2, 7, 0, 1),
+	(145, 1020015, 2, 7, 0, 1),
+	(146, 1020014, 2, 7, 0, 1),
+	(147, 1020013, 2, 7, 0, 1),
+	(148, 1020012, 2, 7, 0, 1),
+	(149, 1020011, 2, 7, 0, 1),
+	(150, 1020010, 2, 7, 0, 1),
+	(151, 1020009, 2, 7, 0, 1),
+	(152, 1020008, 2, 7, 0, 1),
+	(153, 1020007, 2, 7, 0, 1),
+	(154, 1020006, 2, 7, 0, 1),
+	(155, 1020005, 2, 7, 0, 1),
+	(156, 1020004, 2, 7, 0, 1),
+	(157, 1020003, 2, 7, 0, 1),
+	(158, 1020002, 2, 7, 0, 1),
+	(159, 1020001, 2, 7, 0, 1),
+	(160, 1020000, 2, 7, 0, 1),
+	(161, 1031018, 2, 7, 0, 1),
+	(162, 1031017, 2, 7, 0, 1),
+	(163, 1031016, 2, 7, 0, 1),
+	(164, 1031015, 2, 7, 0, 1),
+	(165, 1031011, 2, 7, 0, 1),
+	(166, 1031010, 2, 7, 0, 1),
+	(167, 1031009, 2, 7, 0, 1),
+	(168, 1031008, 2, 7, 0, 1),
+	(169, 1031007, 2, 7, 0, 1),
+	(170, 1031006, 2, 7, 0, 1),
+	(171, 1031005, 2, 7, 0, 1),
+	(172, 1031004, 2, 7, 0, 1),
+	(173, 1031003, 2, 7, 0, 1),
+	(174, 1031002, 2, 7, 0, 1),
+	(175, 1031001, 2, 7, 0, 1),
+	(176, 1030074, 2, 7, 0, 1),
+	(177, 1030073, 2, 7, 0, 1),
+	(178, 1030072, 2, 7, 0, 1),
+	(179, 1030071, 2, 7, 0, 1),
+	(180, 1030070, 2, 7, 0, 1),
+	(181, 1030069, 2, 7, 0, 1),
+	(182, 1030068, 2, 7, 0, 1),
+	(183, 1030067, 2, 7, 0, 1),
+	(184, 1030066, 2, 7, 0, 1),
+	(185, 1030065, 2, 7, 0, 1),
+	(186, 1030064, 2, 7, 0, 0),
+	(187, 1030063, 2, 7, 0, 0),
+	(188, 1030062, 2, 7, 0, 0),
+	(189, 1030061, 2, 7, 0, 1),
+	(190, 1030060, 2, 7, 0, 1),
+	(191, 1030059, 2, 7, 0, 0),
+	(192, 1030057, 2, 7, 0, 1),
+	(193, 1030056, 2, 7, 0, 1),
+	(194, 1030054, 2, 7, 0, 1),
+	(195, 1030053, 2, 7, 0, 1),
+	(196, 1030052, 2, 7, 0, 1),
+	(197, 1030051, 2, 7, 0, 1),
+	(198, 1030050, 2, 7, 0, 1),
+	(199, 1030049, 2, 7, 0, 1),
+	(200, 1030048, 2, 7, 0, 1),
+	(201, 1030047, 2, 7, 0, 1),
+	(202, 1030046, 2, 7, 0, 1),
+	(203, 1030045, 2, 7, 0, 1),
+	(204, 1030044, 2, 7, 0, 1),
+	(205, 1030043, 2, 7, 0, 1),
+	(206, 1030042, 2, 7, 0, 1),
+	(207, 1030041, 2, 7, 0, 1),
+	(208, 1030040, 2, 7, 0, 1),
+	(209, 1030039, 2, 7, 0, 1),
+	(210, 1030038, 2, 7, 0, 1),
+	(211, 1030037, 2, 7, 0, 0),
+	(212, 1030036, 2, 7, 0, 1),
+	(213, 1030035, 2, 7, 0, 1),
+	(214, 1030034, 2, 7, 0, 1),
+	(215, 1030033, 2, 7, 0, 1),
+	(216, 1030032, 2, 7, 0, 1),
+	(217, 1030031, 2, 7, 0, 1),
+	(218, 1030030, 2, 7, 0, 1),
+	(219, 1030029, 2, 7, 0, 1),
+	(220, 1030028, 2, 7, 0, 1),
+	(221, 1030027, 2, 7, 0, 1),
+	(222, 1030026, 2, 7, 0, 1),
+	(223, 1030025, 2, 7, 0, 1),
+	(224, 1030024, 2, 7, 0, 1),
+	(225, 1030023, 2, 7, 0, 1),
+	(226, 1030022, 2, 7, 0, 1),
+	(227, 1030021, 2, 7, 0, 1),
+	(228, 1030020, 2, 7, 0, 1),
+	(229, 1030019, 2, 7, 0, 1),
+	(230, 1030018, 2, 7, 0, 1),
+	(231, 1030017, 2, 7, 0, 1),
+	(232, 1030016, 2, 7, 0, 1),
+	(233, 1030015, 2, 7, 0, 1),
+	(234, 1030014, 2, 7, 0, 1),
+	(235, 1030013, 2, 7, 0, 1),
+	(236, 1030012, 2, 7, 0, 1),
+	(237, 1030011, 2, 7, 0, 1),
+	(238, 1030010, 2, 7, 0, 1),
+	(239, 1030009, 2, 7, 0, 1),
+	(240, 1030008, 2, 7, 0, 1),
+	(241, 1030007, 2, 7, 0, 1),
+	(242, 1030006, 2, 7, 0, 1),
+	(243, 1030005, 2, 7, 0, 1),
+	(244, 1030004, 2, 7, 0, 1),
+	(245, 1030003, 2, 7, 0, 1),
+	(246, 1030002, 2, 7, 0, 1),
+	(247, 1030001, 2, 7, 0, 1),
+	(248, 1030000, 2, 7, 0, 1),
+	(249, 1041018, 2, 1, 0, 1),
+	(250, 1041017, 2, 1, 0, 1),
+	(251, 1041016, 2, 1, 0, 1),
+	(252, 1041015, 2, 1, 0, 1),
+	(253, 1041011, 2, 1, 0, 1),
+	(254, 1041010, 2, 1, 0, 1),
+	(255, 1041009, 2, 1, 0, 1),
+	(256, 1041008, 2, 1, 0, 1),
+	(257, 1041007, 2, 1, 0, 1),
+	(258, 1041006, 2, 1, 0, 1),
+	(259, 1041003, 2, 1, 0, 1),
+	(260, 1041002, 2, 1, 0, 1),
+	(261, 1041001, 2, 1, 0, 1),
+	(262, 1040066, 2, 1, 0, 1),
+	(263, 1040065, 2, 1, 0, 0),
+	(264, 1040064, 2, 1, 0, 1),
+	(265, 1040063, 2, 1, 0, 1),
+	(266, 1040062, 2, 1, 0, 1),
+	(267, 1040061, 2, 1, 0, 1),
+	(268, 1040060, 2, 1, 0, 1),
+	(269, 1040059, 2, 1, 0, 1),
+	(270, 1040058, 2, 1, 0, 1),
+	(271, 1040057, 2, 1, 0, 1),
+	(272, 1040056, 2, 1, 0, 0),
+	(273, 1040055, 2, 1, 0, 1),
+	(274, 1040053, 2, 1, 0, 1),
+	(275, 1040052, 2, 1, 0, 1),
+	(276, 1040050, 2, 1, 0, 1),
+	(277, 1040049, 2, 1, 0, 1),
+	(278, 1040048, 2, 1, 0, 1),
+	(279, 1040047, 2, 1, 0, 1),
+	(280, 1040046, 2, 1, 0, 1),
+	(281, 1040045, 2, 1, 0, 1),
+	(282, 1040044, 2, 1, 0, 1),
+	(283, 1040043, 2, 1, 0, 1),
+	(284, 1040042, 2, 1, 0, 1),
+	(285, 1040041, 2, 1, 0, 1),
+	(286, 1040040, 2, 1, 0, 1),
+	(287, 1040039, 2, 1, 0, 1),
+	(288, 1040038, 2, 1, 0, 1),
+	(289, 1040037, 2, 1, 0, 1),
+	(290, 1040036, 2, 1, 0, 1),
+	(291, 1040035, 2, 1, 0, 1),
+	(292, 1040034, 2, 1, 0, 1),
+	(293, 1040033, 2, 1, 0, 1),
+	(294, 1040032, 2, 1, 0, 1),
+	(295, 1040031, 2, 1, 0, 1),
+	(296, 1040030, 2, 1, 0, 1),
+	(297, 1040029, 2, 1, 0, 1),
+	(298, 1040028, 2, 1, 0, 1),
+	(299, 1040027, 2, 1, 0, 1),
+	(300, 1040026, 2, 1, 0, 1),
+	(301, 1040025, 2, 1, 0, 1),
+	(302, 1040024, 2, 1, 0, 1),
+	(303, 1040023, 2, 1, 0, 1),
+	(304, 1040022, 2, 1, 0, 1),
+	(305, 1040021, 2, 1, 0, 1),
+	(306, 1040020, 2, 1, 0, 1),
+	(307, 1040019, 2, 1, 0, 1),
+	(308, 1040018, 2, 1, 0, 1),
+	(309, 1040017, 2, 1, 0, 1),
+	(310, 1040016, 2, 1, 0, 1),
+	(311, 1040015, 2, 1, 0, 1),
+	(312, 1040014, 2, 1, 0, 1),
+	(313, 1040013, 2, 1, 0, 1),
+	(314, 1040012, 2, 1, 0, 1),
+	(315, 1040011, 2, 1, 0, 1),
+	(316, 1040010, 2, 1, 0, 1),
+	(317, 1040009, 2, 1, 0, 1),
+	(318, 1040008, 2, 1, 0, 1),
+	(319, 1040007, 2, 1, 0, 1),
+	(320, 1040006, 2, 1, 0, 1),
+	(321, 1040005, 2, 1, 0, 1),
+	(322, 1040004, 2, 1, 0, 1),
+	(323, 1040003, 2, 1, 0, 1),
+	(324, 1040002, 2, 1, 0, 1),
+	(325, 1040001, 2, 1, 0, 1),
+	(326, 1051018, 2, 1, 0, 1),
+	(327, 1051017, 2, 1, 0, 0),
+	(328, 1051016, 2, 1, 0, 1),
+	(329, 1051015, 2, 1, 0, 1),
+	(330, 1051011, 2, 1, 0, 1),
+	(331, 1051010, 2, 1, 0, 1),
+	(332, 1051009, 2, 1, 0, 1),
+	(333, 1051008, 2, 1, 0, 1),
+	(334, 1051007, 2, 1, 0, 1),
+	(335, 1051006, 2, 1, 0, 1),
+	(336, 1051003, 2, 1, 0, 1),
+	(337, 1051002, 2, 1, 0, 1),
+	(338, 1051001, 2, 1, 0, 1),
+	(339, 1050067, 2, 1, 0, 1),
+	(340, 1050066, 2, 1, 0, 0),
+	(341, 1050065, 2, 1, 0, 1),
+	(342, 1050064, 2, 1, 0, 1),
+	(343, 1050063, 2, 1, 0, 1),
+	(344, 1050062, 2, 1, 0, 1),
+	(345, 1050061, 2, 1, 0, 1),
+	(346, 1050060, 2, 1, 0, 1),
+	(347, 1050059, 2, 1, 0, 1),
+	(348, 1050058, 2, 1, 0, 1),
+	(349, 1050057, 2, 1, 0, 0),
+	(350, 1050056, 2, 1, 0, 0),
+	(351, 1050055, 2, 1, 0, 0),
+	(352, 1050054, 2, 1, 0, 0),
+	(353, 1050052, 2, 1, 0, 1),
+	(354, 1050051, 2, 1, 0, 1),
+	(355, 1050049, 2, 1, 0, 1),
+	(356, 1050048, 2, 1, 0, 1),
+	(357, 1050047, 2, 1, 0, 1),
+	(358, 1050046, 2, 1, 0, 1),
+	(359, 1050045, 2, 1, 0, 1),
+	(360, 1050044, 2, 1, 0, 1),
+	(361, 1050043, 2, 1, 0, 1),
+	(362, 1050042, 2, 1, 0, 1),
+	(363, 1050041, 2, 1, 0, 1),
+	(364, 1050040, 2, 1, 0, 1),
+	(365, 1050039, 2, 1, 0, 1),
+	(366, 1050038, 2, 1, 0, 1),
+	(367, 1050037, 2, 1, 0, 1),
+	(368, 1050036, 2, 1, 0, 1),
+	(369, 1050035, 2, 1, 0, 1),
+	(370, 1050034, 2, 1, 0, 1),
+	(371, 1050033, 2, 1, 0, 1),
+	(372, 1050032, 2, 1, 0, 1),
+	(373, 1050031, 2, 1, 0, 1),
+	(374, 1050030, 2, 1, 0, 1),
+	(375, 1050029, 2, 1, 0, 1),
+	(376, 1050028, 2, 1, 0, 1),
+	(377, 1050027, 2, 1, 0, 1),
+	(378, 1050026, 2, 1, 0, 1),
+	(379, 1050025, 2, 1, 0, 1),
+	(380, 1050024, 2, 1, 0, 1),
+	(381, 1050023, 2, 1, 0, 1),
+	(382, 1050022, 2, 1, 0, 1),
+	(383, 1050021, 2, 1, 0, 1),
+	(384, 1050020, 2, 1, 0, 1),
+	(385, 1050019, 2, 1, 0, 1),
+	(386, 1050018, 2, 1, 0, 1),
+	(387, 1050017, 2, 1, 0, 1),
+	(388, 1050016, 2, 1, 0, 1),
+	(389, 1050015, 2, 1, 0, 1),
+	(390, 1050014, 2, 1, 0, 1),
+	(391, 1050013, 2, 1, 0, 1),
+	(392, 1050012, 2, 1, 0, 1),
+	(393, 1050011, 2, 1, 0, 1),
+	(394, 1050010, 2, 1, 0, 1),
+	(395, 1050009, 2, 1, 0, 1),
+	(396, 1050008, 2, 1, 0, 1),
+	(397, 1050007, 2, 1, 0, 1),
+	(398, 1050006, 2, 1, 0, 1),
+	(399, 1050005, 2, 1, 0, 1),
+	(400, 1050004, 2, 1, 0, 1),
+	(401, 1050003, 2, 1, 0, 1),
+	(402, 1050001, 2, 1, 0, 1),
+	(403, 1050002, 2, 1, 0, 1),
+	(404, 1060088, 2, 1, 0, 0),
+	(405, 1060087, 2, 1, 0, 0),
+	(406, 1060086, 2, 1, 0, 0),
+	(407, 1061017, 2, 1, 0, 1),
+	(408, 1061016, 2, 1, 0, 1),
+	(409, 1061015, 2, 1, 0, 1),
+	(410, 1060085, 2, 1, 0, 1),
+	(411, 1060084, 2, 1, 0, 1),
+	(412, 1061014, 2, 1, 0, 1),
+	(413, 1061013, 2, 1, 0, 1),
+	(414, 1061012, 2, 1, 0, 1),
+	(415, 1061011, 2, 1, 0, 1),
+	(416, 1061010, 2, 1, 0, 1),
+	(417, 1061009, 2, 1, 0, 1),
+	(418, 1060083, 2, 1, 0, 1),
+	(419, 1060082, 2, 1, 0, 1),
+	(420, 1061008, 2, 1, 0, 1),
+	(421, 1061005, 2, 1, 0, 1),
+	(422, 1061004, 2, 1, 0, 1),
+	(423, 1060081, 2, 1, 0, 1),
+	(424, 1060080, 2, 1, 0, 1),
+	(425, 1060079, 2, 1, 0, 1),
+	(426, 1060078, 2, 1, 0, 1),
+	(427, 1060077, 2, 1, 0, 1),
+	(428, 1061003, 2, 1, 0, 1),
+	(431, 1060072, 2, 1, 0, 1),
+	(432, 1060071, 2, 1, 0, 1),
+	(433, 1060070, 2, 1, 0, 1),
+	(434, 1060069, 2, 1, 0, 1),
+	(435, 1060068, 2, 1, 0, 1),
+	(436, 1060067, 2, 1, 0, 1),
+	(439, 1060064, 2, 1, 0, 1),
+	(444, 1060059, 2, 1, 0, 1),
+	(445, 1060058, 2, 1, 0, 1),
+	(450, 1060053, 2, 1, 0, 1),
+	(452, 1060051, 2, 1, 0, 0),
+	(453, 1060050, 2, 1, 0, 1),
+	(454, 1060049, 2, 1, 0, 1),
+	(455, 1060048, 2, 1, 0, 1),
+	(456, 1060047, 2, 1, 0, 1),
+	(457, 1060046, 2, 1, 0, 1),
+	(462, 1060041, 2, 1, 0, 0),
+	(464, 1060039, 2, 1, 0, 1),
+	(465, 1060032, 2, 1, 0, 1),
+	(466, 1060031, 2, 1, 0, 1),
+	(467, 1060030, 2, 1, 0, 1),
+	(468, 1060029, 2, 1, 0, 1),
+	(469, 1060028, 2, 1, 0, 1),
+	(470, 1060027, 2, 1, 0, 1),
+	(471, 1060026, 2, 1, 0, 1),
+	(472, 1060025, 2, 1, 0, 1),
+	(473, 1060024, 2, 1, 0, 1),
+	(474, 1060023, 2, 1, 0, 1),
+	(475, 1060022, 2, 1, 0, 1),
+	(476, 1060021, 2, 1, 0, 1),
+	(477, 1060020, 2, 1, 0, 1),
+	(478, 1060019, 2, 1, 0, 1),
+	(479, 1060018, 2, 1, 0, 1),
+	(480, 1060017, 2, 1, 0, 1),
+	(481, 1060016, 2, 1, 0, 1),
+	(482, 1060015, 2, 1, 0, 1),
+	(483, 1060014, 2, 1, 0, 1),
+	(484, 1060013, 2, 1, 0, 1),
+	(485, 1060012, 2, 1, 0, 1),
+	(486, 1060011, 2, 1, 0, 1),
+	(488, 1060009, 2, 1, 0, 1),
+	(494, 1060003, 2, 1, 0, 1),
+	(497, 1060000, 2, 1, 0, 1),
+	(498, 1060038, 2, 1, 0, 0),
+	(499, 1060037, 2, 1, 0, 0),
+	(500, 1060036, 2, 1, 0, 0),
+	(501, 1060035, 2, 1, 0, 0),
+	(502, 1060034, 2, 1, 0, 0),
+	(503, 1060033, 2, 1, 0, 0),
+	(505, 2000001, 2, 1, 0, 1),
+	(506, 2000002, 2, 1, 0, 1),
+	(507, 2000003, 2, 1, 0, 1),
+	(508, 2000004, 2, 1, 0, 0),
+	(509, 2000005, 2, 1, 0, 1),
+	(510, 2000007, 2, 1, 0, 1),
+	(511, 2000008, 2, 1, 0, 1),
+	(512, 2000009, 2, 1, 0, 1),
+	(514, 2010001, 2, 1, 0, 1),
+	(515, 2010002, 2, 1, 0, 1),
+	(516, 2010004, 2, 1, 0, 1),
+	(517, 2010006, 2, 1, 0, 1),
+	(518, 2010007, 2, 1, 0, 1),
+	(519, 2010008, 2, 1, 0, 1),
+	(522, 2010011, 2, 1, 0, 1),
+	(524, 2010013, 2, 1, 0, 0),
+	(526, 2010016, 2, 1, 0, 1),
+	(527, 2010017, 2, 1, 0, 1),
+	(529, 2010019, 2, 1, 0, 1),
+	(530, 2010020, 2, 1, 0, 1),
+	(531, 2020001, 2, 1, 0, 1),
+	(532, 2020002, 2, 1, 0, 1),
+	(533, 2020003, 2, 1, 0, 0),
+	(534, 2020004, 2, 1, 0, 1),
+	(535, 2030001, 2, 1, 0, 1),
+	(536, 2030002, 2, 1, 0, 1),
+	(538, 2030004, 2, 1, 0, 1),
+	(539, 2030005, 2, 1, 0, 0),
+	(540, 2030006, 2, 1, 0, 0),
+	(541, 2040001, 2, 1, 0, 1),
+	(542, 2040002, 2, 1, 0, 1),
+	(543, 2040003, 2, 1, 0, 1),
+	(546, 2050001, 2, 1, 0, 1),
+	(549, 2060001, 2, 1, 0, 1),
+	(550, 2060002, 2, 1, 0, 1),
+	(551, 2060003, 2, 1, 0, 0),
+	(553, 3000000, 1, 3, 0, 0),
+	(554, 3000001, 1, 2, 0, 1),
+	(555, 3000002, 1, 4, 0, 1),
+	(557, 3010001, 1, 1, 0, 1),
+	(558, 3020001, 1, 1, 0, 1),
+	(559, 3030001, 1, 1, 0, 1),
+	(560, 3040001, 1, 1, 0, 1),
+	(561, 3050001, 1, 1, 0, 1),
+	(562, 3060001, 1, 1, 0, 1),
+	(563, 3070001, 1, 1, 0, 1),
+	(564, 3080001, 1, 1, 0, 1),
+	(565, 2000012, 2, 1, 0, 0),
+	(566, 2000500, 2, 1, 0, 0),
+	(567, 2000501, 2, 1, 0, 0),
+	(568, 2000502, 2, 1, 0, 1),
+	(569, 2000010, 2, 1, 0, 1),
+	(570, 1022000, 2, 7, 0, 1),
+	(571, 1031020, 2, 7, 0, 1),
+	(572, 1031021, 2, 7, 0, 1),
+	(573, 1060090, 2, 1, 0, 1),
+	(574, 1060091, 2, 1, 0, 1),
+	(575, 1041020, 2, 1, 0, 1),
+	(576, 1051020, 2, 1, 0, 1),
+	(577, 1001003, 2, 1, 0, 1),
+	(578, 1060092, 2, 1, 0, 1),
+	(579, 1011007, 2, 1, 0, 1),
+	(580, 1011006, 2, 1, 0, 1),
+	(582, 1011004, 2, 1, 0, 1),
+	(583, 1011003, 2, 1, 0, 1),
+	(584, 1022001, 2, 7, 0, 1),
+	(585, 1022002, 2, 7, 0, 1),
+	(586, 1022003, 2, 7, 0, 1),
+	(587, 1022004, 2, 7, 0, 1),
+	(588, 1022005, 2, 7, 0, 1),
+	(589, 1022006, 2, 7, 0, 1),
+	(590, 1022007, 2, 7, 0, 1),
+	(591, 1022008, 2, 7, 0, 1),
+	(592, 1022009, 2, 7, 0, 1),
+	(593, 1022010, 2, 7, 0, 1),
+	(594, 1031022, 2, 7, 0, 1),
+	(595, 1031023, 2, 7, 0, 1),
+	(596, 1031024, 2, 7, 0, 1),
+	(597, 1031025, 2, 7, 0, 1),
+	(598, 1031026, 2, 7, 0, 1),
+	(599, 1031027, 2, 7, 0, 1),
+	(600, 1031028, 2, 7, 0, 1),
+	(601, 1031029, 2, 7, 0, 1),
+	(602, 1031030, 2, 7, 0, 1),
+	(603, 1031031, 2, 7, 0, 1),
+	(604, 1041021, 2, 1, 0, 1),
+	(605, 1041022, 2, 1, 0, 1),
+	(606, 1041023, 2, 1, 0, 1),
+	(607, 1041024, 2, 1, 0, 1),
+	(608, 1041025, 2, 1, 0, 1),
+	(609, 1041026, 2, 1, 0, 1),
+	(610, 1041027, 2, 1, 0, 1),
+	(611, 1041028, 2, 1, 0, 1),
+	(612, 1041029, 2, 1, 0, 1),
+	(613, 1041030, 2, 1, 0, 1),
+	(615, 1001005, 2, 1, 0, 1),
+	(616, 1001006, 2, 1, 0, 1),
+	(617, 1001007, 2, 1, 0, 1),
+	(618, 1051021, 2, 1, 0, 1),
+	(619, 1051022, 2, 1, 0, 1),
+	(620, 1051023, 2, 1, 0, 1),
+	(621, 1051024, 2, 1, 0, 1),
+	(622, 1051025, 2, 1, 0, 1),
+	(623, 1051026, 2, 1, 0, 1),
+	(624, 1051027, 2, 1, 0, 1),
+	(625, 1051028, 2, 1, 0, 1),
+	(626, 1051029, 2, 1, 0, 1),
+	(627, 1051030, 2, 1, 0, 1),
+	(628, 2000503, 2, 1, 0, 1),
+	(629, 2000504, 2, 1, 0, 1),
+	(630, 1022011, 2, 7, 0, 1),
+	(631, 1022012, 2, 7, 0, 1),
+	(632, 1051031, 2, 1, 0, 1),
+	(633, 1051032, 2, 1, 0, 1),
+	(635, 1001009, 2, 1, 0, 1),
+	(636, 1041031, 2, 1, 0, 1),
+	(637, 1041032, 2, 1, 0, 1),
+	(638, 1031032, 2, 7, 0, 1),
+	(639, 1031033, 2, 7, 0, 1),
+	(640, 2000505, 2, 1, 0, 1),
+	(641, 2010601, 2, 1, 0, 1),
+	(642, 2010602, 2, 1, 0, 1),
+	(643, 2010603, 2, 1, 0, 1),
+	(644, 2020605, 2, 1, 0, 1),
+	(645, 2010606, 2, 1, 0, 1),
+	(646, 1001010, 2, 1, 0, 1),
+	(647, 1001011, 2, 1, 0, 1),
+	(648, 1001012, 2, 1, 0, 1),
+	(649, 1001013, 2, 1, 0, 1),
+	(650, 1001014, 2, 1, 0, 1),
+	(651, 1001015, 2, 1, 0, 1),
+	(652, 1060093, 2, 1, 0, 1),
+	(653, 1001016, 2, 1, 0, 1),
+	(654, 1011008, 2, 1, 0, 1),
+	(655, 1022013, 2, 7, 0, 1),
+	(656, 1031034, 2, 7, 0, 1),
+	(657, 1051033, 2, 1, 0, 1),
+	(658, 1041033, 2, 1, 0, 1),
+	(659, 1060094, 2, 1, 0, 1),
+	(660, 1001017, 2, 1, 0, 1),
+	(661, 1011009, 2, 1, 0, 1),
+	(662, 1022014, 2, 7, 0, 1),
+	(663, 1031035, 2, 7, 0, 1),
+	(664, 1051034, 2, 1, 0, 1),
+	(665, 1041034, 2, 1, 0, 1),
+	(666, 1022016, 2, 7, 0, 1),
+	(667, 1031037, 2, 7, 0, 1),
+	(668, 1051036, 2, 1, 0, 1),
+	(669, 1041036, 2, 1, 0, 1),
+	(670, 1022015, 2, 7, 0, 1),
+	(671, 1031036, 2, 7, 0, 1),
+	(672, 1051035, 2, 1, 0, 1),
+	(673, 1041035, 2, 1, 0, 1),
+	(674, 1022017, 2, 7, 0, 1),
+	(675, 1031038, 2, 7, 0, 1),
+	(676, 1051037, 2, 1, 0, 1),
+	(677, 1041037, 2, 1, 0, 1),
+	(678, 1022018, 2, 7, 0, 1),
+	(679, 1031039, 2, 7, 0, 1),
+	(680, 1051038, 2, 1, 0, 1),
+	(681, 1041038, 2, 1, 0, 1),
+	(682, 1060095, 2, 1, 0, 1),
+	(683, 2000506, 2, 1, 0, 1),
+	(684, 2000507, 2, 1, 0, 0),
+	(685, 1060002, 2, 1, 0, 1),
+	(686, 1060001, 2, 1, 0, 1),
+	(687, 2000508, 2, 1, 0, 1),
+	(688, 1060096, 2, 1, 0, 1),
+	(689, 1031041, 2, 7, 0, 1),
+	(690, 1022019, 2, 7, 0, 1),
+	(691, 1031040, 2, 7, 0, 1),
+	(692, 1041039, 2, 1, 0, 1),
+	(693, 1051039, 2, 1, 0, 1),
+	(695, 1001018, 2, 1, 0, 1),
+	(696, 1001019, 2, 1, 0, 1),
+	(697, 1001020, 2, 1, 0, 1),
+	(698, 1060098, 2, 1, 0, 1),
+	(699, 1060099, 2, 1, 0, 1),
+	(700, 1060100, 2, 1, 0, 1),
+	(701, 1022020, 2, 7, 0, 1),
+	(702, 1022021, 2, 7, 0, 1),
+	(704, 1031042, 2, 7, 0, 1),
+	(705, 1031043, 2, 7, 0, 1),
+	(706, 1051040, 2, 1, 0, 1),
+	(707, 1051041, 2, 1, 0, 1),
+	(708, 1041040, 2, 1, 0, 1),
+	(709, 1041041, 2, 1, 0, 1),
+	(710, 2000511, 2, 1, 0, 1),
+	(711, 2000510, 2, 1, 0, 1),
+	(712, 2010607, 2, 1, 0, 1),
+	(713, 2000608, 2, 1, 0, 1),
+	(714, 2000609, 2, 1, 0, 1),
+	(715, 2000512, 2, 1, 0, 1),
+	(716, 2000513, 2, 1, 0, 1),
+	(717, 2000610, 2, 1, 0, 1),
+	(718, 2000611, 2, 1, 0, 0),
+	(719, 2010015, 2, 1, 0, 0),
+	(720, 2010018, 2, 1, 0, 0),
+	(721, 2000612, 2, 1, 0, 1),
+	(722, 1041042, 2, 1, 0, 1),
+	(723, 1001021, 2, 1, 0, 1),
+	(724, 1001022, 2, 1, 0, 1),
+	(725, 1031044, 2, 7, 0, 1),
+	(726, 1022022, 2, 7, 0, 1),
+	(727, 1022023, 2, 7, 0, 1),
+	(728, 1022024, 2, 7, 0, 1),
+	(729, 1051042, 2, 1, 0, 1),
+	(730, 1051043, 2, 1, 0, 1),
+	(731, 1051044, 2, 1, 0, 1),
+	(732, 1031045, 2, 7, 0, 1),
+	(733, 1041043, 2, 1, 0, 1),
+	(734, 1041044, 2, 1, 0, 1),
+	(735, 1022025, 2, 7, 0, 1),
+	(736, 1031046, 2, 7, 0, 1),
+	(737, 1022026, 2, 7, 0, 1),
+	(738, 1031047, 2, 7, 0, 1),
+	(739, 1022027, 2, 7, 0, 1),
+	(740, 1041045, 2, 1, 0, 1),
+	(741, 1051045, 2, 1, 0, 1),
+	(742, 1051046, 2, 1, 0, 1),
+	(743, 1041046, 2, 1, 0, 1),
+	(744, 1022028, 2, 7, 0, 1),
+	(745, 1031048, 2, 7, 0, 1),
+	(746, 1031049, 2, 7, 0, 1),
+	(747, 1041047, 2, 1, 0, 1),
+	(748, 1031050, 2, 7, 0, 1),
+	(749, 1041048, 2, 1, 0, 1),
+	(750, 1041049, 2, 1, 0, 1),
+	(751, 1041050, 2, 1, 0, 1),
+	(752, 1041051, 2, 1, 0, 1),
+	(753, 1060101, 2, 1, 0, 1),
+	(754, 1001023, 2, 1, 0, 1),
+	(757, 1022029, 2, 7, 0, 1),
+	(758, 1051047, 2, 1, 0, 1),
+	(759, 1022030, 2, 7, 0, 1),
+	(760, 1022031, 2, 7, 0, 1),
+	(761, 1022032, 2, 7, 0, 1),
+	(762, 1031052, 2, 7, 0, 1),
+	(763, 1051048, 2, 1, 0, 1),
+	(764, 1051049, 2, 1, 0, 1),
+	(765, 1022033, 2, 7, 0, 1),
+	(766, 1001025, 2, 1, 0, 1),
+	(767, 2000613, 2, 1, 0, 1),
+	(768, 2010614, 2, 1, 0, 1),
+	(769, 2000614, 2, 1, 0, 1),
+	(770, 1060075, 2, 1, 0, 1),
+	(771, 1060074, 2, 1, 0, 1),
+	(772, 1060066, 2, 1, 0, 1),
+	(773, 1060065, 2, 1, 0, 1),
+	(774, 1060063, 2, 1, 0, 1),
+	(775, 1060062, 2, 1, 0, 1),
+	(776, 1060061, 2, 1, 0, 1),
+	(777, 1060060, 2, 1, 0, 1),
+	(778, 1060057, 2, 1, 0, 1),
+	(779, 1060056, 2, 1, 0, 1),
+	(780, 1060055, 2, 1, 0, 1),
+	(781, 1060054, 2, 1, 0, 1),
+	(782, 1060052, 2, 1, 0, 1),
+	(783, 1060045, 2, 1, 0, 1),
+	(784, 1060044, 2, 1, 0, 1),
+	(785, 1060043, 2, 1, 0, 1),
+	(786, 1060042, 2, 1, 0, 1),
+	(787, 1060040, 2, 1, 0, 1),
+	(788, 1060010, 2, 1, 0, 1),
+	(789, 1060008, 2, 1, 0, 1),
+	(790, 1060007, 2, 1, 0, 1),
+	(791, 1060006, 2, 1, 0, 1),
+	(792, 1060005, 2, 1, 0, 1),
+	(793, 1060004, 2, 1, 0, 1),
+	(794, 2000000, 2, 1, 0, 1),
+	(795, 2000006, 2, 1, 0, 1),
+	(796, 2000011, 2, 1, 0, 1),
+	(797, 2010000, 2, 1, 0, 1),
+	(798, 2010009, 2, 1, 0, 1),
+	(799, 2010010, 2, 1, 0, 1),
+	(800, 2010012, 2, 1, 0, 1),
+	(801, 2010014, 2, 1, 0, 1),
+	(802, 2030003, 2, 1, 0, 1),
+	(803, 2040005, 2, 1, 0, 1),
+	(804, 2050002, 2, 1, 0, 1),
+	(805, 2050003, 2, 1, 0, 1),
+	(806, 2060004, 2, 1, 0, 1),
+	(807, 3000003, 1, 5, 0, 1),
+	(808, 4000001, 2, 1, 0, 1),
+	(809, 4000002, 2, 1, 0, 1),
+	(810, 4000003, 2, 1, 0, 1),
+	(811, 4000004, 2, 1, 0, 1),
+	(812, 4000005, 2, 1, 0, 1),
+	(813, 4010001, 2, 1, 0, 1),
+	(814, 4020001, 2, 1, 0, 1),
+	(815, 4020002, 2, 1, 0, 1),
+	(816, 4020003, 2, 1, 0, 1),
+	(817, 4020004, 2, 1, 0, 1),
+	(818, 4020005, 2, 1, 0, 1),
+	(819, 4020006, 2, 1, 0, 1),
+	(820, 4030003, 2, 1, 0, 1),
+	(821, 4030004, 2, 1, 0, 1),
+	(822, 4030005, 2, 1, 0, 1),
+	(823, 4030006, 2, 1, 0, 1),
+	(824, 4030007, 2, 1, 0, 1),
+	(825, 4030008, 2, 1, 0, 1),
+	(826, 4030009, 2, 1, 0, 1),
+	(827, 4030010, 2, 1, 0, 1),
+	(828, 4030011, 2, 1, 0, 1),
+	(829, 4030012, 2, 1, 0, 1),
+	(830, 4030013, 2, 1, 0, 1),
+	(831, 4030014, 2, 1, 0, 1),
+	(832, 4030015, 2, 1, 0, 1),
+	(833, 4030016, 2, 1, 0, 1),
+	(834, 4030017, 2, 1, 0, 1),
+	(835, 4030018, 2, 1, 0, 1),
+	(836, 4030019, 2, 1, 0, 1),
+	(837, 4030020, 2, 1, 0, 1),
+	(838, 4030021, 2, 1, 0, 1),
+	(839, 4030022, 2, 1, 0, 1),
+	(840, 4030023, 2, 1, 0, 1),
+	(841, 4030024, 2, 1, 0, 1),
+	(842, 4030025, 2, 1, 0, 1),
+	(843, 4030026, 2, 1, 0, 1),
+	(844, 4030027, 2, 1, 0, 1),
+	(845, 4030028, 2, 1, 0, 1),
+	(846, 4030029, 2, 1, 0, 1),
+	(847, 4030030, 2, 1, 0, 1),
+	(848, 4030031, 2, 1, 0, 1),
+	(849, 4030032, 2, 1, 0, 1),
+	(850, 4030033, 2, 1, 0, 1),
+	(851, 4030034, 2, 1, 0, 1),
+	(852, 4030035, 2, 1, 0, 1),
+	(853, 4030036, 2, 1, 0, 1),
+	(854, 4030037, 2, 1, 0, 1),
+	(855, 4030038, 2, 1, 0, 1),
+	(856, 4030039, 2, 1, 0, 1),
+	(857, 4030040, 2, 1, 0, 1),
+	(858, 4030041, 2, 1, 0, 1),
+	(859, 4030042, 2, 1, 0, 1),
+	(860, 4030043, 2, 1, 0, 1),
+	(861, 4030044, 2, 1, 0, 1),
+	(862, 4030045, 2, 1, 0, 1),
+	(863, 4030046, 2, 1, 0, 1),
+	(864, 4030047, 2, 1, 0, 1),
+	(865, 4030048, 2, 1, 0, 1),
+	(866, 4030049, 2, 1, 0, 1),
+	(867, 4030050, 2, 1, 0, 1),
+	(868, 4030051, 2, 1, 0, 1),
+	(869, 4030052, 2, 1, 0, 1),
+	(870, 4030053, 2, 1, 0, 1),
+	(871, 4030054, 2, 1, 0, 1),
+	(872, 4030055, 2, 1, 0, 1),
+	(873, 4030056, 2, 1, 0, 1),
+	(874, 4030057, 2, 1, 0, 1),
+	(875, 4030058, 2, 1, 0, 1),
+	(876, 4030059, 2, 1, 0, 1),
+	(877, 4030060, 2, 1, 0, 1),
+	(878, 4060001, 2, 1, 0, 1),
+	(879, 4060002, 2, 1, 0, 1),
+	(880, 4060003, 2, 1, 0, 1),
+	(881, 4060004, 2, 1, 0, 1),
+	(882, 4060005, 2, 1, 0, 1),
+	(883, 4060006, 2, 1, 0, 1),
+	(884, 4060007, 2, 1, 0, 1),
+	(885, 4060008, 2, 1, 0, 1),
+	(886, 4060009, 2, 1, 0, 1),
+	(887, 4060010, 2, 1, 0, 1),
+	(888, 4060011, 2, 1, 0, 1),
+	(889, 4060012, 2, 1, 0, 1),
+	(890, 4060013, 2, 1, 0, 1),
+	(891, 4060014, 2, 1, 0, 1),
+	(892, 4040001, 2, 1, 0, 1),
+	(893, 4040002, 2, 1, 0, 1),
+	(894, 4050001, 2, 1, 0, 1),
+	(895, 4050002, 2, 1, 0, 1),
+	(896, 4050003, 2, 1, 0, 1),
+	(897, 4050004, 2, 1, 0, 1),
+	(898, 4050005, 2, 1, 0, 1),
+	(899, 4050006, 2, 1, 0, 1),
+	(900, 4050007, 2, 1, 0, 1),
+	(901, 4050008, 2, 1, 0, 1),
+	(902, 4050009, 2, 1, 0, 1),
+	(903, 4050010, 2, 1, 0, 1),
+	(904, 4050011, 2, 1, 0, 1),
+	(905, 4050012, 2, 1, 0, 1),
+	(906, 4050013, 2, 1, 0, 1),
+	(907, 4050014, 2, 1, 0, 1),
+	(908, 4050015, 2, 1, 0, 1),
+	(909, 4050016, 2, 1, 0, 1),
+	(910, 4050017, 2, 1, 0, 1),
+	(911, 4050018, 2, 1, 0, 1),
+	(912, 4050019, 2, 1, 0, 1),
+	(913, 4050020, 2, 1, 0, 1),
+	(914, 4050021, 2, 1, 0, 1),
+	(915, 4050022, 2, 1, 0, 1),
+	(916, 4050023, 2, 1, 0, 1),
+	(917, 4050024, 2, 1, 0, 1),
+	(918, 4050025, 2, 1, 0, 1),
+	(919, 4050026, 2, 1, 0, 1),
+	(920, 4050027, 2, 1, 0, 1),
+	(921, 4050028, 2, 1, 0, 1),
+	(922, 4050029, 2, 1, 0, 1),
+	(923, 4050030, 2, 1, 0, 1),
+	(924, 4050031, 2, 1, 0, 1),
+	(925, 4050032, 2, 1, 0, 1),
+	(926, 4050033, 2, 1, 0, 1),
+	(927, 4050034, 2, 1, 0, 1),
+	(928, 4050035, 2, 1, 0, 1),
+	(929, 4050036, 2, 1, 0, 1),
+	(930, 4050037, 2, 1, 0, 1),
+	(931, 4050038, 2, 1, 0, 1),
+	(932, 4050039, 2, 1, 0, 1),
+	(933, 4050040, 2, 1, 0, 1),
+	(934, 4050041, 2, 1, 0, 1),
+	(935, 4050042, 2, 1, 0, 1),
+	(936, 4050043, 2, 1, 0, 1),
+	(937, 4050044, 2, 1, 0, 1),
+	(938, 4050045, 2, 1, 0, 1),
+	(939, 4050046, 2, 1, 0, 1),
+	(940, 4050047, 2, 1, 0, 1),
+	(941, 4050048, 2, 1, 0, 1),
+	(942, 4050049, 2, 1, 0, 1),
+	(943, 4050050, 2, 1, 0, 1),
+	(944, 4050051, 2, 1, 0, 1),
+	(945, 4050052, 2, 1, 0, 1),
+	(946, 4050053, 2, 1, 0, 1),
+	(947, 4050054, 2, 1, 0, 1),
+	(948, 4050055, 2, 1, 0, 1),
+	(949, 4050056, 2, 1, 0, 1),
+	(950, 4050057, 2, 1, 0, 1),
+	(951, 4050058, 2, 1, 0, 1),
+	(952, 4050059, 2, 1, 0, 1),
+	(953, 4050060, 2, 1, 0, 1),
+	(954, 4050061, 2, 1, 0, 1),
+	(955, 4050062, 2, 1, 0, 1),
+	(956, 4050063, 2, 1, 0, 1),
+	(957, 4050064, 2, 1, 0, 1),
+	(958, 4050065, 2, 1, 0, 1),
+	(959, 4050066, 2, 1, 0, 1),
+	(960, 4050067, 2, 1, 0, 1),
+	(961, 4050068, 2, 1, 0, 1),
+	(962, 4050069, 2, 1, 0, 1),
+	(963, 4050070, 2, 1, 0, 1),
+	(964, 4050071, 2, 1, 0, 1),
+	(965, 4050072, 2, 1, 0, 1),
+	(966, 4050073, 2, 1, 0, 1),
+	(967, 4050074, 2, 1, 0, 1),
+	(968, 4050075, 2, 1, 0, 1),
+	(969, 4050076, 2, 1, 0, 1),
+	(970, 4050077, 2, 1, 0, 1),
+	(971, 4050078, 2, 1, 0, 1),
+	(972, 4050079, 2, 1, 0, 1),
+	(973, 4050080, 2, 1, 0, 1),
+	(974, 4050081, 2, 1, 0, 1),
+	(975, 4050082, 2, 1, 0, 1),
+	(976, 4050083, 2, 1, 0, 1),
+	(977, 4050084, 2, 1, 0, 1),
+	(978, 4050085, 2, 1, 0, 1),
+	(979, 4050086, 2, 1, 0, 1),
+	(980, 4050087, 2, 1, 0, 1),
+	(981, 4050088, 2, 1, 0, 1),
+	(982, 4050089, 2, 1, 0, 1),
+	(983, 4050090, 2, 1, 0, 1),
+	(984, 4050091, 2, 1, 0, 1),
+	(985, 4050092, 2, 1, 0, 1),
+	(986, 4050093, 2, 1, 0, 1),
+	(987, 4050094, 2, 1, 0, 1),
+	(988, 4050095, 2, 1, 0, 1),
+	(989, 4050096, 2, 1, 0, 1),
+	(990, 4050097, 2, 1, 0, 1),
+	(991, 4050098, 2, 1, 0, 1),
+	(992, 4050099, 2, 1, 0, 1),
+	(993, 4050100, 2, 1, 0, 1),
+	(994, 5000001, 2, 1, 0, 1),
+	(995, 5000002, 2, 1, 0, 1),
+	(996, 5020001, 2, 1, 0, 1),
+	(997, 6000001, 2, 1, 0, 1),
+	(998, 6000002, 2, 1, 0, 1),
+	(999, 6000003, 2, 1, 0, 1),
+	(1000, 6000004, 2, 1, 0, 1),
+	(1001, 6000005, 2, 1, 0, 1),
+	(1002, 6000006, 2, 1, 0, 1),
+	(1003, 6000007, 2, 1, 0, 1),
+	(1004, 6000008, 2, 1, 0, 1),
+	(1005, 6000009, 2, 1, 0, 1),
+	(1006, 6000010, 2, 1, 0, 1),
+	(1007, 6000011, 2, 1, 0, 1),
+	(1008, 6000012, 2, 1, 0, 1),
+	(1009, 6000013, 2, 1, 0, 1),
+	(1010, 6000014, 2, 1, 0, 1),
+	(1011, 6000015, 2, 1, 0, 1),
+	(1012, 6000016, 2, 1, 0, 1),
+	(1013, 6000017, 2, 1, 0, 1),
+	(1014, 6000018, 2, 1, 0, 1),
+	(1015, 6000019, 2, 1, 0, 1),
+	(1016, 6000020, 2, 1, 0, 1),
+	(1017, 6000021, 2, 1, 0, 1),
+	(1018, 6000022, 2, 1, 0, 1),
+	(1019, 6000023, 2, 1, 0, 1),
+	(1020, 6000024, 2, 1, 0, 1),
+	(1021, 6000025, 2, 1, 0, 1),
+	(1022, 6000026, 2, 1, 0, 1),
+	(1023, 7000001, 2, 1, 0, 1),
+	(1024, 7000002, 2, 1, 0, 1),
+	(1025, 7000003, 2, 1, 0, 1),
+	(1026, 7000004, 2, 1, 0, 1),
+	(1027, 7000005, 2, 1, 0, 1),
+	(1028, 7000006, 2, 1, 0, 1),
+	(1029, 7000007, 2, 1, 0, 1),
+	(1030, 7000008, 2, 1, 0, 1),
+	(1031, 7000009, 2, 1, 0, 1),
+	(1032, 7000010, 2, 1, 0, 1),
+	(1033, 7000011, 2, 1, 0, 1),
+	(1034, 7000012, 2, 1, 0, 1),
+	(1035, 7000013, 2, 1, 0, 1),
+	(1036, 7000014, 2, 1, 0, 1),
+	(1037, 7000015, 2, 1, 0, 1),
+	(1038, 7000016, 2, 1, 0, 1),
+	(1039, 7010001, 2, 1, 0, 1),
+	(1040, 7010002, 2, 1, 0, 1),
+	(1041, 7010003, 2, 1, 0, 1);
+
+-- Dumping structure for table s4_dump_game.shop_items
+DROP TABLE IF EXISTS `shop_items`;
+CREATE TABLE IF NOT EXISTS `shop_items` (
+  `Id` int(10) unsigned NOT NULL,
+  `RequiredGender` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `RequiredLicense` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `Colors` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `UniqueColors` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `RequiredLevel` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `LevelLimit` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `RequiredMasterLevel` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `IsOneTimeUse` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `IsDestroyable` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.shop_items: ~1,146 rows (approximately)
+INSERT INTO `shop_items` (`Id`, `RequiredGender`, `RequiredLicense`, `Colors`, `UniqueColors`, `RequiredLevel`, `LevelLimit`, `RequiredMasterLevel`, `IsOneTimeUse`, `IsDestroyable`) VALUES
+	(1000000, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000001, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000002, 2, 0, 7, 0, 0, 0, 0, 0, 1),
+	(1000003, 2, 0, 7, 0, 0, 0, 0, 0, 1),
+	(1000004, 2, 0, 7, 0, 0, 0, 0, 0, 1),
+	(1000005, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1000006, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000007, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000008, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000009, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1000010, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000011, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000012, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000013, 1, 0, 8, 0, 0, 0, 0, 0, 1),
+	(1000014, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000015, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000016, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000017, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000018, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000019, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1000020, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1000021, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000022, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000023, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000024, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1000025, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1000026, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1000027, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000028, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1000030, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1000031, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1000032, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000033, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1000034, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1000035, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1001001, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1001002, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1001003, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001005, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001006, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001007, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001009, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1001010, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1001011, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001012, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001013, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001014, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001015, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001016, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1001017, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001018, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1001019, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1001020, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1001021, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1001022, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001023, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1001025, 1, 0, 7, 0, 0, 0, 0, 0, 1),
+	(1010001, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010002, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010003, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010004, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010005, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010006, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010007, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010008, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010009, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010010, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010011, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010012, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010013, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010014, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010015, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010016, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010017, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010018, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010019, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010020, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010022, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010023, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010024, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010025, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010026, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010028, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010031, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010032, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010033, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010034, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1010035, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1011001, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1011002, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1011003, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1011004, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1011006, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1011007, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1011008, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1011009, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020000, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020001, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1020002, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1020003, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020004, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020005, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020006, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020007, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020008, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020009, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020010, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020011, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020012, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020013, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020014, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020015, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020016, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020017, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020018, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020019, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020020, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020021, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020022, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020024, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1020025, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020026, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020027, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020028, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020029, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020030, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020031, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020032, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020033, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020034, 1, 0, 7, 0, 0, 0, 0, 0, 1),
+	(1020035, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1020036, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020037, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020038, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020039, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020040, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020041, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020042, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020043, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020044, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020045, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020046, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020047, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020048, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1020049, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020050, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020051, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1020052, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020053, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020054, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020055, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020056, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020058, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1020059, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020061, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020062, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020063, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020064, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020065, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020066, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020067, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020068, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020069, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1020070, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1020071, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1020072, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020073, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020074, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020075, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020076, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1020077, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1021001, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1021002, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1021003, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1021004, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1021005, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1021006, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1021007, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1021008, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1021009, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1021010, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1021011, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1021015, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1021016, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1021017, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1021018, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1022000, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022001, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022002, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022003, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022004, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022005, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1022006, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022007, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022008, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022009, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022010, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022011, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022012, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022013, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022014, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022015, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1022016, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022017, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1022018, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1022019, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022020, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1022021, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022022, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022023, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022024, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022025, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022026, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022027, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022028, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1022029, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1022030, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1022031, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1022032, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1022033, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1030000, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030001, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030002, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030003, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030004, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030005, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030006, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030007, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030008, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030009, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030010, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030011, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030012, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030013, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030014, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030015, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030016, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030017, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030018, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030019, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030020, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030021, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030022, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030023, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030024, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030025, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030026, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030027, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030028, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030029, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030030, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030031, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030032, 1, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030033, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030034, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030035, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030036, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030037, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030038, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030039, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030040, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030041, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030042, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030043, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030044, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030045, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030046, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030047, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1030048, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030049, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030050, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030051, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030052, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1030053, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030054, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030056, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030057, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030059, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030060, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030061, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030062, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030063, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030064, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030065, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030066, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1030067, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030068, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1030069, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030070, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030071, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030072, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030073, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1030074, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1031001, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1031002, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1031003, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1031004, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1031005, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1031006, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1031007, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1031008, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031009, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031010, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1031011, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1031015, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031016, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031017, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1031018, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1031020, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031021, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031022, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031023, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031024, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031025, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031026, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031027, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031028, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031029, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031030, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031031, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031032, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031033, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031034, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031035, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031036, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1031037, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031038, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1031039, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1031040, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031041, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031042, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1031043, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1031044, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031045, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1031046, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031047, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031048, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031049, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1031050, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1031052, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040001, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040002, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040003, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040004, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040005, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040006, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040007, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040008, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040009, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040010, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040011, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1040012, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040013, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040014, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040015, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040016, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040017, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040018, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040019, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040020, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1040021, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040022, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040023, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040024, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040025, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040026, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040027, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040028, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040029, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040030, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040031, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040032, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040033, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040034, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040035, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040036, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1040037, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040038, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040039, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040040, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040041, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040042, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040043, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040044, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1040045, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040046, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040047, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040048, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040049, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040050, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040052, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1040053, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040055, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040056, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040057, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040058, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1040059, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1040060, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1040061, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040062, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040063, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040064, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040065, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1040066, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1041001, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1041002, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1041003, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1041006, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1041007, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1041008, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041009, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041010, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1041011, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1041015, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041016, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041017, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1041018, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041020, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041021, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041022, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041023, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041024, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041025, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041026, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041027, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041028, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041029, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041030, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041031, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041032, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041033, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041034, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041035, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1041036, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041037, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1041038, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1041039, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041040, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1041041, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041042, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041043, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1041044, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041045, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041046, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041047, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041048, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041049, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1041050, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1041051, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050001, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1050002, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050003, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050004, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050005, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050006, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1050007, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050008, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050009, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050010, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050011, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1050012, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1050013, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050014, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050015, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050016, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050017, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050018, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050019, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050020, 2, 0, 6, 0, 0, 0, 0, 0, 1),
+	(1050021, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050022, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1050023, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050024, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050025, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050026, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050027, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050028, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050029, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050030, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050031, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050032, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050033, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050034, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050035, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050036, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050037, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050038, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050039, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050040, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050041, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1050042, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1050043, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1050044, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050045, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050046, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050047, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1050048, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1050049, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050051, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1050052, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1050054, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050055, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1050056, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050057, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050058, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1050059, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1050060, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1050061, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1050062, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050063, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050064, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050065, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050066, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1050067, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1051001, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1051002, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1051003, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1051006, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1051007, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1051008, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051009, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051010, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1051011, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1051015, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051016, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051017, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1051018, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1051020, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051021, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051022, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051023, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051024, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051025, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051026, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051027, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051028, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051029, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051030, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051031, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051032, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051033, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051034, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051035, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1051036, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051037, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1051038, 1, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1051039, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051040, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1051041, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051042, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051043, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051044, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051045, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051046, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1051047, 2, 0, 3, 0, 0, 0, 0, 0, 1),
+	(1051048, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1051049, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060000, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060001, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060002, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060003, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060006, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060007, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060008, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060009, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060010, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060011, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060012, 0, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1060013, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060014, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060015, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060016, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060017, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060018, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060019, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060020, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060021, 2, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1060022, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060023, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060024, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060025, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060026, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060027, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060028, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060029, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060030, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060031, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060032, 1, 0, 5, 0, 0, 0, 0, 0, 1),
+	(1060033, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060034, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060035, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060036, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060037, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060038, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060039, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060040, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060041, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060042, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060043, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060044, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060045, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060046, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060047, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060048, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060049, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060050, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060051, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060052, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060053, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060054, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060055, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060056, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060057, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060058, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1060059, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1060060, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060061, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060062, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060063, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060064, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1060065, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060066, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060067, 1, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1060068, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1060069, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060070, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060071, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060072, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060074, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060075, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(1060077, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060078, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060079, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060080, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060081, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060082, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060083, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060084, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060085, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060086, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060087, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060088, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060090, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1060091, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060092, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1060093, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1060094, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1060095, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1060096, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1060098, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060099, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1060100, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1060101, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061003, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061004, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061005, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061008, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1061009, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061010, 2, 0, 4, 0, 0, 0, 0, 0, 1),
+	(1061011, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061012, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061013, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061014, 1, 0, 0, 0, 0, 0, 0, 0, 1),
+	(1061015, 2, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1061016, 1, 0, 2, 0, 0, 0, 0, 0, 1),
+	(1061017, 2, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000000, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2000001, 0, 1, 7, 0, 0, 0, 0, 0, 1),
+	(2000002, 0, 2, 5, 0, 0, 0, 0, 0, 1),
+	(2000003, 0, 26, 4, 0, 0, 0, 0, 0, 1),
+	(2000004, 0, 26, 0, 0, 0, 0, 0, 0, 1),
+	(2000005, 0, 0, 5, 0, 0, 0, 0, 0, 1),
+	(2000006, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2000007, 0, 1, 2, 0, 0, 0, 0, 0, 1),
+	(2000008, 0, 1, 3, 0, 0, 0, 0, 0, 1),
+	(2000009, 0, 2, 0, 0, 0, 0, 0, 0, 1),
+	(2000010, 0, 0, 3, 0, 0, 0, 0, 0, 1),
+	(2000011, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2000012, 0, 2, 0, 0, 0, 0, 0, 0, 1),
+	(2000500, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000501, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000502, 0, 26, 0, 0, 0, 0, 0, 0, 1),
+	(2000503, 0, 1, 0, 0, 0, 0, 0, 0, 1),
+	(2000504, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000505, 0, 0, 2, 0, 0, 0, 0, 0, 1),
+	(2000506, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000507, 0, 26, 0, 0, 0, 0, 0, 0, 1),
+	(2000508, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000510, 0, 0, 5, 0, 0, 0, 0, 0, 1),
+	(2000511, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000512, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000513, 0, 0, 4, 0, 0, 0, 0, 0, 1),
+	(2000608, 0, 0, 4, 0, 0, 0, 0, 0, 1),
+	(2000609, 0, 0, 4, 0, 0, 0, 0, 0, 1),
+	(2000610, 0, 0, 3, 0, 0, 0, 0, 0, 1),
+	(2000611, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000612, 0, 0, 4, 0, 0, 0, 0, 0, 1),
+	(2000613, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2000614, 0, 26, 0, 0, 0, 0, 0, 0, 1),
+	(2010000, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2010001, 0, 3, 4, 0, 0, 0, 0, 0, 1),
+	(2010002, 0, 4, 3, 0, 0, 0, 0, 0, 1),
+	(2010004, 0, 25, 3, 0, 0, 0, 0, 0, 1),
+	(2010006, 0, 0, 5, 0, 0, 0, 0, 0, 1),
+	(2010007, 0, 0, 5, 0, 0, 0, 0, 0, 1),
+	(2010008, 0, 0, 3, 0, 0, 0, 0, 0, 1),
+	(2010009, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2010010, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2010011, 0, 25, 0, 0, 0, 0, 0, 0, 1),
+	(2010012, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2010013, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2010014, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2010015, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2010016, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2010017, 0, 3, 0, 0, 0, 0, 0, 0, 1),
+	(2010018, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2010019, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2010020, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2010601, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2010602, 0, 0, 4, 0, 0, 0, 0, 0, 1),
+	(2010603, 0, 0, 2, 0, 0, 0, 0, 0, 1),
+	(2010606, 0, 4, 0, 0, 0, 0, 0, 0, 1),
+	(2010607, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2010614, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2020001, 0, 5, 4, 0, 0, 0, 0, 0, 1),
+	(2020002, 0, 27, 4, 0, 0, 0, 0, 0, 1),
+	(2020003, 0, 27, 0, 0, 0, 0, 0, 0, 1),
+	(2020004, 0, 5, 0, 0, 0, 0, 0, 0, 1),
+	(2020605, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2030001, 0, 6, 3, 0, 0, 0, 0, 0, 1),
+	(2030002, 0, 7, 3, 0, 0, 0, 0, 0, 1),
+	(2030003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2030004, 0, 7, 2, 0, 0, 0, 0, 0, 1),
+	(2030005, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2030006, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2040001, 0, 8, 4, 0, 0, 0, 0, 0, 1),
+	(2040002, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(2040003, 0, 28, 3, 0, 0, 0, 0, 0, 1),
+	(2040004, 0, 0, 3, 0, 0, 0, 0, 0, 1),
+	(2040005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2050001, 0, 10, 5, 0, 0, 0, 0, 0, 1),
+	(2050002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2050003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(2060001, 0, 11, 3, 0, 0, 0, 0, 0, 1),
+	(2060002, 0, 12, 3, 0, 0, 0, 0, 0, 1),
+	(2060003, 0, 11, 0, 0, 0, 0, 0, 0, 1),
+	(2060004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(3000000, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(3000001, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(3000002, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+	(3000003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(3010001, 0, 13, 0, 0, 0, 0, 0, 0, 1),
+	(3020001, 0, 14, 0, 0, 0, 0, 0, 0, 1),
+	(3030001, 0, 15, 0, 0, 0, 0, 0, 0, 1),
+	(3040001, 0, 16, 0, 0, 0, 0, 0, 0, 1),
+	(3050001, 0, 17, 0, 0, 0, 0, 0, 0, 1),
+	(3060001, 0, 18, 0, 0, 0, 0, 0, 0, 1),
+	(3070001, 0, 19, 0, 0, 0, 0, 0, 0, 1),
+	(3080001, 0, 20, 0, 0, 0, 0, 0, 0, 1),
+	(4000001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4000002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4000003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4000004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4000005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4010001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4020001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4020002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4020003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4020004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4020005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4020006, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030006, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030007, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030008, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030009, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030010, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030011, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030012, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030013, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030014, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030015, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030016, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030017, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030018, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030019, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030020, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030021, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030022, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030023, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030024, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030025, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030026, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030027, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030028, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030029, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030030, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030031, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030032, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030033, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030034, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030035, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030036, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030037, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030038, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030039, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030040, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030041, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030042, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030043, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030044, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030045, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030046, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030047, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030048, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030049, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030050, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030051, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030052, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030053, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030054, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030055, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030056, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030057, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030058, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030059, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4030060, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4040001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4040002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050006, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050007, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050008, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050009, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050010, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050011, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050012, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050013, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050014, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050015, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050016, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050017, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050018, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050019, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050020, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050021, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050022, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050023, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050024, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050025, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050026, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050027, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050028, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050029, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050030, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050031, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050032, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050033, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050034, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050035, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050036, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050037, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050038, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050039, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050040, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050041, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050042, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050043, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050044, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050045, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050046, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050047, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050048, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050049, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050050, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050051, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050052, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050053, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050054, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050055, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050056, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050057, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050058, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050059, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050060, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050061, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050062, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050063, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050064, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050065, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050066, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050067, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050068, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050069, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050070, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050071, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050072, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050073, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050074, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050075, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050076, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050077, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050078, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050079, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050080, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050081, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050082, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050083, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050084, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050085, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050086, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050087, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050088, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050089, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050090, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050091, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050092, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050093, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050094, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050095, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050096, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050097, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050098, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050099, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4050100, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060006, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060007, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060008, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060009, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060010, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060011, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060012, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060013, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(4060014, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(5000001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(5000002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(5020001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000006, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000007, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000008, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000009, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000010, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000011, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000012, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000013, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000014, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000015, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000016, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000017, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000018, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000019, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000020, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000021, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000022, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000023, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000024, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000025, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(6000026, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000003, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000004, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000005, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000006, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000007, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000008, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000009, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000010, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000011, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000012, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000013, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000014, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000015, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7000016, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7010001, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7010002, 1, 0, 1, 0, 0, 0, 0, 0, 1),
+	(7010003, 1, 0, 1, 0, 0, 0, 0, 0, 1);
+
+-- Dumping structure for table s4_dump_game.shop_price_groups
+DROP TABLE IF EXISTS `shop_price_groups`;
+CREATE TABLE IF NOT EXISTS `shop_price_groups` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(20) DEFAULT NULL,
+  `PriceType` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.shop_price_groups: ~2 rows (approximately)
+INSERT INTO `shop_price_groups` (`Id`, `Name`, `PriceType`) VALUES
+	(1, 'PEN', 1),
+	(2, 'PREM', 3);
+
+-- Dumping structure for table s4_dump_game.shop_prices
+DROP TABLE IF EXISTS `shop_prices`;
+CREATE TABLE IF NOT EXISTS `shop_prices` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `PriceGroupId` int(11) NOT NULL,
+  `PeriodType` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `Period` int(11) NOT NULL DEFAULT '0',
+  `Price` int(11) NOT NULL DEFAULT '0',
+  `IsRefundable` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `Durability` int(11) NOT NULL DEFAULT '0',
+  `IsEnabled` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `PriceGroupId` (`PriceGroupId`) USING BTREE,
+  CONSTRAINT `shop_prices_ibfk_1` FOREIGN KEY (`PriceGroupId`) REFERENCES `shop_price_groups` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.shop_prices: ~2 rows (approximately)
+INSERT INTO `shop_prices` (`Id`, `PriceGroupId`, `PeriodType`, `Period`, `Price`, `IsRefundable`, `Durability`, `IsEnabled`) VALUES
+	(1, 1, 1, 0, 1, 1, 1000000, 1),
+	(2, 2, 1, 0, 1, 1, 1000000, 1);
+
+-- Dumping structure for table s4_dump_game.shop_version
+DROP TABLE IF EXISTS `shop_version`;
+CREATE TABLE IF NOT EXISTS `shop_version` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Version` varchar(40) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.shop_version: ~1 rows (approximately)
+INSERT INTO `shop_version` (`Id`, `Version`) VALUES
+	(1, '201708291500');
+
+-- Dumping structure for table s4_dump_game.start_items
+DROP TABLE IF EXISTS `start_items`;
+CREATE TABLE IF NOT EXISTS `start_items` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `ShopItemInfoId` int(11) NOT NULL,
+  `ShopPriceId` int(11) NOT NULL,
+  `ShopEffectId` int(11) NOT NULL,
+  `Color` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `Count` int(11) NOT NULL DEFAULT '0',
+  `RequiredSecurityLevel` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `ShopEffectId` (`ShopEffectId`) USING BTREE,
+  KEY `ShopItemInfoId` (`ShopItemInfoId`) USING BTREE,
+  KEY `ShopPriceId` (`ShopPriceId`) USING BTREE,
+  CONSTRAINT `start_items_ibfk_1` FOREIGN KEY (`ShopItemInfoId`) REFERENCES `shop_iteminfos` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `start_items_ibfk_2` FOREIGN KEY (`ShopPriceId`) REFERENCES `shop_prices` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `start_items_ibfk_3` FOREIGN KEY (`ShopEffectId`) REFERENCES `shop_effects` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table s4_dump_game.start_items: ~0 rows (approximately)
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
--- ---------------------------------------------------------
-
-
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
