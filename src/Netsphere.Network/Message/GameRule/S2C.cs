@@ -776,6 +776,17 @@ namespace Netsphere.Network.Message.GameRule
     [BlubContract]
     public class SArcadeStageInfoAckMessage : IGameRuleMessage
     {
+        public SArcadeStageInfoAckMessage()
+        {
+
+        }
+
+        public SArcadeStageInfoAckMessage(byte unk, int unk2)
+        {
+            Unk1 = unk;
+            Unk2 = unk2;
+        }
+
         [BlubMember(0)]
         public byte Unk1 { get; set; }
 

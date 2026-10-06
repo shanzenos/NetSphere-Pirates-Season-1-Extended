@@ -846,6 +846,11 @@ namespace Netsphere.Network.Services
         {
             //Logger.ForAccount(session.Player.Account)
             //.Debug($"Arcade Stage Info {message.Unk1} {message.Unk2}");
+
+            plr.RoomInfo.ArcadeRespawnCount = 10;
+            session.SendAsync(new SArcadeRespawnAckMessage { Unk = plr.RoomInfo.ArcadeRespawnCount });
+
+            plr.Room.Options.TimeLimit = TimeSpan.FromMilliseconds(message.Unk2);
             GetArcade(session)?.StageInfo(message.Unk1, (byte)message.Unk2);
 
             session.SendAsync(new SArcadeStageInfoAckMessage { Unk1 = message.Unk1, Unk2 = message.Unk2 });
@@ -869,7 +874,10 @@ namespace Netsphere.Network.Services
                 session.SendAsync(new SArcadeRespawnAckMessage { Unk = 0 });
                 return;
             }
-            arcade.Respawn(session.Player);
+
+            plr.RoomInfo.ArcadeRespawnCount = Math.Max(0, plr.RoomInfo.ArcadeRespawnCount - 1);
+            arcade.Respawn(plr);
+            session.SendAsync(new SArcadeRespawnAckMessage { Unk = plr.RoomInfo.ArcadeRespawnCount });
         }
 
         [MessageHandler(typeof(CArcadeStageReadyReqMessage))]
