@@ -73,6 +73,19 @@ namespace ProudNet.Handlers
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
         {
             var session = context.Channel.GetAttribute(ChannelAttributes.Session).Get();
+            if (session == null)
+            {
+                context.CloseAsync();
+                return;
+            }
+
+            // Drop connections that timeout during login
+            if (!session.HandhsakeEvent.IsSet)
+            {
+                session.CloseAsync();
+                return;
+            }
+
             _server.RaiseError(new ErrorEventArgs(session, exception));
             session.CloseAsync();
         }

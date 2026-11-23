@@ -17,6 +17,8 @@ namespace ProudNet.Handlers
         {
             LoggerMessage.DefineScope($"Unhandled exception");
             var session = context.Channel.GetAttribute(ChannelAttributes.Session).Get();
+            if (session != null && !session.HandhsakeEvent.IsSet)
+                return;
             _server.RaiseError(new ErrorEventArgs(session, exception));
             //session?.CloseAsync();
         }
