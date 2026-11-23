@@ -87,8 +87,13 @@ namespace ProudNet
 
             _disposed = true;
 
-            Crypt?.Dispose();
-            return Channel?.CloseAsync();
+            if (Channel == null)
+            {
+                Crypt?.Dispose();
+                return Task.CompletedTask;
+            }
+
+            return Channel.CloseAsync().ContinueWith(_ => Crypt?.Dispose(), TaskScheduler.Default);
         }
 
         public void Dispose()

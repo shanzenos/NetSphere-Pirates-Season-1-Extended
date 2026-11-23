@@ -214,7 +214,8 @@ namespace Netsphere
             if (plr.Room != this)
                 return;
 
-            Group.Leave(plr.RelaySession.HostId);
+            if (plr.RelaySession != null)
+                Group.Leave(plr.RelaySession.HostId);
             Broadcast(new SLeavePlayerAckMessage(plr.Account.Id, plr.Account.Nickname, roomLeaveReason));
 
             if (roomLeaveReason == RoomLeaveReason.Kicked ||
@@ -226,7 +227,7 @@ namespace Netsphere
             plr.RoomInfo.Team.Leave(plr);
             _players.Remove(plr.Account.Id);
             plr.Room = null;
-            plr.Session.SendAsync(new Network.Message.Game.SLeavePlayerAckMessage(plr.Account.Id));
+            plr.Session?.SendAsync(new Network.Message.Game.SLeavePlayerAckMessage(plr.Account.Id));
 
             OnPlayerLeft(new RoomPlayerEventArgs(plr)); //If someone leaves, host is selected from lowestping player
 
@@ -263,7 +264,9 @@ namespace Netsphere
             var good = 30;
             var bad = 190;
 
-            var players = TeamManager.SelectMany(t => t.Value.Values).ToArray();
+            var players = TeamManager.SelectMany(t => t.Value.Values).Where(plr => plr.Session != null).ToArray();
+            if (players.Length == 0)
+                return 0;
             var total = players.Sum(plr => plr.Session.UnreliablePing) / players.Length;
 
             if (total <= good)
