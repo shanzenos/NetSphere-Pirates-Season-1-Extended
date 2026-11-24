@@ -30,7 +30,10 @@ namespace Netsphere.Network
 
             config.Version = new Guid("{9be73c0b-3b10-403e-be7d-9f222702a38c}");
             config.MessageFactories = new MessageFactory[] { new AuthMessageFactory() };
-            config.MessageHandlers = new IMessageHandler[] { new AuthService() };
+            var packetLogger = LogManager.GetLogger("PacketLog");
+            PacketLog.Sink = line => packetLogger.Info(line);
+            PacketLog.Enabled = Config.Instance.PacketLogging;
+            config.MessageHandlers = new IMessageHandler[] { new PacketLogHandler(), new AuthService() };
             Instance = new AuthServer(config);
         }
 

@@ -58,6 +58,9 @@ namespace Netsphere
         [JsonProperty("noob_mode")]
         public bool NoobMode { get; set; }
 
+        [JsonProperty("packet_logging")]
+        public bool PacketLogging { get; set; }
+
         [JsonProperty("database")]
         public DatabasesConfig Database { get; set; }
 

@@ -55,7 +55,11 @@ namespace ProudNet
 
         public Task SendAsync(object message, SendOptions options)
         {
-            return _disposed ? Task.CompletedTask : Channel.WriteAndFlushAsync(new SendContext(message, options));
+            if (_disposed)
+                return Task.CompletedTask;
+
+            PacketLog.Log("S2C", message, HostId.ToString());
+            return Channel.WriteAndFlushAsync(new SendContext(message, options));
         }
 
         internal Task SendAsync(IMessage message)

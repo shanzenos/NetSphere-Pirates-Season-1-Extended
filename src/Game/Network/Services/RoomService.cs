@@ -824,7 +824,7 @@ namespace Netsphere.Network.Services
                 session.SendAsync(new SArcadeBeginRoundAckMessage { Unk1 = message.Unk1, Unk2 = message.Unk2 });
                 return;
             }
-            arcade.StageBegin(session.Player);
+            arcade.StageBegin(session.Player, message.Unk1, message.Unk2);
         }
 
         [MessageHandler(typeof(CArcadeStageClearReqMessage))]

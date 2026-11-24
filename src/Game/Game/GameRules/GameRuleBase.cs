@@ -15,6 +15,9 @@ namespace Netsphere.Game.GameRules
         public bool notInitialBriefing;
 
         public abstract GameRule GameRule { get; }
+
+        //Setting the sub state to 4 for the arcade timer
+        protected const GameTimeState ArcadePlayingSubState = (GameTimeState)4;
         public Room Room { get; }
         public abstract Briefing Briefing { get; }
         public StateMachine<GameRuleState, GameRuleStateTrigger> StateMachine { get; }
@@ -252,6 +255,7 @@ namespace Netsphere.Game.GameRules
 
         private void StateMachine_OnTransition(StateMachine<GameRuleState, GameRuleStateTrigger>.Transition transition)
         {
+                    NLog.LogManager.GetLogger("GameRule").Info($"[{GameRule}] <Room {Room.Id}> State {transition.Source} -> {transition.Destination} ({transition.Trigger})");
             RoundTime = TimeSpan.Zero;
 
             if (transition.Destination == GameRuleState.FirstHalf || transition.Destination == GameRuleState.Neutral)
@@ -286,7 +290,7 @@ namespace Netsphere.Game.GameRules
                     Room.BroadcastBriefing();
                     Room.Broadcast(new SChangeStateAckMessage(GameState.Playing));
                     if (transition.Destination == GameRuleState.Neutral)
-                        Room.Broadcast(new SChangeSubStateAckMessage(GameTimeState.Neutral));
+                        Room.Broadcast(new SChangeSubStateAckMessage(GameRule == GameRule.Arcade ? ArcadePlayingSubState : GameTimeState.Neutral));
                     else
                         Room.Broadcast(new SChangeSubStateAckMessage(GameTimeState.FirstHalf));
                     break;

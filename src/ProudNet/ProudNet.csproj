@@ -73,6 +73,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PacketLog.cs" />
     <Compile Include="Codecs\CoreMessageDecoder.cs" />
     <Compile Include="Codecs\CoreMessageEncoder.cs" />
     <Compile Include="Codecs\MessageDecoder.cs" />

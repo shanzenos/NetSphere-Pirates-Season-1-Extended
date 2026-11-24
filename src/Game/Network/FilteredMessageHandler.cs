@@ -28,6 +28,8 @@ namespace Netsphere.Network
             if (!GetParameter(context, message, out session))
                 throw new Exception("Unable to retrieve session");
 
+            PacketLog.Log("C2S", message, session.HostId.ToString());
+
             if (predicates != null && predicates.Any(predicate => !predicate(session)))
             {
                 Logger.Debug($"Dropping message {message.GetType().Name} from client {((ISocketChannel)context.Channel).RemoteAddress}");
