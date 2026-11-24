@@ -90,11 +90,17 @@ namespace Netsphere.Game.GameRules
                 if (StateMachine.IsInState(GameRuleState.Neutral))
                 {
                     if (!teamMgr.PlayersPlaying.Any())
+                    {
+                        Logger.Info($"[Arcade] <Room {Room.Id}> No players playing, ending stage");
                         StateMachine.Fire(GameRuleStateTrigger.StartResult);
+                    }
 
                     // Did we reach round limit?
                     if (RoundTime >= Room.Options.TimeLimit)
+                    {
+                        Logger.Info($"[Arcade] <Room {Room.Id}> Time limit reached: RoundTime={RoundTime} TimeLimit={Room.Options.TimeLimit}");
                         StateMachine.Fire(GameRuleStateTrigger.StartResult);
+                    }
                 }
             }
         }
@@ -129,25 +135,29 @@ namespace Netsphere.Game.GameRules
                 Room.Broadcast(new SArcadeAllLoadingSucceedAckMessage());
         }
 
-        public void StageBegin(Player plr)
+        public void StageBegin(Player plr, byte unk1, byte unk2)
         {
             ResetStage();
 
             if (StateMachine.CanFire(GameRuleStateTrigger.StartGame))
                 StateMachine.Fire(GameRuleStateTrigger.StartGame);
 
+            // Log the client requests
             Room.Broadcast(new SArcadeBeginRoundAckMessage
             {
-                Unk1 = (byte)Math.Max(1, Room.TeamManager.PlayersPlaying.Count()),
-                Unk2 = Stage
+                Unk1 = unk1,
+                Unk2 = unk2
             });
 
             foreach (var player in Room.TeamManager.Players)
                 player.RoomInfo.ArcadeRespawnCount = RespawnsPerStage;
+            Room.Broadcast(new SArcadeEnablePlayeTimeAckMessage { Unk = 1 });
+            Logger.Info($"[Arcade] <Room {Room.Id}> StageBegin by {plr?.Account.Nickname}: Stage={Stage} Difficulty={Difficulty} TimeLimit={Room.Options.TimeLimit} Players={Room.TeamManager.Players.Count()} State={StateMachine.State}");
         }
 
         public void StageInfo(byte stage, byte subStage)
         {
+            Logger.Info($"[Arcade] <Room {Room.Id}> StageInfo: stage={stage} subStage={subStage}");
             if (stage >= 1 && stage <= ArcadeStats.Stages)
                 Stage = stage;
 
@@ -255,6 +265,7 @@ namespace Netsphere.Game.GameRules
 
         public void StageClear(ArcadeScoreSyncReqDto[] scores)
         {
+            Logger.Info($"[Arcade] <Room {Room.Id}> StageClear: Stage={Stage} Difficulty={Difficulty}");
             ScoreSync(scores);
 
             foreach (var score in _scoreByAccount.Values)
@@ -278,6 +289,7 @@ namespace Netsphere.Game.GameRules
         // End stage when all players finish
         public void StageFailed(Player plr)
         {
+            Logger.Info($"[Arcade] <Room {Room.Id}> StageFailed by {plr?.Account.Nickname}: failed={_failedPlayers.Count + 1} playing={Room.TeamManager.PlayersPlaying.Count()}");
             if (plr != null)
                 _failedPlayers.Add(plr.Account.Id);
 
@@ -292,9 +304,11 @@ namespace Netsphere.Game.GameRules
         // Players get ten revives or costs PEN
         public void Respawn(Player plr)
         {
+            Logger.Info($"[Arcade] <Room {Room.Id}> Respawn request from {plr.Account.Nickname}: RespawnsLeft={plr.RoomInfo.ArcadeRespawnCount} PEN={plr.PEN} State={plr.RoomInfo.State} RoomState={StateMachine.State}");
+
             if (plr.RoomInfo.ArcadeRespawnCount <= 0 || plr.PEN < ReviveCost)
             {
-                plr.Session?.SendAsync(new SArcadeRespawnFailAckMessage());
+                plr.Session?.SendAsync(new SArcadeRespawnFailAckMessage { Result = 1 });
                 StageFailed(plr);
                 return;
             }
