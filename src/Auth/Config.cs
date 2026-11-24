@@ -28,9 +28,6 @@ namespace Netsphere
         [JsonProperty("auto_register")]
          public bool AutoRegister { get; set; }
 
-        [JsonProperty("packet_logging")]
-        public bool PacketLogging { get; set; }
-
         [JsonProperty("database")]
         public DatabasesConfig Database { get; set; }
 

@@ -119,7 +119,6 @@
     <Compile Include="API\ChannelState.cs" />
     <Compile Include="JsonConverters.cs" />
     <Compile Include="Network\AuthServer.cs" />
-    <Compile Include="Network\PacketLogHandler.cs" />
     <Compile Include="Network\Service\AuthService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

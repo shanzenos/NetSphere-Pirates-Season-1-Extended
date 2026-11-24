@@ -18,7 +18,11 @@ namespace ProudNet.Handlers
             LoggerMessage.DefineScope($"Unhandled exception");
             var session = context.Channel.GetAttribute(ChannelAttributes.Session).Get();
             if (session != null && !session.HandhsakeEvent.IsSet)
+            {
+                if (PacketLog.Enabled)
+                    PacketLog.Sink?.Invoke("Pre-handshake error: " + exception);
                 return;
+            }
             _server.RaiseError(new ErrorEventArgs(session, exception));
             //session?.CloseAsync();
         }
