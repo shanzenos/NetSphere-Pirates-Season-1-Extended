@@ -596,8 +596,13 @@ namespace Netsphere.Network.Services
             //Only count kills on actual players, not sentry weapons (Unk: 1=Player, 2=Sentry, 3=Sentiforce)
             if (message.Score.Target.PeerId.Unk != 1)
             {
-                // Unless it's an arcade NPC, return nothing
-                GetArcade(session)?.MonsterKilled(killer);
+                //Exception: Arcade mode allows scores from NPC kills
+                var arcade = GetArcade(session);
+                if (arcade != null)
+                {
+                    room.Broadcast(new SScoreKillAckMessage(message.Score));
+                    arcade.MonsterKilled(killer);
+                }
                 return;
             }
 

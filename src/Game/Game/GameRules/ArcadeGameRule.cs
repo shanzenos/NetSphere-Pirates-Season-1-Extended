@@ -17,8 +17,11 @@ namespace Netsphere.Game.GameRules
         // ReSharper disable once InconsistentNaming
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private const int ReviveCost = 30;
+        private const int ReviveCoins = 1;
         private const int RespawnsPerStage = 10;
+        private static readonly TimeSpan FailExitDelay = TimeSpan.FromSeconds(30);
+
+        private TimeSpan? _failedAt;
 
         private readonly Dictionary<ulong, Player> _loadingOk = new Dictionary<ulong, Player>();
         private readonly Dictionary<ulong, int> _killedByAccount = new Dictionary<ulong, int>();
@@ -46,7 +49,8 @@ namespace Netsphere.Game.GameRules
 
             StateMachine.Configure(GameRuleState.Neutral)
                 .SubstateOf(GameRuleState.Playing)
-                .Permit(GameRuleStateTrigger.StartResult, GameRuleState.EnteringResult);
+                .Permit(GameRuleStateTrigger.StartResult, GameRuleState.EnteringResult)
+                .Permit(GameRuleStateTrigger.EndGame, GameRuleState.Waiting);
 
             StateMachine.Configure(GameRuleState.EnteringResult)
                 .SubstateOf(GameRuleState.Playing)
@@ -93,6 +97,14 @@ namespace Netsphere.Game.GameRules
                     {
                         Logger.Info($"[Arcade] <Room {Room.Id}> No players playing, ending stage");
                         StateMachine.Fire(GameRuleStateTrigger.StartResult);
+                    }
+
+                    if (_failedAt.HasValue && RoundTime - _failedAt.Value >= FailExitDelay &&
+                        StateMachine.CanFire(GameRuleStateTrigger.EndGame))
+                    {
+                        Logger.Info($"[Arcade] <Room {Room.Id}> Stage failed, returning room to lobby");
+                        StateMachine.Fire(GameRuleStateTrigger.EndGame);
+                        return;
                     }
 
                     // Did we reach round limit?
@@ -142,16 +154,14 @@ namespace Netsphere.Game.GameRules
             if (StateMachine.CanFire(GameRuleStateTrigger.StartGame))
                 StateMachine.Fire(GameRuleStateTrigger.StartGame);
 
-            // Log the client requests
             Room.Broadcast(new SArcadeBeginRoundAckMessage
             {
-                Unk1 = unk1,
-                Unk2 = unk2
+                Unk1 = (byte)Math.Max(1, Room.TeamManager.PlayersPlaying.Count()),
+                Unk2 = Stage
             });
 
             foreach (var player in Room.TeamManager.Players)
                 player.RoomInfo.ArcadeRespawnCount = RespawnsPerStage;
-            Room.Broadcast(new SArcadeEnablePlayeTimeAckMessage { Unk = 1 });
             Logger.Info($"[Arcade] <Room {Room.Id}> StageBegin by {plr?.Account.Nickname}: Stage={Stage} Difficulty={Difficulty} TimeLimit={Room.Options.TimeLimit} Players={Room.TeamManager.Players.Count()} State={StateMachine.State}");
         }
 
@@ -297,28 +307,45 @@ namespace Netsphere.Game.GameRules
             if (_failedPlayers.Count < Math.Max(1, playing))
                 return;
 
-            if (StateMachine.CanFire(GameRuleStateTrigger.StartResult))
-                StateMachine.Fire(GameRuleStateTrigger.StartResult);
+            // Lost stage: the room returns to its lobby once the client's respawn countdown has run out
+            _failedAt = RoundTime;
+        }
+
+        public override void OnScoreKill(Player killer, Player assist, Player target, AttackAttribute attackAttribute)
+        {
+            base.OnScoreKill(killer, assist, target, attackAttribute);
+
+            if (target == null || StateMachine.IsInState(GameRuleState.EnteringResult) || StateMachine.IsInState(GameRuleState.Result))
+                return;
+
+            target.RoomInfo.State = PlayerState.Dead;
+            Logger.Info($"[Arcade] <Room {Room.Id}> Player died: {target.Account.Nickname} RespawnsLeft={target.RoomInfo.ArcadeRespawnCount} Coins={target.Coins1}");
+
+            // A dead player without a coin can never revive, so the stage is lost for them
+            if (target.RoomInfo.ArcadeRespawnCount <= 0 || target.Coins1 < ReviveCoins)
+                StageFailed(target);
         }
 
         // Players get ten revives or costs PEN
         public void Respawn(Player plr)
         {
-            Logger.Info($"[Arcade] <Room {Room.Id}> Respawn request from {plr.Account.Nickname}: RespawnsLeft={plr.RoomInfo.ArcadeRespawnCount} PEN={plr.PEN} State={plr.RoomInfo.State} RoomState={StateMachine.State}");
+            Logger.Info($"[Arcade] <Room {Room.Id}> Respawn request from {plr.Account.Nickname}: RespawnsLeft={plr.RoomInfo.ArcadeRespawnCount} Coins={plr.Coins1} State={plr.RoomInfo.State} RoomState={StateMachine.State}");
 
-            if (plr.RoomInfo.ArcadeRespawnCount <= 0 || plr.PEN < ReviveCost)
+            if (plr.RoomInfo.ArcadeRespawnCount <= 0 || plr.Coins1 < ReviveCoins)
             {
                 plr.Session?.SendAsync(new SArcadeRespawnFailAckMessage { Result = 1 });
                 StageFailed(plr);
                 return;
             }
 
-            plr.PEN -= ReviveCost;
+            plr.Coins1 -= ReviveCoins;
             plr.RoomInfo.ArcadeRespawnCount--;
             plr.RoomInfo.State = PlayerState.Alive;
+            _failedPlayers.Remove(plr.Account.Id);
+            _failedAt = null;
 
             plr.Session?.SendAsync(new SArcadeRespawnAckMessage { Unk = plr.RoomInfo.ArcadeRespawnCount });
-            plr.Session?.SendAsync(new SRefreshCashInfoAckMessage(plr.PEN, plr.AP));
+            plr.Session?.SendAsync(new SSetCoinAckMessage { ArcadeCoins = plr.Coins1, BuffCoins = plr.Coins2 });
         }
 
         //Arcade Capsule rewards
@@ -382,6 +409,7 @@ namespace Netsphere.Game.GameRules
             _killedByAccount.Clear();
             _scoreByAccount.Clear();
             _failedPlayers.Clear();
+            _failedAt = null;
         }
 
         private bool CanStart()
