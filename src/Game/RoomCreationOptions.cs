@@ -17,6 +17,8 @@ namespace Netsphere
         public byte MaxLevel { get; set; }
         public byte ItemLimit { get; set; }
         public bool IsNoIntrusion { get; set; }
+        public uint Unk1 { get; set; }
+        public byte Unk2 { get; set; }
 
         public IPEndPoint ServerEndPoint { get; set; }
     }

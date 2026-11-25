@@ -26,7 +26,8 @@ namespace Netsphere.Network.Services
         {
             var plr = session.Player;
 
-            plr.Room.Broadcast(new SEnterPlayerAckMessage(plr.Account.Id, plr.Account.Nickname, 0, plr.RoomInfo.Mode, 0));
+            plr.Room.Broadcast(new SEnterPlayerAckMessage(plr.Account.Id, plr.Account.Nickname,
+                (byte)plr.RoomInfo.Team.Team, plr.RoomInfo.Mode, (int)plr.TotalExperience));
             session.SendAsync(new SChangeMasterAckMessage(plr.Room.Master.Account.Id));
             session.SendAsync(new SChangeRefeReeAckMessage(plr.Room.Host.Account.Id));
             plr.Room.BroadcastBriefing();
@@ -82,6 +83,8 @@ namespace Netsphere.Network.Services
                 MaxLevel = message.Room.MaxLevel,
                 ItemLimit = message.Room.EquipLimit,
                 IsNoIntrusion = message.Room.IsNoIntrusion,
+                Unk1 = message.Room.Unk1,
+                Unk2 = message.Room.Unk3,
 
                 ServerEndPoint = new IPEndPoint(IPAddress.Parse(Config.Instance.IP), Config.Instance.RelayListener.Port)
             }, RelayServer.Instance.P2PGroupManager.Create(true));

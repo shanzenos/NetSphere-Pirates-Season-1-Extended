@@ -126,6 +126,7 @@ namespace Netsphere.Game.GameRules
         {
             base.PlayerJoined(room, e);
             SendStageInfo(e.Player);
+            e.Player.Session?.SendAsync(new SArcadeStageSelectAckMessage { Unk1 = Math.Max((byte)1, Stage), Unk2 = Difficulty });
             Logger.Info($"[Arcade] <Room {Room.Id}> Joined {e.Player.Account.Nickname}: Team={e.Player.RoomInfo.Team?.Team} Mode={e.Player.RoomInfo.Mode} Slot={e.Player.RoomInfo.Slot}");
         }
 
@@ -166,7 +167,7 @@ namespace Netsphere.Game.GameRules
                 player.RoomInfo.ArcadeRespawnCount = RespawnsPerStage;
                 Logger.Info($"[Arcade] <Room {Room.Id}> Player {player.Account.Nickname}: Team={player.RoomInfo.Team?.Team} Mode={player.RoomInfo.Mode} Slot={player.RoomInfo.Slot} Master={Room.Master == player}");
             }
-            Logger.Info($"[Arcade] <Room {Room.Id}> StageBegin by {plr?.Account.Nickname}: Stage={Stage} Difficulty={Difficulty} TimeLimit={Room.Options.TimeLimit} Players={Room.TeamManager.Players.Count()} State={StateMachine.State}");
+            Logger.Info($"[Arcade] <Room {Room.Id}> StageBegin by {plr?.Account.Nickname}: Stage={Stage} Difficulty={Difficulty} TimeLimit={Room.Options.TimeLimit} Players={Room.TeamManager.Players.Count()} State={StateMachine.State} RoomUnk1={Room.Options.Unk1} RoomUnk2={Room.Options.Unk2}");
         }
 
         public void StageInfo(byte stage, byte subStage)

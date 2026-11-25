@@ -398,6 +398,8 @@ namespace Netsphere.Network
                 .Member(dest => dest.MaxLevel, src => src.Options.MaxLevel)
                 .Member(dest => dest.EquipLimit, src => src.Options.ItemLimit)
                 .Member(dest => dest.IsNoIntrusion, src => src.Options.IsNoIntrusion)
+                .Member(dest => dest.Unk4, src => src.Options.Unk1)
+                .Member(dest => dest.Unk5, src => src.Options.Unk2)
                 .Member(dest => dest.ConnectingCount, src => src.TeamManager.Players.Count())
                 .Member(dest => dest.PlayerCount, src => src.TeamManager.Players.Count())
                 .Member(dest => dest.Latency, src => src.GetLatency())
@@ -427,6 +429,8 @@ namespace Netsphere.Network
                 .Member(dest => dest.MaxLevel, src => src.Options.MaxLevel)
                 .Member(dest => dest.ItemLimit, src => src.Options.ItemLimit)
                 .Member(dest => dest.IsNoIntrusion, src => src.Options.IsNoIntrusion)
+                .Member(dest => dest.Unk1, src => src.Options.Unk1)
+                .Member(dest => dest.Unk2, src => src.Options.Unk2)
                 .Member(dest => dest.RelayEndPoint, src => src.Options.ServerEndPoint)
                 .Function(dest => dest.State, src =>
                 {
