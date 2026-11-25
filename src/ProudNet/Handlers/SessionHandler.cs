@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using ProudNet.Serialization;
 using ProudNet.Serialization.Messages.Core;
@@ -16,6 +17,19 @@ namespace ProudNet.Handlers
         }
 
         public override async void ChannelActive(IChannelHandlerContext context)
+        {
+            try
+            {
+                await OnChannelActive(context);
+            }
+            catch (Exception)
+            {
+                //Cleanup clients that dropped before the proudnet handshake finished
+                try { await context.CloseAsync(); } catch (Exception) { }
+            }
+        }
+
+        private async Task OnChannelActive(IChannelHandlerContext context)
         {
             var hostId = _server.Configuration.HostIdFactory.New();
             var session = _server.Configuration.SessionFactory.Create(hostId, context.Channel);
