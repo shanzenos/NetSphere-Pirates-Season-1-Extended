@@ -126,6 +126,7 @@ namespace Netsphere.Game.GameRules
         {
             base.PlayerJoined(room, e);
             SendStageInfo(e.Player);
+            Logger.Info($"[Arcade] <Room {Room.Id}> Joined {e.Player.Account.Nickname}: Team={e.Player.RoomInfo.Team?.Team} Mode={e.Player.RoomInfo.Mode} Slot={e.Player.RoomInfo.Slot}");
         }
 
         public override void PlayerLeft(object room, RoomPlayerEventArgs e)
@@ -161,7 +162,10 @@ namespace Netsphere.Game.GameRules
             });
 
             foreach (var player in Room.TeamManager.Players)
+            {
                 player.RoomInfo.ArcadeRespawnCount = RespawnsPerStage;
+                Logger.Info($"[Arcade] <Room {Room.Id}> Player {player.Account.Nickname}: Team={player.RoomInfo.Team?.Team} Mode={player.RoomInfo.Mode} Slot={player.RoomInfo.Slot} Master={Room.Master == player}");
+            }
             Logger.Info($"[Arcade] <Room {Room.Id}> StageBegin by {plr?.Account.Nickname}: Stage={Stage} Difficulty={Difficulty} TimeLimit={Room.Options.TimeLimit} Players={Room.TeamManager.Players.Count()} State={StateMachine.State}");
         }
 
