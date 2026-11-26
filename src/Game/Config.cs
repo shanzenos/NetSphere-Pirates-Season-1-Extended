@@ -94,7 +94,8 @@ namespace Netsphere
             SecurityLevel = SecurityLevel.User;
             AuthAPI = new AuthAPI();
             SaveInterval = TimeSpan.FromMinutes(1);
-            NoobMode = true;
+            NoobMode = false;
+            PacketLogging = false;
             Database = new DatabasesConfig();
             Game = new GameSettings();
         }
