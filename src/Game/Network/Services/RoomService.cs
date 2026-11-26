@@ -37,6 +37,11 @@ namespace Netsphere.Network.Services
         public void CMakeRoomReq(GameSession session, CMakeRoomReqMessage message)
         {
             var plr = session.Player; 
+            var dto = message.Room;
+            Logger.Info()
+                .Account(plr)
+                .Message($"MakeRoom: Rule={dto.MatchKey.GameRule} Map={dto.MatchKey.Map} Time={dto.TimeLimit} Unk1={dto.Unk1} Score={dto.ScoreLimit} Unk2={dto.Unk2} Friendly={dto.IsFriendly} Balanced={dto.IsBalanced} Level={dto.MinLevel}-{dto.MaxLevel} Equip={dto.EquipLimit} NoIntrusion={dto.IsNoIntrusion} Unk3={dto.Unk3}")
+                .Write();
             if (!plr.Channel.RoomManager.GameRuleFactory.Contains(message.Room.MatchKey.GameRule))
             {
                 Logger.Error()
