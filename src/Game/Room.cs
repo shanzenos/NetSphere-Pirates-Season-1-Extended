@@ -153,6 +153,7 @@ namespace Netsphere
                     GameRuleManager.GameRule = RoomManager.GameRuleFactory.Get(Options.MatchKey.GameRule, this);
                     Broadcast(new SChangeRuleAckMessage(Options.Map<RoomCreationOptions, ChangeRuleDto>()));
                     IsChangingRules = false;
+                    BroadcastBriefing();
                 }
             }
 
@@ -441,7 +442,9 @@ namespace Netsphere
                     }
                 }
 
-                BroadcastBriefing();
+                //Prevent broadcasting briefing during room settings changes
+                if (!IsChangingRules)
+                    BroadcastBriefing();
             }
 
 
