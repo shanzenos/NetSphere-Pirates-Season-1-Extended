@@ -350,7 +350,7 @@ namespace Netsphere.Game.GameRules
                         }
                     }
 
-                    foreach (var plr in Room.TeamManager.Players.Where(plr => plr.RoomInfo.State != PlayerState.Lobby))
+                    foreach (var plr in Room.TeamManager.Values.SelectMany(team => team.Values).Where(plr => plr.RoomInfo.State != PlayerState.Lobby))
                         plr.RoomInfo.State = PlayerState.Waiting;
 
                     if (Room.TeamManager.Values.Any())
@@ -376,7 +376,7 @@ namespace Netsphere.Game.GameRules
                     break;
 
                 case GameRuleState.Waiting:
-                    foreach (var plr in Room.TeamManager.Players.Where(plr => plr.RoomInfo.State != PlayerState.Lobby))
+                    foreach (var plr in Room.TeamManager.Values.SelectMany(team => team.Values).Where(plr => plr.RoomInfo.State != PlayerState.Lobby))
                     {
                         plr.RoomInfo.Reset();
                         plr.RoomInfo.State = PlayerState.Lobby;

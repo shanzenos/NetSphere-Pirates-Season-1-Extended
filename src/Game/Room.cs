@@ -390,7 +390,11 @@ namespace Netsphere
 
         private Player GetPlayerWithLowestPing() //player with lowest ping defined here
         {
-            return _players.Values.Aggregate((lowestPlayer, player) => (lowestPlayer == null || player.Session.UnreliablePing < lowestPlayer.Session.UnreliablePing ? player : lowestPlayer));
+            var candidates = _players.Values.Where(plr => plr.RoomInfo.Mode == PlayerGameMode.Normal).ToArray();
+            if (candidates.Length == 0)
+                candidates = _players.Values.ToArray();
+
+            return candidates.Aggregate((lowestPlayer, player) => (lowestPlayer == null || player.Session.UnreliablePing < lowestPlayer.Session.UnreliablePing ? player : lowestPlayer));
         }
 
         private void TeamManager_TeamChanged(object sender, TeamChangedEventArgs e)
